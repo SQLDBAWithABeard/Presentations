@@ -59,13 +59,16 @@ Get-Help Backup-SqlDatabase -Examples
 #    will be named 'MyDB.bak'.
 ########################################################################################
 #
-# 
+# This will not work if you don't have SQL installed
+# Find another command to practice with using Get-Command
+#
 Backup-SqlDatabase -ServerInstance . -Database DBADatabase
 # I will show the Default Backup Directory. Look at the LastWriteTime
+# If you don't have a C:\MSSQL\Backup directory this will fail try another directory with the ls command alias
 #
 ls C:\MSSQL\Backup
 cd C:\MSSQL\Backup
-# sneakily I showed you that you can use cmd or bash commands
+# sneakily I showed you that you can use cmd or bash commands!!
 #
 # Everything is an object and you can assign and investigate objects. 
 #
@@ -79,9 +82,11 @@ Get-ChildItem | Get-Member
 # Now you can see the events, properties and methods for the object
 # It is Better to do it like this though. Store the results in a variable using the $ to define the variable
 #
+# If you dont have SQL Agent on this machine this will fail. Try assigning the variable to a different service
+#
 $Service = Get-Service SQLSERVERAGENT
 $Service | Get-Member -MemberType Method
-# When you want to take it further Go back to Get-Help. Don't always relay on the examples. Read more of it
+# When you want to take it further Go back to Get-Help and read it. Don't always relay on the examples. Read more of it
 # But you can also find help about concepts and the langauge
 #
 Get-Help About_C*
@@ -107,7 +112,7 @@ powershell_ise.exe '02.ps1' -noprofile
 #              Or any of the Powershell focused web-sites too many to list here             
 #
 #              Thank you 
-#              @SQLDBAWithABeard
+#              @SQLDBAWithBeard http://sqldbawithabeard.com
 ## 
 ####
 Read-Host
@@ -157,7 +162,7 @@ Read-Host
 #                      @       G.    @     G                     
 #                      @      .i      @                          
 #                            8        1,                                   
-#              Thank you  @SQLDBAWithABeard
+#              Thank you  @SQLDBAWithBeard http://sqldbawithabeard.com
 ## 
 ####                           
 Read-Host
