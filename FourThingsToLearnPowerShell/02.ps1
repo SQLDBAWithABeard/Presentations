@@ -19,6 +19,8 @@ $Index | Get-Member -MemberType Property
 
 
 
+
+
 foreach($Table in $db.Tables)
     {
     foreach ($Index in $Table.Indexes)
