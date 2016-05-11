@@ -2,6 +2,7 @@
 ## $Files = Get-ChildItem -Path C:\temp -Recurse
 ## Files | Get-Member and find some properties to investigate
 
+## Or enter the SQL Server information below
 $Server = ''  # ServerName Here
 $dbName = ''  # Database Name Here
 $srv = New-Object Microsoft.SQLSErver.Management.SMO.Server $Server
