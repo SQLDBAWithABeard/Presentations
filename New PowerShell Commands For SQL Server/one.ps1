@@ -96,23 +96,23 @@ $B | Select Name,ServiceAccount,ServiceStartMode
 ## You can also pass these into other commands using pipe
 $B | Get-SqlAgentJob
 ## Now you can start doing things
-(Get-SqlAgentJob -ServerInstance ROB-SURFACEBOOK ).Count
-(Get-SqlAgentJob -ServerInstance ROB-SURFACEBOOK|Where-Object {$_.LastRunOutcome -eq 'Succeeded'}).Count
-(Get-SqlAgentJob -ServerInstance ROB-SURFACEBOOK |Where-Object {$_.LastRunOutcome -eq 'Failed'}).Count
-(Get-SqlAgentJob -ServerInstance ROB-SURFACEBOOK |Where-Object{$_.IsEnabled -eq $false}).Count
-(Get-SqlAgentJob -ServerInstance ROB-SURFACEBOOK |Where-Object{$_.LastRunOutcome -eq 'Unknown'}).Count
+(Get-SqlAgentJob -ServerInstance . ).Count
+(Get-SqlAgentJob -ServerInstance .|Where-Object {$_.LastRunOutcome -eq 'Succeeded'}).Count
+(Get-SqlAgentJob -ServerInstance . |Where-Object {$_.LastRunOutcome -eq 'Failed'}).Count
+(Get-SqlAgentJob -ServerInstance . |Where-Object{$_.IsEnabled -eq $false}).Count
+(Get-SqlAgentJob -ServerInstance . |Where-Object{$_.LastRunOutcome -eq 'Unknown'}).Count
 ## Thats old Powershell version code ).Where{} is better
 ## Lets also add the counts to an object
 [pscustomobject]$Jobs= @{}
-$Jobs.JobCount =     (Get-SqlAgentJob -ServerInstance ROB-SURFACEBOOK ).Count
-$Jobs.successCount = (Get-SqlAgentJob -ServerInstance ROB-SURFACEBOOK ).where{$_.LastRunOutcome -eq 'Succeeded'}.Count
-$Jobs.failedCount =  (Get-SqlAgentJob -ServerInstance ROB-SURFACEBOOK ).where{$_.LastRunOutcome -eq 'Failed'}.Count
-$Jobs.JobsDisabled = (Get-SqlAgentJob -ServerInstance ROB-SURFACEBOOK ).where{$_.IsEnabled -eq $false}.Count
-$Jobs.UnknownCount = (Get-SqlAgentJob -ServerInstance ROB-SURFACEBOOK ).where{$_.LastRunOutcome -eq 'Unknown'}.Count
+$Jobs.JobCount =     (Get-SqlAgentJob -ServerInstance . ).Count
+$Jobs.successCount = (Get-SqlAgentJob -ServerInstance . ).where{$_.LastRunOutcome -eq 'Succeeded'}.Count
+$Jobs.failedCount =  (Get-SqlAgentJob -ServerInstance . ).where{$_.LastRunOutcome -eq 'Failed'}.Count
+$Jobs.JobsDisabled = (Get-SqlAgentJob -ServerInstance . ).where{$_.IsEnabled -eq $false}.Count
+$Jobs.UnknownCount = (Get-SqlAgentJob -ServerInstance . ).where{$_.LastRunOutcome -eq 'Unknown'}.Count
 $Jobs
 ## You can also start and stop jobs
-(Get-SqlAgentJob -ServerInstance ROB-SURFACEBOOK -Name 'DatabaseBackup - SYSTEM_DATABASES - FULL').Start()
-Get-SqlAgentJob -ServerInstance ROB-SURFACEBOOK -Name 'DatabaseBackup - SYSTEM_DATABASES - FULL'
+(Get-SqlAgentJob -ServerInstance . -Name 'DatabaseBackup - SYSTEM_DATABASES - FULL').Start()
+Get-SqlAgentJob -ServerInstance . -Name 'DatabaseBackup - SYSTEM_DATABASES - FULL'
 ## Or combine it into something like this
 Get-Content 'Presentations:\New PowerShell Commands For SQL Server\Restore-LogShippingDatabase.ps1'
 ## There is also the history
@@ -150,7 +150,7 @@ Get-SqlAgentJob -ServerInstance . -Name 'DatabaseBackup - SYSTEM_DATABASES - FUL
 ## And the error log
 ##
 ## Again we have the since parameter
-cd SQLSERVER:\SQL\ROB-SURFACEBOOK\DEFAULT
+cd SQLSERVER:\SQL\localhost\DEFAULT
 Get-SqlErrorLog -Since Yesterday
 ## but also a timespan
 Get-SqlErrorLog -Timespan '00:30:00' |Format-Table -AutoSize -Wrap
