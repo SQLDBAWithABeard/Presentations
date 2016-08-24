@@ -47,6 +47,7 @@ function Start-Demo
   $_PretendTyping = $true
   $_InterkeyPause = 100
   $Global:Duration = $null
+  $justKeepSwinging = 0
  
   Write-Host -for $otherColor @"
 Start-Demo: $file - Start time: $starttime
@@ -100,13 +101,24 @@ NOTE: Start-Demo replaces the typing but runs the actual commands.
         $_PretendTyping = $true
  
     } # else
- 
-   if($_Lines[$_i] -notmatch '`')
-   {
-        #Write-Host "Yes $($_Lines[$_i])" -BackgroundColor white -ForegroundColor red;
-        $_input = Read-Host;
-   } #else { $continuation = $true}
- 
+
+    if(($_lines[$_i] -match '\)' -and $_lines[$_i+1] -match '\{') -or ($_lines[$_i] -match '\){'))
+    {
+        $justKeepSwinging++
+    }
+
+    if($justKeepSwinging -ne 0 -and $_lines[$_i] -match '\}')
+    {
+         $justKeepSwinging--
+    }
+
+    if($_lines[$_i] -notmatch '`' -and $justKeepSwinging -eq 0)
+    {
+         #Write-Host "Yes $($_Lines[$_i])" -BackgroundColor white -ForegroundColor red;
+         $_input = Read-Host;
+    }
+	#else { $continuation = $true}  
+
     switch ($_input)
     {
 ################ HELP with DEMO
@@ -251,39 +263,61 @@ NOTE 4: Although this script is functional try not to "Goto" a continuation
       ####################  EXECUTE
       default
           {
-             trap [System.Exception] {Write-Error $_;continue;};
-             ## - 02/10/2012-> Commented out original line below
-             # Invoke-Expression $(".{" + $_lines[$_i] + "}| out-host")
+            trap [System.Exception] {Write-Error $_;continue;};
+            ## - 02/10/2012-> Commented out original line below
+            # Invoke-Expression $(".{" + $_lines[$_i] + "}| out-host")
  
             ## - add section identify oneliners with continuation tick:
-                [string] $Addline = $null;
-                if($_lines[$_i] -match '`')
+            [string] $Addline = $null;
+            if($_lines[$_i] -match '`')
+            {
+                #Write-Host " Found tick = $($_lines[$_i])" -ForegroundColor yellow;
+                $Addline = $_lines[$_i].replace('`','').tostring()
+                $Scriptline += $Addline;
+                $continuation = $true;
+            }
+			elseif(($_lines[$_i] -match '\)' -and $_lines[$_i+1] -match '\{') -or ($_lines[$_i] -match '\){'))
+            {
+                #Write-Host " Found tick = $($_lines[$_i])" -ForegroundColor yellow;
+                $Addline = $_lines[$_i].tostring()
+                $Scriptline += $Addline;
+                $continuation = $true;
+
+                #just incase the full statement is on one line
+                if($_lines[$_i] -match '\}')
                 {
-                    #Write-Host " Found tick = $($_lines[$_i])" -ForegroundColor yellow;
-                    $Addline = $_lines[$_i].replace('`','').tostring()
-                    $Scriptline += $Addline;
-                    $continuation = $true;
-                }
-                else
-                {
-                    $Scriptline += $_lines[$_i].ToString();
                     $continuation = $false;
-                };
-                if($continuation -eq $false)
-                {
-                    ## - Executive:
-                    Write-Host " `r`n`t Executing Script...`r`n" -ForegroundColor $otherColor;
-                    Invoke-Expression $(".{" +$Scriptline + "}| out-host")
                 }
-            ## - --------------------------------------------------------------------
-             if($continuation -eq $false)
-             {
+            }
+			elseif($_lines[$_i] -match '\}')
+            {
+                #Write-Host " Found tick = $($_lines[$_i])" -ForegroundColor yellow;
+                $Addline = $_lines[$_i].tostring()
+                $Scriptline += $Addline;
+                $continuation = $false;
+            }
+            else
+            {
+                $Scriptline += $_lines[$_i].ToString();
+                $continuation = $false;
+            }
+
+            if($continuation -eq $false -and $justKeepSwinging -eq 0)
+            {
+                ## - Executive:
+                Write-Host " `r`n`t Executing Script...`r`n" -ForegroundColor $otherColor;
+                Invoke-Expression $(".{" +$Scriptline + "}| out-host")
+            }
+            
+			## - --------------------------------------------------------------------
+            if($continuation -eq $false -and $justKeepSwinging -eq 0)
+            {
                 # Write-Host "`r`n";
                 Write-Host "-- Press Enter to continue --" 
                 $Global:Duration = [DateTime]::Now - $Global:StartTime
                 Read-Host;
                 $Scriptline = $null;
-             };
+            };
           }
     } # Switch
   } # for
