@@ -62,6 +62,11 @@ NOTE: Start-Demo replaces the typing but runs the actual commands.
   # around in the order.
   for ($_i = $Command; $_i -lt $_lines.count; $_i++)
   {
+    if($_lines[$_i].Length -eq 0)
+    {
+        continue
+    }
+
     if ($_lines[$_i].StartsWith("#"))
     {
         Write-Host -NoNewLine $("`n[$_i]PS> ")
