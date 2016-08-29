@@ -15,8 +15,8 @@ PSConfEU - Reducing your DBAs Context Switching PowerShell SQL and PowerBi
 Where to go to learn - PDT for SQL Server                                  
                                             
 Start-Demo.ps1 updated Start-Demo for loops
-start-demotest.ps1 a demo for the above
+Start-demotest.ps1 a demo for the above
 
-Run the start-demo.ps1 file in PowerSHell (NOT ISE) and then Start-Demo PATHTO\start-demotest.ps1
+Run the start-demo.ps1 file in PowerShell (NOT ISE) and then Start-Demo PATHTO\start-demotest.ps1
 
 CODE HERE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
