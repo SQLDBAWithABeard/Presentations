@@ -1,3 +1,12 @@
+# Create some dummy files in C:\temp
+$i = 10
+while ($i -ne 0)
+{
+$file = New-Item -Name "$i.txt" -Path c:\temp -ItemType File;
+Set-Content $file "Hello World";
+$I--;
+}
+
 # Path to Temp
 $path = "C:\temp\"
 
