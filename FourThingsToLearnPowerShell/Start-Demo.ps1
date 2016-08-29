@@ -20,6 +20,7 @@
 # 02/10/2012 - Make code to properly display continuation lines.
 # 02/12/2012 - Fix info on Start time and duration.
 # 02/12/2012 - Adjust execution message spacing.
+# 29/08/2016 - Added support for multi-line code - ChocolateMonkey (Luke Duddridge)
 #
 ###########################################################################
  
