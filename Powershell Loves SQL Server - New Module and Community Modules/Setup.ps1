@@ -35,6 +35,6 @@ Invoke-Pester 'C:\Users\mrrob\OneDrive\Documents\GitHub\Presentations\Powershell
 start-process powershell.exe
 <#
 
-Start-Demo -file . 'C:\Users\mrrob\OneDrive\Documents\GitHub\Presentations\Powershell Loves SQL Server - New Module and Community Modules\one.ps1'
+Start-Demo -file 'C:\Users\mrrob\OneDrive\Documents\GitHub\Presentations\Powershell Loves SQL Server - New Module and Community Modules\one.ps1'
 
 #>

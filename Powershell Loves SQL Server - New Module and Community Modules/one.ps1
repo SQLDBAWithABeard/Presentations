@@ -131,5 +131,91 @@ Get-SqlAgentJob -ServerInstance . -Name 'DatabaseBackup - SYSTEM_DATABASES - FUL
 ## but also a timespan
 $srv = New-Object Microsoft.SQLServer.Management.SMO.Server .
 $srv | Get-SqlErrorLog -Timespan '00:30:00' |Format-Table -AutoSize -Wrap
+## Lets look at the dbatools module
+Start-Process microsoft-edge:'https://dbatools.io/sep2016/'
+## So lots of new useful best practice commands
+## It started as an amazing migration module
+## You can migrate anything from an entire instance to a single login
+## Lets Watch Chrissy migrate an instance
+Start-Process microsoft-edge:'https://dbatools.io/videos'
+## Remove-SQLDatabaseSafely is one of my commands
+Start-Process microsoft-edge:'https://www.youtube.com/watch?v=2vusWhe-e1E'
+## Some of the new commands
+## Get the Restore History
+Get-DbaRestoreHistory -SqlServer . -Detailed
+## Get the TCP port
+Get-DbaTcpPort -SqlServer .
+## Detailed
+Get-DbaTcpPort -SqlServer . -Detailed
+## Compatability Levels
+Test-DbaDatabaseCompatibility -SqlServer . -Detailed|ft -AutoSize
+## Collation
+Test-DbaDatabaseCollation -SqlServer . -Detailed | ft -AutoSize
+## Which authorisation are we using?
+Test-DbaConnectionAuthScheme -SqlServer . -Detailed
+## Max memory
+Get-SqlMaxMemory -SqlServer . 
+## Get SP_WhoIsActive Results
+(Get-SqlAgentJob -ServerInstance . ).where{$_.Name -like '*DatabaseIntegrityCheck*'}.start()
+Show-SqlWhoIsActive -SqlServer . -Database DBA-Admin
+## Need Database FreeSpace
+Get-DbaDatabaseFreespace -SqlServer . 
+## What databases are on my server?
+Show-SqlDatabaseList -SqlServer .
+## Is my TempDB set up using "best practices"
+Test-SqlTempDbConfiguration -SqlServer .
+## Database owners ok?
+Test-DbaDatabaseOwner -SqlServer . -TargetLogin ROB-SURFACEBOOK\mrrob -Detailed | ft -AutoSize
+## Agent Job Owners
+Test-DbaJobOwner -SqlServer . -Detailed -TargetLogin sa |ft -AutoSize
+## Power Plan ok?
+Test-dbaPowerPlan -ComputerName . -Detailed
+## There are so many commands and options start here
+Start-Process microsoft-edge:'https://dbatools.io/functions/'
+## Lets install dba reports
+##
+cd Git:\dbareports
+##
+import-module .\dbareports 
+##
+cd Presentations:\
+Get-Command -Module dbareports
+## Lets Install the DBAReports solution
+Install-DbaReports -SqlServer SQL2016N1 -Database CardiffDemodbareports -InstallPath C:\temp\dbareports -JObSuffix 'Cardiff'
+## and add some servers
+$Servers = 'SQL2005Ser2003','SQL2008Ser2008','SQL2012Ser08AG3','SQL2012Ser08AG1','SQL2012Ser08AG2','SQL2014Ser12R2','SQL2016N1','SQL2016N2'
+Add-DbrServerToInventory -SqlInstance $Servers -Environment Production -Location InsideTheNUC 
+## THese are the jobs created
+Get-SqlAgentJob -ServerInstance SQL2016N1|Select Name,Category,IsEnabled,CurrentRunstatus,DateCreated|Format-Table -AutoSize
+#lets start the jobs
+(Get-SqlAgentJob -ServerInstance SQL2016N1 -Name 'dbareports - Agent Job Results*Cardiff*').Start()
+(Get-SqlAgentJob -ServerInstance SQL2016N1 -Name 'dbareports - Database Information*Cardiff*').Start() 
+(Get-SqlAgentJob -ServerInstance SQL2016N1 -Name 'dbareports - Disk Usage*Cardiff*').Start() 
+(Get-SqlAgentJob -ServerInstance SQL2016N1).Where{$_.Name -like 'dbareports *'}|Select Name,CurrentRunstatus,LastRunOutCome|Format-Table -AutoSize
+## Lets have a look at the jobs whilst they run
+Get-DbrAgentJob
+## Lets have a look at the configuration
+Get-DbrConfig
+## Lets have a look at our instances
+Get-DbrInstanceList|ft -AutoSize -Wrap
+## Lets have a look at the information for a server
+Get-DbrAllInfo -SQLInstance SQL2014Ser12R2 -Filepath c:\temp\
+## We can also run some Pester Validation tests
+Invoke-Pester 'C:\Users\mrrob\OneDrive\Documents\GitHub\dbareports demo Estate Checks.ps1'
+## Lets look at the SSRS Reports
+ii 'C:\Users\mrrob\Desktop\Installing SSRS Reports for dbareports.webm'
+## and the best bit the Cortana Integration
+ii 'C:\Users\mrrob\Desktop\PowerBi Reports and Cortana for dbareports.mkv'
+
+
+
+
+
+
+
+
+
+
+
 
 
