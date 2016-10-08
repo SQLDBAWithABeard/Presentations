@@ -16,13 +16,13 @@ Get-Service sqlagent*dave|Start-Service
 }
 
 $Script = {
-$SQLBoxes = 'SQL2005Ser2003','SQL2008Ser2008','SQL2012Ser08AG3','SQL2012Ser2008AG1','SQL2012Ser2008AG2','SQL2014Ser2012R2','SQL2016N1','SQL2016N2'
+$SQLBoxes = 'SQL2005Ser2003','SQL2008Ser2008','SQL2014Ser2012R2','SQL2016N1','SQL2016N2'
 $VMs = Get-vm $SQLBoxes
 foreach($vm in $vms)
 {
 if($VM.State -eq 'Off')
 {
-$VM|Start-VM 
+$VM|Stop-VM 
 }
 }
 

@@ -1,5 +1,5 @@
 ﻿## The first thing to do is to install the latest SSMS release
-Start-Process microsoft-edge:'https://www.google.co.uk/search?q=download+ssms+2016'
+start-process iexplore 'https://www.google.co.uk/search?q=download+ssms+2016'
 ## You need to downlaod and install AND reboot
 ##
 ## then you can import the module
@@ -132,21 +132,19 @@ Get-SqlAgentJob -ServerInstance . -Name 'DatabaseBackup - SYSTEM_DATABASES - FUL
 $srv = New-Object Microsoft.SQLServer.Management.SMO.Server .
 $srv | Get-SqlErrorLog -Timespan '00:30:00' |Format-Table -AutoSize -Wrap
 ## Lets look at the dbatools module
-Start-Process microsoft-edge:'https://dbatools.io/sep2016/'
+start-process iexplore 'https://dbatools.io/sep2016/'
 ## So lots of new useful best practice commands
 ## It started as an amazing migration module
 ## You can migrate anything from an entire instance to a single login
 ## Lets Watch Chrissy migrate an instance
-Start-Process microsoft-edge:'https://dbatools.io/videos'
+start-process iexplore 'https://dbatools.io/videos'
 ## Remove-SQLDatabaseSafely is one of my commands
-Start-Process microsoft-edge:'https://www.youtube.com/watch?v=2vusWhe-e1E'
+Invoke-Item 'C:\users\mrrob\Videos\Remove-SQLDatabaseSafely - Change JobOwner SQL2014.mp4'
 ## Some of the new commands
 ## Get the Restore History
 Get-DbaRestoreHistory -SqlServer . -Detailed
 ## Get the TCP port
 Get-DbaTcpPort -SqlServer .
-## Detailed
-Get-DbaTcpPort -SqlServer . -Detailed
 ## Compatability Levels
 Test-DbaDatabaseCompatibility -SqlServer . -Detailed|ft -AutoSize
 ## Collation
@@ -181,17 +179,17 @@ import-module .\dbareports
 cd Presentations:\
 Get-Command -Module dbareports
 ## Lets Install the DBAReports solution
-Install-DbaReports -SqlServer SQL2016N1 -Database CardiffDemodbareports -InstallPath C:\temp\dbareports -JObSuffix 'Cardiff'
+Install-DbaReports -SqlServer SQL2016N1 -Database ReadingDemodbareports -InstallPath C:\temp\dbareports -JobPrefix 'Cardiff'
 ## and add some servers
-$Servers = 'SQL2005Ser2003','SQL2008Ser2008','SQL2012Ser08AG3','SQL2012Ser08AG1','SQL2012Ser08AG2','SQL2014Ser12R2','SQL2016N1','SQL2016N2'
+$Servers = 'SQL2005Ser2003','SQL2008Ser2008','SQL2014Ser12R2','SQL2016N1','SQL2016N2'
 Add-DbrServerToInventory -SqlInstance $Servers -Environment Production -Location InsideTheNUC 
 ## THese are the jobs created
 Get-SqlAgentJob -ServerInstance SQL2016N1|Select Name,Category,IsEnabled,CurrentRunstatus,DateCreated|Format-Table -AutoSize
 #lets start the jobs
-(Get-SqlAgentJob -ServerInstance SQL2016N1 -Name 'dbareports - Agent Job Results*Cardiff*').Start()
-(Get-SqlAgentJob -ServerInstance SQL2016N1 -Name 'dbareports - Database Information*Cardiff*').Start() 
-(Get-SqlAgentJob -ServerInstance SQL2016N1 -Name 'dbareports - Disk Usage*Cardiff*').Start() 
-(Get-SqlAgentJob -ServerInstance SQL2016N1).Where{$_.Name -like 'dbareports *'}|Select Name,CurrentRunstatus,LastRunOutCome|Format-Table -AutoSize
+(Get-SqlAgentJob -ServerInstance SQL2016N1).Where{$_.Name -like '*Cardiff*dbareports - Agent Job Results*'}.Start()
+(Get-SqlAgentJob -ServerInstance SQL2016N1).Where{$_.Name -like '*Cardiff*dbareports - Database Information*'}.Start() 
+(Get-SqlAgentJob -ServerInstance SQL2016N1).Where{$_.Name -like '*Cardiff*dbareports - Disk Usage*'}.Start() 
+(Get-SqlAgentJob -ServerInstance SQL2016N1).Where{$_.Name -like '*Cardiff*dbareports *'}|Select Name,CurrentRunstatus,LastRunOutCome|Format-Table -AutoSize
 ## Lets have a look at the jobs whilst they run
 Get-DbrAgentJob
 ## Lets have a look at the configuration

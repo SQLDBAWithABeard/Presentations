@@ -1,6 +1,6 @@
 ﻿Describe "Testing NUC" {
     Context "VM State" {       
-        $NUCServers ='BeardDC1','SQL2005Ser2003','SQL2008Ser2008','SQL2012Ser08AG3','SQL2012Ser2008AG1','SQL2012Ser2008AG2','SQL2014Ser2012R2','SQL2016N1','SQL2016N2','THEBEARDDNS1' 
+        $NUCServers ='BeardDC1','SQL2005Ser2003','SQL2008Ser2008','SQL2014Ser2012R2','SQL2016N1','SQL2016N2','THEBEARDDNS1' 
         $NUCVMs = Get-VM -ComputerName beardnuc | Where-Object {$_.Name -in $NUCServers}
             foreach($VM in $NUCVms)
                 {
@@ -13,8 +13,10 @@
     } # end context vms
     }
 Describe "Demo Readiness" {
+ $SQLServers = 'SQL2005Ser2003','SQL2008Ser2008','SQL2014Ser12R2','SQL2016N1','SQL2016N2'
+            
 	Context "Ping test" {
-		foreach ($ServerName in $NUCServers)
+		foreach ($ServerName in $SQLServers)
 		{
 			It "$Servername Should respond to ping" {
 				(Test-Connection -ComputerName $Servername -Count 1 -Quiet -ErrorAction SilentlyContinue) | Should be $True			
@@ -23,18 +25,18 @@ Describe "Demo Readiness" {
 		}
 	}
     Context "SQL State" {
-        $SQLServers = 'SQL2005Ser2003','SQL2008Ser2008','SQL2012Ser08AG3','SQL2012Ser08AG1','SQL2012Ser08AG2','SQL2014Ser12R2','SQL2016N1','SQL2016N2'
+        $SQLServers = 'SQL2005Ser2003','SQL2008Ser2008','SQL2014Ser12R2','SQL2016N1','SQL2016N2'
         foreach($Server in $SQLServers)
         {
           $DBEngine = Get-service -ComputerName $Server -Name MSSQLSERVER
-           It "DBEngine should be running" {
+           It "DBEngine should be running on $Server" {
                 $DBEngine.Status | Should Be 'Running'
             }
            It "DBEngine Should be Auto Start" {
             $DBEngine.StartType | Should be 'Automatic'
            }
           $Agent= Get-service -ComputerName $Server -Name SQLSERVERAGENT
-           It "Agent should be running" {
+           It "Agent should be running on $Server" {
                 $Agent.Status | Should Be 'Running'
             }
            It "Agent Should be Auto Start" {
