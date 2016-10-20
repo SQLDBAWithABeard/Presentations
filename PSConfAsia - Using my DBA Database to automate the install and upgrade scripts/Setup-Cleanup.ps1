@@ -1,4 +1,14 @@
-﻿$servers = 'SQL2005Ser2003','SQL2008Ser2008','SQL2012Ser08AG1','SQL2012Ser08AG2','SQL2012Ser08AG3','SQL2014Ser12r2','SQL2016N1','SQL2016N2'
+﻿ $srv = New-Object Microsoft.SQLServer.Management.SMO.Server .
+ if($srv.Databases['ScriptInstall'])
+ {
+    $srv.Databases['ScriptInstall'].Drop()
+ }
+
+ if($Srv.JobServer.Jobs['!AutoInstall DBA Scripts'])
+ {
+    $Srv.JobServer.Jobs['!AutoInstall DBA Scripts'].Drop()
+ }
+$servers = 'SQL2005Ser2003','SQL2008Ser2008','SQL2012Ser08AG1','SQL2012Ser08AG2','SQL2012Ser08AG3','SQL2014Ser12r2','SQL2016N1','SQL2016N2'
 (Get-SqlAgentJob -ServerInstance $Servers).Where{$_.Category -eq'Database Maintenance'}.Drop()
 (Get-SqlAgentJob -ServerInstance $Servers).Where{$_.Name -eq 'Log SP_WhoisActive to Table'}.Drop()
 (Get-SqlAgentJob -ServerInstance $Servers).Where{$_.Category -eq'Database Maintenance'}|Select originatingserver,name
