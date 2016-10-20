@@ -16,6 +16,8 @@ The code from my presentations can be found here
 [PSConfEU - Making Powershell Useful](https://github.com/SQLDBAWithABeard/Presentations/tree/master/PSConfEU%20-%20Making%20Powershell%20Useful) - From files to source control for your teams powershell [Video Here]                  
 [PSConfEU - Reducing your DBAs Context Switching PowerShell SQL and PowerBi](https://github.com/SQLDBAWithABeard/Presentations/tree/master/PSConfEU%20-%20Reducing%20your%20DBAs%20Context%20Switching)   [Video Here](https://www.youtube.com/watch?v=9BKlrOjMWXk)
 
+[PSConfAsia - Using my DBA Database to automate the install and upgrade scripts](https://github.com/SQLDBAWithABeard/Presentations/tree/master/PSConfAsia%20-%20Using%20my%20DBA%20Database%20to%20automate%20the%20install%20and%20upgrade%20scripts) Installing T-SQL Scripts and Using Pester to Validate
+
 [Where to go to learn](https://github.com/SQLDBAWithABeard/Presentations/tree/master/Where%20to%20go%20to%20learn) - PDT for SQL Server                                  
 [PowerShell Loves SqL Server - New sqlserver Module and Community Modules](https://github.com/SQLDBAWithABeard/Presentations/tree/master/Powershell%20Loves%20SQL%20Server%20-%20New%20Module%20and%20Community%20Modules) - The New sqlserver Powershell module and dbatools and dbareports from the [SQL Community Collaborative](https://github.com/sqlcollaborative) - SQL Relay Cardiff and Reading 2016
 

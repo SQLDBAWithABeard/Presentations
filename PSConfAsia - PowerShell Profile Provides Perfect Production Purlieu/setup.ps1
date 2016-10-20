@@ -30,10 +30,9 @@ try
 Get-Service MSSQLSERVER|Start-Service}
 catch
 {Write-Warning "FAILED to start SQL"}
-start-process powershell.exe -noprofile
 <#
 
 . 'C:\Users\mrrob\OneDrive\Documents\Scripts\Powershell Scripts\Functions\Start-Demo.ps1'
-Start-Demo -file 'C:\Users\mrrob\OneDrive\Documents\Presentations\PowerShell Profile Provides Perfecct Production Purlieu\One.ps1'
+Start-Demo -file 'C:\Users\mrrob\OneDrive\Documents\GitHub\Presentations\PSConfAsia - PowerShell Profile Provides Perfect Production Purlieu\One.ps1'
 
 #>

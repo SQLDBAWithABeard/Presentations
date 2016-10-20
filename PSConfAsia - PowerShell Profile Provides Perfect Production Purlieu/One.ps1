@@ -8,8 +8,10 @@ New-Item $profile -ItemType File
 ##
 ## Lets add something to it and take a look
 Set-Content $profile -Value "Write-Output 'Hello Singapore'";Add-Content $profile -Value "Write-HOst 'I have never seen a more beautiful crowd' -foreground Red -background Blue";Add-Content $profile -Value "Write-HOst 'I have never seen a more beautiful crowd' -foreground Red -background Green";Add-Content $profile -Value "Write-HOst 'I have never seen a more beautiful crowd' -foreground Red -background Yellow";Add-Content $profile -Value "Write-HOst 'I have never seen a more beautiful crowd' -foreground Blue -background Red";Add-Content $profile -Value "Write-HOst 'I have never seen a more beautiful crowd' -foreground Blue -background Yellow";Add-Content $profile -Value "Write-HOst 'I have never seen a more beautiful crowd' -foreground Blue -background Green";Add-Content $profile -Value "Write-HOst 'I have never seen a more beautiful crowd' -foreground Blue -background Blue";Add-Content $profile -Value "Write-HOst 'I have never seen a more beautiful crowd' -foreground Yellow -background Green";Add-Content $profile -Value "Write-HOst 'I have never seen a more beautiful crowd' -foreground Yellow -background Blue";Add-Content $profile -Value "Write-HOst 'I have never seen a more beautiful crowd' -foreground Yellow -background Red";Add-Content $Profile -Value "Write-output 'DONT USE WRITE-HOST!!!!!!!!!!!!!!!'"
+## You can can edit your profile in notepad (or in ISE using PsEdit $Profile
+notepad $Profile
 ##
-## Lets have a look at the profile
+## Lets have a look at the profile in action
 cls
 ##
 ## We can load our profile like this anytime if we are testing. This will happen every time the console is opened
@@ -30,6 +32,9 @@ Get-Help New-PSDrive -ShowWindow
 ## Set the profile and load the profile
 $content = Get-Content 'C:\Users\mrrob\OneDrive\Documents\Presentations\PowerShell Profile Provides Perfecct Production Purlieu\PSDrives.ps1'
 Set-Content $Profile $content
+## Lets have a look at it
+notepad $Profile
+## and see it in action
 .$Profile
 cd Presentations:\
 dir
@@ -38,8 +43,6 @@ dir SQLDAVE:\Logins
 dir JOBSERVER:\JObs
 ## I would not do that though I would use the new cmdlets from the SSMS July release
 Get-SQLAgentjob -ServerInstance . | Format-Table -AutoSize -Wrap
-## How was that done ?
-Get-Content 'C:\Users\mrrob\OneDrive\Documents\Presentations\PowerShell Profile Provides Perfecct Production Purlieu\PSDrives.ps1'
 ## You can Change the prompt as well
 $content = Get-Content 'C:\Users\mrrob\OneDrive\Documents\Presentations\PowerShell Profile Provides Perfecct Production Purlieu\Prompt.ps1'
 Set-Content $profile $content
@@ -73,7 +76,11 @@ $HOst.UI.RawUI.BackgroundColor = 'Black'
 $host.UI.RawUI.ForegroundColor = 'Yellow'
 cls
 Get-Service
-# You can change Errors and warnigns too
+# Lets have a look at the other options You can find them here
+$HOst| gm
+$Host.UI|gm
+$Host.UI.RawUI|gm
+# You can change Errors and Warnings too
 .'C:\Users\mrrob\OneDrive\Documents\Presentations\PowerShell Profile Provides Perfecct Production Purlieu\HostColours.ps1'
 .'C:\Users\mrrob\OneDrive\Documents\Scripts\Powershell Scripts\Functions\Test-ConsoleColor.ps1'
 Test-ConsoleColor
