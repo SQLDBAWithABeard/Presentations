@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		04 - Add Servers.sql = 04 - Add Servers.sql
 		05 - Set Servers To Update.sql = 05 - Set Servers To Update.sql
 		06 - Query For Needs Update.sql = 06 - Query For Needs Update.sql
-		Auto Install Agent job.sql = Auto Install Agent job.sql
+		07 - Auto Install Agent job.sql = 07 - Auto Install Agent job.sql
 	EndProjectSection
 EndProject
 Global
@@ -19,7 +19,7 @@ Global
 		Default|Default = Default|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0BC07CD1-74CC-48CF-A721-84689838BD1E}.Default|Default.ActiveCfg = Default
+		{F3C30CBC-EACD-4065-87EE-EF63B1BB0F04}.Default|Default.ActiveCfg = Default
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
