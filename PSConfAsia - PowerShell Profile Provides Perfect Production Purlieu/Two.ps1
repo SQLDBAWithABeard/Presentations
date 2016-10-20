@@ -1,6 +1,9 @@
-﻿## Maybe put your Admin Credential in a variable eg
+﻿$content = Get-Content 'C:\Users\mrrob\OneDrive\Documents\Presentations\PowerShell Profile Provides Perfecct Production Purlieu\PSDrivesplusvars.ps1'
+Set-Content $Profile $content
+.$Profile
+## Maybe put your Admin Credential in a variable eg
 $AdminCred = Get-Credential -Message 'Add your Admin' -UserName 'THEBEARD\Rob'
-## Then you can use like this
+## Then you can use like this (if you have your NUC plugged in Rob) otherwise #8
 Enter-PSSession -ComputerName $SQLServer -Credential $AdminCred
 ##
 ## Or set some variables that you always use 
@@ -11,7 +14,7 @@ $TestServers
 ## I am sure that you think of other things that will be useful for you
 ##
 cls
-## Store your Functions in TFS (or TSVS or whatever it is called this week)
+## Store your Functions, modules scripts in TFS (or TSVS or VSO or whatever it is called this week)
 ## 
 Show-DatabasesOnServer ROB-SURFACEBOOK
 ##
@@ -31,7 +34,7 @@ cd c:\temp
 ## using GPO if I want so each team gets the correct functions for their function
 ##
 ## And anybody can contribute and update the scripts....... safely!
-
+##
 ## Script Analyzer has a set of default rules
 Invoke-ScriptAnalyzer -Path 'C:\Users\mrrob\OneDrive\Documents\Scripts\Powershell Scripts\show me all sql services and accounts.ps1'
 ##
