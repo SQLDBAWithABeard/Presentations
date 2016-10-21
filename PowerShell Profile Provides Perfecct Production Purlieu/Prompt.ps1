@@ -81,3 +81,5 @@ function prompt {
 
     return " "
 }
+
+$DBAServer = 'ROB-SURFACEBOOK'

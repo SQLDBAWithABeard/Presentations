@@ -1,17 +1,22 @@
 ﻿## Maybe put your Admin Credential in a variable eg
 $AdminCred = Get-Credential -Message 'Add your Admin' -UserName 'THEBEARD\Rob'
-## Then you can use like this
+## Then you can use like this Won't work if NUC not connected Rob so # 8
 Enter-PSSession -ComputerName $SQLServer -Credential $AdminCred
 ##
 ## Or set some variables that you always use 
 Exit-PSSession
-$TestServers =Invoke-Sqlcmd -ServerInstance $DBADatabase -Query "SELECT [ServerName]FROM [DBADatabase].[dbo].[InstanceList] where Environment ='Test'"
+##
+$DevServers = (Invoke-Sqlcmd -ServerInstance $DBAServer -Query "SELECT [ServerName]FROM [DBADatabase].[dbo].[InstanceList] where Environment ='Dev'").ServerName
+$DevServers
+$TestServers = (Invoke-Sqlcmd -ServerInstance $DBAServer -Query "SELECT [ServerName]FROM [DBADatabase].[dbo].[InstanceList] where Environment ='Test'").ServerName
 $TestServers
+$LiveServers = (Invoke-Sqlcmd -ServerInstance $DBAServer -Query "SELECT [ServerName]FROM [DBADatabase].[dbo].[InstanceList] where Environment ='Prod'").ServerName
+$LiveServers
 ##
 ## I am sure that you think of other things that will be useful for you
 ##
 cls
-## Store your Functions in TFS (or TSVS or whatever it is called this week)
+## Store your Functions in TFS (or TSVS or VSO whatever it is called this week :-) )
 ## 
 Show-DatabasesOnServer ROB-SURFACEBOOK
 ##
