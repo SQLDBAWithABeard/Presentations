@@ -30,7 +30,7 @@ try
 Get-Service MSSQLSERVER|Start-Service}
 catch
 {Write-Warning "FAILED to start SQL"}
-start-process powershell.exe -noprofile
+Start-Process powershell.exe 
 <#
 
 . 'C:\Users\mrrob\OneDrive\Documents\Scripts\Powershell Scripts\Functions\Start-Demo.ps1'
