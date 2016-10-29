@@ -1,4 +1,14 @@
-﻿ $srv = New-Object Microsoft.SQLServer.Management.SMO.Server .
+﻿ 
+try{get-service MS*DAVE*|Start-Service}
+catch{Write-Warning "FAILED to start DAVE"
+}
+try
+{Get-Service SQLSERVERAGENT|Start-Service
+Get-Service MSSQLSERVER|Start-Service}
+catch
+{Write-Warning "FAILED to start SQL"}
+
+$srv = New-Object Microsoft.SQLServer.Management.SMO.Server .
  if($srv.Databases['ScriptInstall'])
  {
     $srv.Databases['ScriptInstall'].Drop()
