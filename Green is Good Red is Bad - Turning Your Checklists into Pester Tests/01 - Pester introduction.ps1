@@ -1,4 +1,12 @@
-﻿## SHOULD OPERATORS - Highlight and Run Rob - Theres more below
+﻿## Do I have Pester ?
+Get-Module Pester
+
+## Get the module
+Find-Module Pester | Install-Module
+
+## or follow the instructions here http://www.powershellmagazine.com/2014/03/12/get-started-with-pester-powershell-unit-testing-framework/
+
+## SHOULD OPERATORS - Highlight and Run Rob - Theres more below
 
 Describe "We should, so shall we look at the Should operators" {
     Context "The same and bigger and smaller - or not" {
@@ -90,3 +98,8 @@ Describe "We should, so shall we look at the Should operators" {
     {
         Write-Warning "Uh-Oh The Beard is sad. Can't connect to $($srv.Name)"
     }
+
+    ## Doing a presentation?
+    ## Write a Pester Check 
+
+    psEdit 'Presentations:\Green is Good Red is Bad - Turning Your Checklists into Pester Tests\00 - Setup and Pester Test.ps1'

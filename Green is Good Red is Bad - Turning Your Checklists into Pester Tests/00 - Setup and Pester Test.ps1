@@ -1,12 +1,21 @@
-﻿try{get-service MS*DAVE*|Start-Service}
+﻿## Needs Both SQL Instances
+cd presentations:\
+try
+{
+    get-service MS*DAVE*|Start-Service
+}
 catch{Write-Warning "FAILED to start DAVE"
 }
 try
-{Get-Service SQLSERVERAGENT,MSSQLSERVER|Start-Service
+{
+    Get-Service SQLSERVERAGENT,MSSQLSERVER|Start-Service
 }
 catch
-{Write-Warning "FAILED to start SQL"}
+{
+    Write-Warning "FAILED to start SQL"
+}
 
+## Test before presentation
 Describe "Testing for Presentation" {
     Context "Surface Book" {
         It "Should have One PowerShell ISE Process" {
@@ -29,6 +38,9 @@ Describe "Testing for Presentation" {
         }
         It "Skype should be closed" {
             (Get-Process skype*).Count | Should BE 0
+        }
+        It "Prompt should be Presentations" {
+            (Get-Location).Path | Should Be 'Presentations:\'
         }
     }
     Context "Surface Book SQL" {
