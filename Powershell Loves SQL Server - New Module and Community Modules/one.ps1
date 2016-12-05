@@ -179,17 +179,17 @@ import-module .\dbareports
 cd Presentations:\
 Get-Command -Module dbareports
 ## Lets Install the DBAReports solution
-Install-DbaReports -SqlServer SQL2016N1 -Database ReadingDemodbareports -InstallPath C:\temp\dbareports -JobPrefix 'Cardiff'
+Install-DbaReports -SqlServer ROB-SURFACEBOOK -Database SQLMidlandsDemodbareports -InstallPath C:\temp\dbareports -JobPrefix 'BearWood'
 ## and add some servers
-$Servers = 'SQL2005Ser2003','SQL2008Ser2008','SQL2014Ser12R2','SQL2016N1','SQL2016N2'
+$Servers = 'ROB-SURFACEBOOK','ROB-SURFACEBOOK\DAVE'
 Add-DbrServerToInventory -SqlInstance $Servers -Environment Production -Location InsideTheNUC 
 ## THese are the jobs created
-Get-SqlAgentJob -ServerInstance SQL2016N1|Select Name,Category,IsEnabled,CurrentRunstatus,DateCreated|Format-Table -AutoSize
+Get-SqlAgentJob -ServerInstance ROB-SURFACEBOOK|Select Name,Category,IsEnabled,CurrentRunstatus,DateCreated|Format-Table -AutoSize
 #lets start the jobs
-(Get-SqlAgentJob -ServerInstance SQL2016N1).Where{$_.Name -like '*Cardiff*dbareports - Agent Job Results*'}.Start()
-(Get-SqlAgentJob -ServerInstance SQL2016N1).Where{$_.Name -like '*Cardiff*dbareports - Database Information*'}.Start() 
-(Get-SqlAgentJob -ServerInstance SQL2016N1).Where{$_.Name -like '*Cardiff*dbareports - Disk Usage*'}.Start() 
-(Get-SqlAgentJob -ServerInstance SQL2016N1).Where{$_.Name -like '*Cardiff*dbareports *'}|Select Name,CurrentRunstatus,LastRunOutCome|Format-Table -AutoSize
+(Get-SqlAgentJob -ServerInstance ROB-SURFACEBOOK).Where{$_.Name -like '*BearWood*dbareports - Agent Job Results*'}.Start()
+(Get-SqlAgentJob -ServerInstance ROB-SURFACEBOOK).Where{$_.Name -like '*BearWood*dbareports - Database Information*'}.Start() 
+(Get-SqlAgentJob -ServerInstance ROB-SURFACEBOOK).Where{$_.Name -like '*BearWood*dbareports - Disk Usage*'}.Start() 
+(Get-SqlAgentJob -ServerInstance ROB-SURFACEBOOK).Where{$_.Name -like '*BearWood*dbareports *'}|Select Name,CurrentRunstatus,LastRunOutCome|Format-Table -AutoSize
 ## Lets have a look at the jobs whilst they run
 Get-DbrAgentJob
 ## Lets have a look at the configuration
@@ -197,9 +197,10 @@ Get-DbrConfig
 ## Lets have a look at our instances
 Get-DbrInstanceList|ft -AutoSize -Wrap
 ## Lets have a look at the information for a server
-Get-DbrAllInfo -SQLInstance SQL2014Ser12R2 -Filepath c:\temp\
+Get-DbrAllInfo -SQLInstance ROB-SURFACEBOOK -Filepath c:\temp\
 ## We can also run some Pester Validation tests
-Invoke-Pester 'C:\Users\mrrob\OneDrive\Documents\GitHub\dbareports demo Estate Checks.ps1'
+## Invoke-Pester 'C:\Users\mrrob\OneDrive\Documents\GitHub\dbareports demo Estate Checks.ps1'
+Test-OLAInstance -Instance $Servers -CheckForBackups -CheckForDBFolders -JobSuffix BearWood -Share C:\MSSQL\Backup 
 ## Lets look at the SSRS Reports
 ii 'C:\Users\mrrob\Desktop\Installing SSRS Reports for dbareports.webm'
 ## and the best bit the Cortana Integration

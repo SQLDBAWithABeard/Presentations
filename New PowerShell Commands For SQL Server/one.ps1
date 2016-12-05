@@ -123,7 +123,7 @@ Get-SqlAgentJobHistory -ServerInstance .
 ## Thats a bit much
 ## Lets look at one job
 Get-SqlAgentJobHistory -ServerInstance . -JobName 'DatabaseBackup - SYSTEM_DATABASES - FULL'
-## OK that is the hostory for the amount of time since I purged the job history
+## OK that is the history for the amount of time since I purged the job history
 ## Theres a since Parameter
 ##  -Since <SinceType>
 ##  
