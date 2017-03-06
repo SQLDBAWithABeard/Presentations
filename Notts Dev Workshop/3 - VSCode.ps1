@@ -18,3 +18,8 @@ Return "This is a demo Beardy!"
 ## File --> Preferences --> Settings
 ## CTRL + SHIFT + P Command Pallette - All that you can do!!
 ## Look at the bottom bar Git Branch, commits, Script Analyser errors and warnings,Line number,indent,End of Line, Language, Current Session, Feedback
+
+## Open the file C:\Users\<username>\.vscode\extensions\ms-vscode.PowerShell-<version#>\examples\DebugTest.ps1
+code C:\Users\User\.vscode\extensions\ms-vscode.PowerShell-0.9.0\examples\DebugTest.ps1
+## Add a conditional breakpoint for $i -eq 25
+## Then add a function output for Write-Output
