@@ -40,7 +40,7 @@ Describe "Testing for Presentation" {
             (Get-Process POWERPNT  -ErrorAction SilentlyContinue).Count | Should Be 1
         }
         It "Should have the correct PowerPoint Presentation Open" {
-            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'Green is Good Red is Bad - Turning Your Checklists into Pester Tests - PowerPoint'
+            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'Presentation1 - PowerPoint'
         }
         It "Mail Should be closed" {
             (Get-Process HxMail -ErrorAction SilentlyContinue).COunt | Should Be 0

@@ -36,7 +36,7 @@ $allservers = (Get-ChildItem).Where{$_.Name -ne 'SQL2008Ser2008' -and $_.name -n
 $allservers
 
 # Use the dbatools module from https://dbatools.io to get information
-# Simply because it is so beautifula dn everyone should know about it
+# Simply because it is so beautiful and everyone should know about it
 
 # How long has my estate been up?
 
@@ -77,6 +77,7 @@ Get-DbaLastBackup -SqlServer linuxvvnext -Credential $cred | Format-Table -AutoS
 Get-DbaLastGoodCheckDb -SqlServer linuxvvnext -Credential $cred |Format-Table -AutoSize
 
 ## Check out the website for a WHOLE LOAD MORE COMMANDS :-)
+## https://dbatools.io/functions/
 
 ## Lets Connect to SQL Server
 
