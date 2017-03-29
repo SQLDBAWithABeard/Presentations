@@ -21,7 +21,7 @@ catch
     Write-Warning "FAILED to start SQL"
 }
 
-        $NUCServers = 'BeardDC1','BeardDC2','BeardLinuxVNext','SQL2005Ser2003','SQL2012Ser08AG3','SQL2012Ser2008AG1','SQL2012Ser2008AG2','SQL2014Ser2012R2','SQL2016N1','SQL2016N2','SQL2016N3','SQLVnextN1','SQLvNextN2','THEBEARDDNS1'
+        $NUCServers = 'BeardDC1','BeardDC2','linuxvnextctp14','SQL2005Ser2003','SQL2012Ser08AG3','SQL2012Ser2008AG1','SQL2012Ser2008AG2','SQL2014Ser2012R2','SQL2016N1','SQL2016N2','SQL2016N3','SQLVnextN1','SQLvNextN2','THEBEARDDNS1'
         $NUCVMs = Get-VM -ComputerName beardnuc | Where-Object {$_.Name -in $NUCServers}
             foreach($VM in $NUCVms)
                 {
@@ -79,7 +79,7 @@ Describe "Testing for Presentation" {
         }
     }
     Context "VM State" {       
-        $NUCServers = 'BeardDC1','BeardDC2','BeardLinuxVNext','SQL2005Ser2003','SQL2012Ser08AG3','SQL2012Ser2008AG1','SQL2012Ser2008AG2','SQL2014Ser2012R2','SQL2016N1','SQL2016N2','SQL2016N3','SQLVnextN1','SQLvNextN2','THEBEARDDNS1'
+        $NUCServers = 'BeardDC1','BeardDC2','linuxvnextctp14','SQL2005Ser2003','SQL2012Ser08AG3','SQL2012Ser2008AG1','SQL2012Ser2008AG2','SQL2014Ser2012R2','SQL2016N1','SQL2016N2','SQL2016N3','SQLVnextN1','SQLvNextN2','THEBEARDDNS1'
         $NUCVMs = Get-VM -ComputerName beardnuc | Where-Object {$_.Name -in $NUCServers}
             foreach($VM in $NUCVms)
                 {
@@ -92,7 +92,7 @@ Describe "Testing for Presentation" {
     
     } # end context vms
     Context "THEBEARD_Domain" {
-            $NUCServers ='BeardDC2','LinuxVvNext','SQL2005Ser2003','SQL2012Ser08AG3','SQL2012Ser08AG1','SQL2012Ser08AG2','SQL2014Ser12R2','SQL2016N1','SQL2016N2','SQL2016N3','SQLVnextN1','SQLvNextN2','THEBEARDDNS1'
+            $NUCServers ='BeardDC2','linuxvnextctp14','SQL2005Ser2003','SQL2012Ser08AG3','SQL2012Ser08AG1','SQL2012Ser08AG2','SQL2014Ser12R2','SQL2016N1','SQL2016N2','SQL2016N3','SQLVnextN1','SQLvNextN2','THEBEARDDNS1'
             foreach($VM in $NUCServers)
                 {
                                  It "$VM Should respond to ping" {

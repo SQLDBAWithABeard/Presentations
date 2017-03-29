@@ -32,7 +32,7 @@ Set-Location BEARDNUC
 Get-ChildItem
 Get-ChildItem | Select -Last 1 | Select *
 
-$allservers = (Get-ChildItem).Where{$_.Name -ne 'SQL2008Ser2008' -and $_.name -ne 'LinuxvvNext' }.Name
+$allservers = (Get-ChildItem).Where{$_.Name -ne 'SQL2008Ser2008' -and $_.name -ne 'linuxvnextctp14' -and $_.Name -ne 'LinuxvvNext' }.Name
 $allservers
 
 # Use the dbatools module from https://dbatools.io to get information
@@ -66,15 +66,18 @@ Get-DbaLastBackup  $allservers | Out-GridView
 
 Get-DbaLastGoodCheckDb -SqlServer $allservers -Detailed | ogv
 
+##  new one I found recently :-)
+Test-DbaIdentityUsage -SqlInstance $allservers -WarningAction SilentlyContinue | OGV
+
 ## just to show that (some) work on Linux
 
 $cred = Get-Credential
 
-Get-DbaUptime -SqlServer linuxvvnext -SQLCredential $cred
-Get-DbaTcpPort -SqlServer linuxvvnext -SQLCredential $cred
-Test-SqlNetworkLatency -Sqlserver linuxvvnext -SQLCredential $cred
-Get-DbaLastBackup -SqlServer linuxvvnext -Credential $cred | Format-Table -AutoSize
-Get-DbaLastGoodCheckDb -SqlServer linuxvvnext -Credential $cred |Format-Table -AutoSize
+Get-DbaUptime -SqlServer linuxvnextctp14 -SQLCredential $cred
+Get-DbaTcpPort -SqlServer linuxvnextctp14 -SQLCredential $cred
+Test-SqlNetworkLatency -Sqlserver linuxvnextctp14 -SQLCredential $cred
+Get-DbaLastBackup -SqlServer linuxvnextctp14 -Credential $cred | Format-Table -AutoSize
+Get-DbaLastGoodCheckDb -SqlServer linuxvnextctp14 -Credential $cred |Format-Table -AutoSize
 
 ## Check out the website for a WHOLE LOAD MORE COMMANDS :-)
 ## https://dbatools.io/functions/
@@ -128,7 +131,7 @@ $Instance.GetType()
 $Instance = New-Object Microsoft.SqlServer.Management.Smo.Server $SQLServer
 $Instance.GetType()
 
-## But tbh these days I use the dbatools module as it has better error handling adn pre-loads
+## But tbh these days I use the dbatools module as it has better error handling and pre-loads
 
 $Instance = Connect-DbaSqlServer $SQLServer
 $Instance.GetType()
@@ -148,6 +151,7 @@ Restore-SqlDatabase -ServerInstance $SQLServer -Database ProviderDemo -BackupFil
 #Using Script parameter you can see its just T-SQL
 
 Restore-SqlDatabase -ServerInstance $SQLServer -Database ProviderDemo -BackupFile $BackupFile -ReplaceDatabase -RestoreAction Database -RelocateFile @($RelocateData,$RelocateLog) -script
+
 
 ## But for now we will stick with a local machine and the PSDrive
 ## Lets take a look at the databases on this machines default instance
