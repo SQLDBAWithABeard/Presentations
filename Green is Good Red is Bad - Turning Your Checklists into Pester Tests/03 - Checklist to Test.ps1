@@ -1,4 +1,5 @@
-﻿Get-Service MSSQLSERVER,SQLSERVERAGENT | Start-Service 
+﻿## Welcome to PowerShell :-)
+Return "This is a demo Beardy!"
 
 ## OK Over to YOU :-)
 
