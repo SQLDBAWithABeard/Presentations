@@ -1,8 +1,10 @@
-﻿## Do I have Pester ?
+﻿## Welcome to PowerShell :-)
+Return "This is a demo Beardy!"
+## Do I have Pester ?
 Get-Module Pester
 
 ## Get the module
-Find-Module Pester | Install-Module
+Find-Module Pester | Install-Module -Scope CurrentUser
 
 ## or follow the instructions here http://www.powershellmagazine.com/2014/03/12/get-started-with-pester-powershell-unit-testing-framework/
 
@@ -12,7 +14,7 @@ Describe "We should, so shall we look at the Should operators" {
     Context "The same and bigger and smaller - or not" {
 
         $SQLservice = Get-Service MSSQLSERVER
-        $srv = New-Object Microsoft.SqlServer.Management.Smo.Server ROB-SURFACEBOOK
+        $srv = New-Object Microsoft.SqlServer.Management.Smo.Server ROB-XPS
 
         It "Is the Service Running? Status should be Running" {
             $SQLservice.Status | Should Be "Running" # Test will pass
@@ -36,7 +38,7 @@ Describe "We should, so shall we look at the Should operators" {
         }#End Context
         Context "I 'like' to 'match'" {
     
-            $srv = New-Object Microsoft.SqlServer.Management.Smo.Server ROB-SURFACEBOOK
+            $srv = New-Object Microsoft.SqlServer.Management.Smo.Server ROB-XPS
 
         It "Server name should be like Rob* .Use the Like assertion to check for wildcards" {
             $srv.NetName| Should BeLike 'Rob*'
@@ -44,17 +46,17 @@ Describe "We should, so shall we look at the Should operators" {
         It "Server name should be exactly like ROB* Use the Like assertion to exactly check for wildcards" {
             $srv.NetName| Should BeLikeExactly 'ROB*'
         }
-        It "Servername should end with Book Finds a suitable match using regex" {
-            $srv.Name | Should Match ".Book"
+        It "Servername should end with XPS Finds a suitable match using regex" {
+            $srv.Name | Should Match ".XPS"
         }
-        It "Servername should end exaclty with BOOK Finds a suitable match using regex" {
-            $srv.Name | Should Match ".BOOK"
+        It "Servername should end exaclty with XPS Finds a suitable match using regex" {
+            $srv.Name | Should MatchExactly ".XPS"
         }
         }#End Context
 
-        Context "What does $($srv.Name) contain? Doesn't work quite as you think it should" {
+        Context "What does $srv.Name contain? Doesn't work quite as you think it should" {
 
-        $srv = New-Object Microsoft.SqlServer.Management.Smo.Server ROB-SURFACEBOOK
+        $srv = New-Object Microsoft.SqlServer.Management.Smo.Server ROB-XPS
         $Errorlog = $srv.ErrorLogPath + '\ERRORLOG'
         It "Error Log contains SQL Server is Ready - Contains works with Files" {
             
@@ -94,9 +96,13 @@ Describe "We should, so shall we look at the Should operators" {
 
     $srv.ConnectionContext.ConnectTimeout = 1 # so we dont have to wait
 
+
+    ### foreach ($srv in $servers)
+
     if($null -eq $srv.version)
     {
         Write-Warning "Uh-Oh The Beard is sad. Can't connect to $($srv.Name)"
+        continue
     }
 
     ## Doing a presentation?
