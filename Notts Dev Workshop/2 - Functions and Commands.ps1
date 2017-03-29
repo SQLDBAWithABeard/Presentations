@@ -28,7 +28,7 @@ function Get-Somejunk
 }
 
 ## Because we have set a mandatory parameter
-Get-Somejunk
+Get-Somejunk 
 #
 Get-Somejunk -ComputerName $env:COMPUTERNAME
 # because we have value from pipeline
@@ -72,7 +72,7 @@ function Get-Somejunk
   
 }
 # It tells us we need an int
-Get-Somejunk $env:COMPUTERNAME -Count
+Get-Somejunk $env:COMPUTERNAME -Count one
 #
 Get-Somejunk $env:COMPUTERNAME -Count 4
 
