@@ -272,9 +272,9 @@ SLeep -Milliseconds 700
 cls
 $i ++
 }
-Write-Host $beard -ForegroundColor DarkBlue -BackgroundColor White
 Write-Host "@SQLDBAWithBeard NO A!" -ForegroundColor Yellow -BackgroundColor Black
 Write-Host "https://sqldbawithabeard.com YEP an A this time!!!" -ForegroundColor Yellow -BackgroundColor Black
+Write-Host $beard -ForegroundColor DarkYellow -BackgroundColor Black
 }
 EndOfShow 
 
