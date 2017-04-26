@@ -78,13 +78,10 @@ Set-Location SQLSERVER:\SQL
 $SQLServer = $env:COMPUTERNAME
 Get-ChildItem .\$SQLServer
 
-Set-Location SQLSERVER:\SQL\$SQLServer
-Get-ChildItem 
-
 ## I have Two Instances
 
 Get-ChildItem SQLSERVER:\SQL\ROB-XPS\DEFAULT
-Get-ChildItem SQLSERVER:\SQL\ROB-XPS\DAVE
+Get-ChildItem SQLSERVER:\SQL\ROB-XPS\DAVE\databases
 
 ## NOTE: You can connect to remote servers too
 
@@ -92,7 +89,7 @@ Get-ChildItem SQLSERVER:\SQL\SQL2016N1
 
 ## What do we have ?
 
-Get-Item DEFAULT | Get-Member -Static
+Get-Item SQLSERVER:\SQL\ROB-XPS\DEFAULT | Get-Member -Static
 
 ## Just an SMO Server which we can do with as we please :-)
 
@@ -154,7 +151,7 @@ $DbName = 'ProviderDemo' ## Change this if you are not using the demo database
 ## Database
 Set-Location Databases\$DbName 
 Get-ChildItem
-
+Get-Item . | Select-Object Name , CreateDate, LastBackupDate
 ## Tables
 Set-Location Tables
 Get-ChildItem
