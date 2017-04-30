@@ -3,7 +3,7 @@ Return "This is a demo Beardy!"
 ##
 
 ## NOTE: Get the SSMS latest release from here https://sqlps.io/dl
-## Hopefully Install-Module sqlserver will be in place by now!
+## You can also use Install-Module sqlserver now :-) :-) !
 
 Import-Module SqlServer
 
@@ -36,6 +36,7 @@ Get-ChildItem | Select -First 1 | Select *
 gci *linux* | remove-item 
 
 ## Want a list of server names
+
 $allservers = (Get-ChildItem).Name
 $allservers
 
@@ -318,7 +319,7 @@ cd PRESENTATIONS:\
 gc $xml.EventFileTarget.File.Name.Replace("F:", "\\SQL2012ser08AG1\F$") | export-csv c:\temp\ag.csv
 
  # For SQL 2014/6/7 you have to add the reference to Microsoft.SqlServer.XE.Core.dll. You don't need this for SQL 2012
- 
+
 Add-Type -Path 'C:\Program Files\Microsoft SQL Server\130\Shared\Microsoft.SqlServer.XE.Core.dll'
 Add-Type -Path 'C:\Program Files\Microsoft SQL Server\130\Shared\Microsoft.SqlServer.XEvent.Linq.dll'
 
@@ -332,7 +333,7 @@ $category     = @{Name = 'category '; Expression = {$_.Fields['category'].Value 
 $message      = @{Name = 'message '; Expression = {$_.Fields['message'].Value }}
 
 $events | Select Name, TimeStamp, $error_number, $severity,$state,$category,$message |ft -auto -wrap
- 
+
 $events | Foreach-Object { $_.Actions | Where-Object { $_.Name -eq 'client_hostname' } } | Group-Object Value
 
 
