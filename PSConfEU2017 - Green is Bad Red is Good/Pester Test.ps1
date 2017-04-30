@@ -19,8 +19,11 @@ catch
     Write-Warning "FAILED to start SQL"
 }
 
-#>
+import-module sqlserver
+Get-Module dbatools | remove-module -ea silentlycontinue
+Import-Module GIT:\dbatools\dbatools.psd1
 
+#>
 Describe "Testing NUC" {
     Context "VM State" {       
         $NUCServers = 'BeardDC1','BeardDC2','LinuxVNextCTP14','SQL2005Ser2003','SQL2012Ser08AG3','SQL2012Ser08AG1','SQL2012Ser08AG2','SQL2014Ser12R2','SQL2016N1','SQL2016N2','SQL2016N3','SQLVnextN1','SQLvNextN2'
@@ -44,7 +47,7 @@ Context "THEBEARD_Domain" {
     }
 
     Context "SQL State" {
-        $SQLServers = (Get-VM -ComputerName beardnuc | Where-Object {$_.Name -like '*SQL*' -and $_.Name -ne 'SQL2008Ser2008' -and $_.State -eq 'Running'}).Name
+        $SQLServers = (Get-VM -ComputerName beardnuc | Where-Object {$_.Name -like '*SQL*'  -and $_.State -eq 'Running'}).Name
         foreach($Server in $SQLServers)
         {
           $DBEngine = Get-service -ComputerName $Server -Name MSSQLSERVER
