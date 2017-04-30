@@ -8,10 +8,10 @@
 
 Describe "Do things Exist" {
     Context "Servers" {
-        It "The Server retunrs a ping" {
+        It "The Server retunrs a ping - This will fail - Wrong Server Name" {
             (Test-Connection SQL2016N31 -Count 1 -Quiet -ErrorAction SilentlyContinue ) | Should Be $true
         }
-        It "The Server retunrs a ping" {
+        It "The Server SQL2016N1 retunrs a ping" {
             (Test-Connection SQL2016N1 -Count 1 -Quiet -ErrorAction SilentlyContinue ) | Should Be $true
         }
         It "SQL2005Ser2003 Operating System Version" {
