@@ -131,7 +131,7 @@ $DataFile = $($Instance.DefaultFile) + 'ProviderDemo.mdf'
 $LogFile = $($Instance.DefaultLog) + 'ProviderDemo.ldf'
 $RelocateData = New-Object Microsoft.SqlServer.Management.Smo.RelocateFile("ProviderDemo", $DataFile)
 $RelocateLog = New-Object Microsoft.SqlServer.Management.Smo.RelocateFile("ProviderDemo_Log", $LogFile)
-Restore-SqlDatabase -ServerInstance $SQLServer -Database ProviderDemo -BackupFile $BackupFile -ReplaceDatabase -RestoreAction Database -RelocateFile @($RelocateData,$RelocateLog)
+Restore-SqlDatabase -ServerInstance $SQLServer -Database ProviderDemo -BackupFile $BackupFile -ReplaceDatabase -RestoreAction Database -RelocateFile @($RelocateData,$RelocateLog) 
 
 #Using Script parameter you can see its just T-SQL
 
@@ -335,6 +335,21 @@ $message      = @{Name = 'message '; Expression = {$_.Fields['message'].Value }}
 $events | Select Name, TimeStamp, $error_number, $severity,$state,$category,$message |ft -auto -wrap
 
 $events | Foreach-Object { $_.Actions | Where-Object { $_.Name -eq 'client_hostname' } } | Group-Object Value
+
+
+
+$srv = New-Object -TypeName Microsoft.SqlServer.Management.Smo.Server -ArgumentList $SQLServer
+$db = $srv.Databases['AdventureWorks2014']
+
+## Findi the biggest tables, bet it is in there
+
+$db.Tables | Sort DataSpaceUsed -Descending | select Schema, Name ,DataSpaceUsed, RowCount -First 1
+
+## We'll grab all of the data into Out-GridView
+$query = "SELECT * FROM Person.Person"
+$results = Invoke-sqlcmd2 -ServerInstance $SQLServer -Database AdventureWorks2014 -Query $query
+$results | ogv
+
 
 
 ##  SQL Server Provider Lab

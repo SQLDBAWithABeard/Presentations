@@ -34,7 +34,7 @@ import-module git:\dbatools\dbatools.psd1
 
 Describe "Testing NUC" {
     Context "VM State" {       
-        $NUCServers = 'BeardDC1','BeardDC2','LinuxVNextCTP14','SQL2005Ser2003','SQL2012Ser08AG3','SQL2012Ser08AG1','SQL2012Ser08AG2','SQL2014Ser12R2','SQL2016N1','SQL2016N2','SQL2016N3','SQLVnextN1','SQLvNextN2'
+        $NUCServers = 'BeardDC1','BeardDC2','LinuxVNextCTP14','SQL2005Ser2003','SQL2012Ser08AG3','SQL2012Ser08AG1','SQL2014Ser12R2','SQL2016N1','SQL2016N2','SQL2016N3','SQLVnextN1','SQLvNextN2' ## 'SQL2012Ser08AG2',
         $NUCVMs = Get-VM -ComputerName beardnuc | Where-Object {$_.Name -in $NUCServers}
             foreach($VM in $NUCVms)
                 {

@@ -45,8 +45,8 @@ Describe "Do things Exist" {
         }
     }
     Context "Networks" {
-        It "Should have 6 Network Adapters" {
-            (Get-NetAdapter).COunt | Should be 6
+        It "Should have 5 Network Adapters" {
+            (Get-NetAdapter).COunt | Should be 5
         }
         It "Should have correct DNS Servers" {
             (Get-DnsClientServerAddress -InterfaceAlias 'Ethernet 3').Serveraddresses | Should Be @('10.0.0.2','10.0.0.1')
@@ -64,15 +64,15 @@ Describe "Do things Exist" {
         }
     }
     Context "IIS"{
-        It 'Should have IIS Feature' {
-            Get-WindowsFeature -ComputerName SQL2016N1 -Name Web-Server| Should Be $True
-        }
-        It 'Should have IIS Management Tools' {
-            Get-WindowsFeature -ComputerName SQL2016N1 -Name Web-Mgmt-Tools| Should Be $True
-        }
-        It 'Should have IIS Console' {
-            Get-WindowsFeature -ComputerName SQL2016N1 -Name Web-Mgmt-Console| Should Be $True
-        } 
+       ## It 'Should have IIS Feature' {
+       ##     Get-WindowsFeature -ComputerName SQL2016N1 -Name Web-Server| Should Be $True
+       ## }
+       ## It 'Should have IIS Management Tools' {
+       ##     Get-WindowsFeature -ComputerName SQL2016N1 -Name Web-Mgmt-Tools| Should Be $True
+       ## }
+       ## It 'Should have IIS Console' {
+       ##     Get-WindowsFeature -ComputerName SQL2016N1 -Name Web-Mgmt-Console| Should Be $True
+       ## } 
         It 'The Default Website Should be Started' {
             $Scriptblock = {(get-website -Name 'Default Web Site').state }
             $State = Invoke-Command -ComputerName SQL2016N1 -ScriptBlock $Scriptblock 
