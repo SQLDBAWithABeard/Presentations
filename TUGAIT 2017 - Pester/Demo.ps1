@@ -2,10 +2,9 @@ Return "This is a demo beardy"
 ## lets start with some simple
 Import-Module Pester
 Get-Module Pester 
-cd presentations:\
-New-Item TUGATest -ItemType Directory
+cd 'presentations:\TUGAIT 2017 Pester'
 . .\Get-SpeakerFace.ps1
-New-Fixture -Name Get-SpeakerBeard -Path .\TUGATest
+New-Fixture -Name Get-SpeakerBeard 
 cd TUGATest
 
 $Faces = (Get-SpeakerFace)
