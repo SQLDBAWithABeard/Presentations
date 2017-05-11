@@ -81,6 +81,18 @@ Invoke-SQLCmd2 -ServerInstance ROB-XPS -Database AdventureWorks2014 -Query $Quer
 $x--
 }
 
+## Orphaned File
+
+$X = 10
+While($X -ne 0) {
+$DBName = 'Orphan_' + $x
+Create-Database -Server SQL2016N2 -DBName $DBName 
+$x--
+}
+
+$srv = Connect-DbaSqlServer -SqlServer SQL2016N2
+$srv.Databases.Where{$_.Name -like 'Orphan*'}.ForEach{$srv.DetachDatabase($_.Name,$false,$false)}
+
 #>
 
 Describe "Testing NUC" {
@@ -201,6 +213,13 @@ Describe "Testing for Demo"{
     It "ShiftID LastValue Should be 255" {
         $a = Test-DbaIdentityUsage -SqlInstance ROB-XPS -Databases AdventureWorks2014 -NoSystemDb
         $a.Where{$_.Column -eq 'ShiftID'}.LastValue | should Be 255
+    }
+    It "Uses TheBeard\Rob"{
+        $ENV:USERDNSDOMAIN | Should be 'THEBEARD.LOCAL'
+        $Env:USERNAME | Should Be 'Rob'
+    }
+    It "has Orphaned Files ready"{
+        (Find-DbaOrphanedFile -SqlServer SQL2016N2).Count | Should Be 30
     }
 }
 
