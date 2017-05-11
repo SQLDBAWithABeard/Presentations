@@ -91,23 +91,56 @@ Test-DbaMaxMemory -SqlServer $SQLServers | ogv
 
 ## look at the Avaialbility Group Servers, Thats not right
 ## Lets make it correct
+
 Test-DbaMaxMemory -SqlServer SQL2012Ser08AG1 ,SQL2012Ser08AG2, SQL2012Ser08AG3  | Where-Object { $_.SqlMaxMB -gt $_.TotalMB } | Set-DbaMaxMemory
 Test-DbaMaxMemory -SqlServer SQL2012Ser08AG1 ,SQL2012Ser08AG2, SQL2012Ser08AG3 | ogv
 
+## What if we have 2 instances?
+Test-DbaMaxMemory -SqlServer ROB-XPS
 
 <# Test Set Tempdb #>
 
 
 <# DBCC CheckDb #>
-cd 'SQLSERVER:\sqlregistration\database engine server group\BEARDNUC'
-$allservers = (Get-ChildItem).Where{$_.Name -like '*SQL2016N*'}.Name
-Get-DbaLastGoodCheckDb -SqlServer $allservers -Detailed | ogv
+# You can use the SQLServer Provider to read your Registered Servers or CMS
+# cd 'SQLSERVER:\sqlregistration\database engine server group\BEARDNUC'
+# $2016servers = (Get-ChildItem).Where{$_.Name -like '*SQL2016N*'}.Name
+
+# When was the last good CheckDb - Cláudio please explain how to do it in T-SQL
+# I'll do it like this!!
+$2016Servers = $SQLServers.Where{$_ -like '*2016*'}
+Get-DbaLastGoodCheckDb -SqlServer $2016servers -Detailed | ogv
 
 <# Find-DBAStoredProcedure #>
 
 
 <# Test-DBAIdentity #>
 
+# I want to add a row to a table and I ge this error
+
+$Query = @"
+INSERT INTO [HumanResources].[Shift]
+([Name],[StartTime],[EndTime],[ModifiedDate])
+VALUES
+( 'The Beards Favourite Shift','10:00:00.0000000','11:00:00.0000000',GetDate())
+"@
+
+Invoke-SQLCmd2 -ServerInstance ROB-XPS -Database AdventureWorks2014 -Query $Query
+
+## Arithmetic overflow error converting IDENTITY to data type tinyint.
+
+## Claudio Please explain what is happening
+
+## But we can quickly and easily see that
+
+Test-DbaIdentityUsage -SqlInstance ROB-XPS -NoSystemDb -Threshold 70 | ogv
+
+## You can look at a whole server
+Test-DbaIdentityUsage -SqlInstance ROB-XPS -NoSystemDb | ogv
+
+## or a number of servers
+
+Test-DbaIdentityUsage -SqlInstance $2016Servers -NoSystemDb | Ogv
 
 <# Get-DBAFreeSpace #>
 

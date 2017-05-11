@@ -68,7 +68,18 @@ Backup-SqlDatabase -ServerInstance SQL2016N1 -Database VideoDemodbareports -Back
 Backup-SqlDatabase -ServerInstance SQL2016N1 -Database VideoDemodbareports -BackupAction Log 
 Backup-SqlDatabase -ServerInstance SQL2016N1 -Database VideoDemodbareports -BackupAction Log 
 
-
+## Fill the column
+$Query = @"
+INSERT INTO [HumanResources].[Shift]
+([Name],[StartTime],[EndTime],[ModifiedDate])
+VALUES
+( 'Made Up SHift ' + CAST(NEWID() AS nvarchar(MAX)),DATEADD(hour,-4, GetDate()),'07:00:00.0000000',GetDate())
+"@
+$x = 252
+While($x -gt 0) {
+Invoke-SQLCmd2 -ServerInstance ROB-XPS -Database AdventureWorks2014 -Query $Query
+$x--
+}
 
 #>
 
@@ -187,4 +198,24 @@ Describe "Testing for Demo"{
         (Connect-DbaSqlServer SQL2012Ser08AG2).Configuration.MaxServerMemory.RunValue | Should Be 2147483647
         (Connect-DbaSqlServer SQL2012Ser08AG3).Configuration.MaxServerMemory.RunValue | Should Be 2147483647
     }
+    It "ShiftID LastValue Should be 255" {
+        $a = Test-DbaIdentityUsage -SqlInstance ROB-XPS -Databases AdventureWorks2014 -NoSystemDb
+        $a.Where{$_.Column -eq 'ShiftID'}.LastValue | should Be 255
+    }
 }
+
+
+
+# Clean up
+<#
+
+$Query = @"
+DELETE
+  FROM [AdventureWorks2014].[HumanResources].[Shift]
+  WHERE ShiftID > 3
+
+  DBCC CHECKIDENT('HumanResources.Shift', RESEED, 3)
+"@
+Invoke-SQLCmd2 -ServerInstance ROB-XPS -Database AdventureWorks2014 -Query $Query
+
+#>
