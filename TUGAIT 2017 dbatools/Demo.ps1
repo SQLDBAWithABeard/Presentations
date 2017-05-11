@@ -153,6 +153,22 @@ Test-DbaIdentityUsage -SqlInstance $2016Servers -NoSystemDb | Ogv
 
 <# Orphaned File #>
 
+## We are running out of space Rob
+## Clean up the Orphaned Files
+
+## I can find them like this
+
+Find-DbaOrphanedFile -SqlServer SQL2016N2 | ogv
+
+## How much space are they using up ?
+
+((Find-DbaOrphanedFile -SqlInstance SQL2016N2 -RemoteOnly | Get-ChildItem | Select -ExpandProperty Length | Measure-Object -Sum)).Sum / 1MB
+
+## Hmm Probably better remove them
+Find-DbaOrphanedFile -SqlInstance SQL2016N2 -RemoteOnly | Remove-Item -Whatif
+
+## Lets remove them!!
+Find-DbaOrphanedFile -SqlInstance SQL2016N2 -RemoteOnly | Remove-Item
 
 <# Start-Up Parameters #>
 
@@ -229,7 +245,7 @@ Get-DbaBackupHistory -SqlServer SQL2016N1 -Databases VideoDemodbareports -Raw| o
 <# Chrissy's blog post about a restore server #>
 
 
-<# remove-SQLDatabaseSafely #>
+<# Remove-SQLDatabaseSafely #>
 
 
 <# Copy-SQLJob #>
