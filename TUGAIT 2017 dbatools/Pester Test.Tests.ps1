@@ -70,7 +70,7 @@ Backup-SqlDatabase -ServerInstance SQL2016N1 -Database VideoDemodbareports -Back
 
 Describe "Testing NUC" {
     Context "VM State" {       
-        $NUCServers = 'BeardDC1','BeardDC2','LinuxVNextCTP14','SQL2005Ser2003','SQL2012Ser08AG3','SQL2012Ser08AG1','SQL2012Ser08AG2','SQL2014Ser12R2','SQL2016N1','SQL2016N2','SQL2016N3','SQLVnextN1','SQLvNextN2'
+        $NUCServers = 'BeardDC1','BeardDC2','LinuxvNextCTP14','SQL2005Ser2003','SQL2012Ser08AG3','SQL2012Ser08AG1','SQL2012Ser08AG2','SQL2014Ser12R2','SQL2016N1','SQL2016N2','SQL2016N3','SQLVnextN1','SQL2008Ser12R2'
         $NUCVMs = Get-VM -ComputerName beardnuc | Where-Object {$_.Name -in $NUCServers}
             foreach($VM in $NUCVms)
                 {
@@ -81,7 +81,7 @@ Describe "Testing NUC" {
 			    }
     }
 Context "THEBEARD_Domain" {
-            $NUCServers = 'BeardDC1','BeardDC2','LinuxvNextCTP14','SQL2005Ser2003','SQL2012Ser08AG3','SQL2012Ser08AG1','SQL2012Ser08AG2','SQL2014Ser12R2','SQL2016N1','SQL2016N2','SQL2016N3','SQLVnextN1','SQLvNextN2'
+            $NUCServers = 'BeardDC1','BeardDC2','LinuxvNextCTP14','SQL2005Ser2003','SQL2012Ser08AG3','SQL2012Ser08AG1','SQL2012Ser08AG2','SQL2014Ser12R2','SQL2016N1','SQL2016N2','SQL2016N3','SQLVnextN1','SQL2008Ser12R2'
             foreach($VM in $NUCServers)
                 {
                                  It "$VM Should respond to ping" {
@@ -91,7 +91,7 @@ Context "THEBEARD_Domain" {
     }
 
     Context "SQL State" {
-        $SQLServers = (Get-VM -ComputerName beardnuc -Credential $cred | Where-Object {$_.Name -like '*SQL*'  -and $_.State -eq 'Running'}).Name
+        $SQLServers = (Get-VM -ComputerName beardnuc | Where-Object {$_.Name -like '*SQL*'  -and $_.State -eq 'Running'}).Name
         foreach($Server in $SQLServers)
         {
           $DBEngine = Get-service -ComputerName $Server -Name MSSQLSERVER
@@ -108,6 +108,10 @@ Context "THEBEARD_Domain" {
            It "$Server Agent Should be Auto Start" {
             $Agent.StartType | Should be 'Automatic'
            }
+        }
+        It "Linux SQL Server should be accepting connections" {
+            $cred = Import-Clixml C:\temp\sa.xml
+            {Connect-DbaSqlServer -SqlServer LinuxvnextCTP14 -Credential $cred} | Should Not Throw
         }
     
     }
@@ -143,11 +147,11 @@ Describe "Testing for Presentation" {
             (Get-Process POWERPNT  -ErrorAction SilentlyContinue).Count | Should Not BeNullOrEmpty 
         }
        It "Should have One PowerPoint Open" {
-            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).Count | Should Not BeNullOrEmpty 
+            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).Count | Should Be 1
         }
 
         It "Should have the correct PowerPoint Presentation Open" {
-            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'Green is Good Red is Bad - PowerPoint'
+            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'dbatools - SQL Server and PowerShell together - PowerPoint'
         }
         It "Mail Should be closed" {
             (Get-Process HxMail -ErrorAction SilentlyContinue).COunt | Should Be 0
@@ -172,6 +176,11 @@ Describe "Testing for Demo"{
         (Get-DnsClientServerAddress -InterfaceAlias 'Ethernet 3').Serveraddresses | Should Be @('10.0.0.1','10.0.0.2')
     }
     It "Should have correct gateway for alias"{
-        (Get-NetIPConfiguration -InterfaceAlias 'Ethernet 3').Ipv4DefaultGateway.NextHop | Should Be '10.0.0.1'
+        (Get-NetIPConfiguration -InterfaceAlias 'Ethernet 3').Ipv4DefaultGateway.NextHop | Should Be '10.0.0.10'
     }
+    It "Max Memory on SQl2012SerAG1 2 and 3 should be 2147483647" {
+        (Connect-DbaSqlServer SQL2012Ser08AG1).Configuration.MaxServerMemory.RunValue | Should Be 2147483647
+        (Connect-DbaSqlServer SQL2012Ser08AG2).Configuration.MaxServerMemory.RunValue | Should Be 2147483647
+        (Connect-DbaSqlServer SQL2012Ser08AG3).Configuration.MaxServerMemory.RunValue | Should Be 2147483647
+    3
 }
