@@ -27,6 +27,10 @@ catch
 import-module sqlserver
 import-module dbatools
 
+
+## Max Mem
+Set-DbaMaxMemory -SqlServer SQL2012Ser08AG1 ,SQL2012Ser08AG2, SQL2012Ser08AG3 -MaxMb 2147483647
+
 Backup-SqlDatabase -ServerInstance SQL2016N1 -Database VideoDemodbareports -BackupAction Database
 Backup-SqlDatabase -ServerInstance SQL2016N1 -Database VideoDemodbareports -Incremental 
 Backup-SqlDatabase -ServerInstance SQL2016N1 -Database VideoDemodbareports -BackupAction Log 
@@ -182,5 +186,5 @@ Describe "Testing for Demo"{
         (Connect-DbaSqlServer SQL2012Ser08AG1).Configuration.MaxServerMemory.RunValue | Should Be 2147483647
         (Connect-DbaSqlServer SQL2012Ser08AG2).Configuration.MaxServerMemory.RunValue | Should Be 2147483647
         (Connect-DbaSqlServer SQL2012Ser08AG3).Configuration.MaxServerMemory.RunValue | Should Be 2147483647
-    3
+    }
 }

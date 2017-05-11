@@ -14,20 +14,26 @@ Get-Help Always start with get-help
 NEEDS COMMENTS -0 RMS
 #>
 
-Return ' Hey BEardy This is a Demo!! '
+Return ' Hey Beardy This is a Demo!! '
+$SQLServers = (Get-VM -ComputerName beardnuc | Where-Object {$_.Name -like '*SQL*'  -and $_.State -eq 'Running'}).Name
 
+## We have to compare the Configuration for 2 servers to make sure that the new server is the same as the old one
+## We are going to show that (some) dbatools commands work with SQL on Linux :-)
 
-$linuxSQL = 'LinuxvvNext'
-$WinSQl1 = 'SQLvNextN1'
+## First we will use Connect-DbaSqlServer - the best way to create a validated SMO object
+$linuxSQL = 'LinuxvNextCTP14'
+$WinSQl1 = 'SQL2017CTP2'
 $cred = Get-Credential -UserName SA -Message "Linux SQL Auth"
 $linux = Connect-DbaSqlServer -SqlServer $linuxSQL  -Credential $cred
-$win1 = Connect-DbaSqlServer -SqlServer $WinSQl1
+$win = Connect-DbaSqlServer -SqlServer $WinSQl1
 
+## Then we shall create a simple function to compare the two spconfigures with Get-DbaSpConfigure
 Function Compare-WinLinuxConfigs
 {
+    #Get the configurations
 $linuxSpConfigure = Get-DbaSpConfigure  -SqlServer $linuxSQL -SqlCredential $cred
 $WinSPConfigure = Get-DbaSpConfigure -SqlServer $WinSQl1
-
+#Compare them
 $propcompare = foreach ($prop in $linuxSpConfigure) {
     [pscustomobject]@{
     Config = $prop.DisplayName
@@ -35,40 +41,58 @@ $propcompare = foreach ($prop in $linuxSpConfigure) {
     'Windows Setting' = $WinSPConfigure | Where DisplayName -eq $prop.DisplayName | Select -ExpandProperty RunningValue
     }
 } 
-
+## Put them in Out-GridView
 $propcompare | ogv
 }
 
 Compare-WinLinuxConfigs
 
+## lets alter the default backup compression setting
 $win.Configuration.Properties['DefaultBackupCompression'].ConfigValue = 1
 $win.Configuration.Alter()
 
+# and compare them
 Compare-WinLinuxConfigs
 
+# so know we need to make them the same
 Copy-SqlSpConfigure -Source $WinSQl1 -Destination $linuxSQL -DestinationSqlCredential $cred -Configs DefaultBackupCompression
 
+# and compare them
 Compare-WinLinuxConfigs
 
+## Now lets alter the linux server and compare
 $linux.Configuration.Properties['DefaultBackupCompression'].ConfigValue = 0
 $linux.Configuration.Alter()
-
 Compare-WinLinuxConfigs
 
+# They are different - Maybe we dont have the servers connected
+# Maybe the new server is not built yet
+# Maybe we need to have the configuration in a file for auditing
+# Lets export it to file with Export-SqlSpConfigure
 $linuxConfigPath = 'C:\Temp\Linuxconfig.sql'
 Export-SqlSpConfigure -SqlServer $linuxSQL -SqlCredential $cred -Path $LinuxConfigPath
 notepad $linuxConfigPath
 
+# if we export the windows configuration 
 $WinConfigPath = 'C:\Temp\Winconfig.sql'
 Export-SqlSpConfigure -SqlServer $WinSQl1 -Path $winConfigPath
 notepad $winConfigPath
 
+# We can use it to make the linux server the same - remember we changed the backup  compression
 Import-SqlSpConfigure -Path $WinConfigPath -SqlServer $linuxSQL -SqlCredential $cred
 
 
 Compare-WinLinuxConfigs
 
 <# Test- Set Max Memory #>
+
+# Lets Test our Max Memory
+Test-DbaMaxMemory -SqlServer $SQLServers | ogv
+
+## look at the Avaialbility Group Servers, Thats not right
+## Lets make it correct
+Test-DbaMaxMemory -SqlServer SQL2012Ser08AG1 ,SQL2012Ser08AG2, SQL2012Ser08AG3  | Where-Object { $_.SqlMaxMB -gt $_.TotalMB } | Set-DbaMaxMemory
+Test-DbaMaxMemory -SqlServer SQL2012Ser08AG1 ,SQL2012Ser08AG2, SQL2012Ser08AG3 | ogv
 
 
 <# Test Set Tempdb #>
