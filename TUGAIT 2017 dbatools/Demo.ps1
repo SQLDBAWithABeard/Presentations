@@ -175,6 +175,8 @@ Find-DbaOrphanedFile -SqlInstance SQL2016N2 -RemoteOnly | Remove-Item
 
 <# Start-Up Parameters #>
 
+# Rob - Add 2371 to sql 2016 N3 adn compare with n1 and n2
+
 
 <## INDEXES ##>
 
