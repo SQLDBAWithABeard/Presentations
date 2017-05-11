@@ -89,7 +89,7 @@ $DBName = 'Orphan_' + $x
 Create-Database -Server SQL2016N2 -DBName $DBName 
 $x--
 }
-
+Start-Sleep -seconds 5
 $srv = Connect-DbaSqlServer -SqlServer SQL2016N2
 $srv.Databases.Where{$_.Name -like 'Orphan*'}.ForEach{$srv.DetachDatabase($_.Name,$false,$false)}
 
@@ -138,7 +138,7 @@ Context "THEBEARD_Domain" {
         }
         It "Linux SQL Server should be accepting connections" {
             $cred = Import-Clixml C:\temp\sa.xml
-            {Connect-DbaSqlServer -SqlServer LinuxvnextCTP14 -Credential $cred} | Should Not Throw
+            {Connect-DbaSqlServer -SqlServer LinuxvnextCTP14 -Credential $cred -ConnectTimeout 60} | Should Not Throw
         }
     
     }

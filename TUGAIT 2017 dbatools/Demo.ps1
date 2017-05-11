@@ -24,7 +24,7 @@ $SQLServers = (Get-VM -ComputerName beardnuc | Where-Object {$_.Name -like '*SQL
 $linuxSQL = 'LinuxvNextCTP14'
 $WinSQl1 = 'SQL2017CTP2'
 $cred = Get-Credential -UserName SA -Message "Linux SQL Auth"
-$linux = Connect-DbaSqlServer -SqlServer $linuxSQL  -Credential $cred
+$linux = Connect-DbaSqlServer -SqlServer $linuxSQL  -Credential $cred -ConnectTimeout 60
 $win = Connect-DbaSqlServer -SqlServer $WinSQl1
 
 ## Then we shall create a simple function to compare the two spconfigures with Get-DbaSpConfigure
@@ -61,6 +61,7 @@ Copy-SqlSpConfigure -Source $WinSQl1 -Destination $linuxSQL -DestinationSqlCrede
 Compare-WinLinuxConfigs
 
 ## Now lets alter the linux server and compare
+
 $linux.Configuration.Properties['DefaultBackupCompression'].ConfigValue = 0
 $linux.Configuration.Alter()
 Compare-WinLinuxConfigs
@@ -69,6 +70,7 @@ Compare-WinLinuxConfigs
 # Maybe the new server is not built yet
 # Maybe we need to have the configuration in a file for auditing
 # Lets export it to file with Export-SqlSpConfigure
+
 $linuxConfigPath = 'C:\Temp\Linuxconfig.sql'
 Export-SqlSpConfigure -SqlServer $linuxSQL -SqlCredential $cred -Path $LinuxConfigPath
 notepad $linuxConfigPath
@@ -97,6 +99,7 @@ Test-DbaMaxMemory -SqlServer SQL2012Ser08AG1 ,SQL2012Ser08AG2, SQL2012Ser08AG3 |
 
 ## What if we have 2 instances?
 Test-DbaMaxMemory -SqlServer ROB-XPS
+
 
 <# Test Set Tempdb #>
 
@@ -136,7 +139,7 @@ Invoke-SQLCmd2 -ServerInstance ROB-XPS -Database AdventureWorks2014 -Query $Quer
 Test-DbaIdentityUsage -SqlInstance ROB-XPS -NoSystemDb -Threshold 70 | ogv
 
 ## You can look at a whole server
-Test-DbaIdentityUsage -SqlInstance ROB-XPS -NoSystemDb | ogv
+Test-DbaIdentityUsage -SqlInstance ROB-XPS, ROB-XPS\DAVE -NoSystemDb | ogv
 
 ## or a number of servers
 
@@ -172,6 +175,7 @@ Find-DbaOrphanedFile -SqlInstance SQL2016N2 -RemoteOnly | Remove-Item
 
 <# Start-Up Parameters #>
 
+
 <## INDEXES ##>
 
 Get-DbaHelpIndex -SqlServer sql2016N1 -Databases Viennadbareports -IncludeStats -IncludeDataTypes |ogv
@@ -183,6 +187,12 @@ Get-DbaHelpIndex -SqlServer sql2016N1 -Databases Viennadbareports -IncludeStats 
 ## Rob - Can you find the duplicate indexes for me please
 
 Find-SqlDuplicateIndex -SqlServer sql2016n1 
+
+Find-SqlDuplicateIndex -SqlServer sql2016n1 -IncludeOverlapping
+
+## Cláudio to create overlapping indexes in AdventureWorks2014
+
+Find-SqlDuplicateIndex -SqlServer ROB-XPS -IncludeOverLapping 
 
 <# Unused Indexes #>
 
@@ -243,7 +253,10 @@ Get-DbaBackupHistory -SqlServer SQL2016N1 -Databases VideoDemodbareports -Raw| o
 
 <# Restore to a new server #>
 
+Backup-DbaDatabase -SqlInstance sql2016n1 -Databases Viennadbareports -BackupDirectory \\SQL2016N2\SQLBackups | Restore-DbaDatabase -SqlServer sql2016n2 -DatabaseName Lisbondbareports
 
+## But what if you use the same server it wont work 
+Backup-DbaDatabase -SqlInstance sql2016n1 -Databases Viennadbareports -BackupDirectory \\SQL2016N2\SQLBackups | Restore-DbaDatabase -SqlServer sql2016n1 -DatabaseName Lisbondbareports -DestinationFilePrefix Lisbon
 <# Chrissy's blog post about a restore server #>
 
 
