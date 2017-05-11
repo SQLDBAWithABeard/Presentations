@@ -178,9 +178,11 @@ Get-DbaHelpIndex -SqlServer sql2016N1 -Databases Viennadbareports -IncludeStats 
 
 <# Duplicate Indexes #>
 
-## ADD DUPLCIATE INDEXES - RMS
+## ADD DUPLICATE INDEXES - RMS
 
-Find-SqlDuplicateIndex -SqlServer sql2016n1
+## Rob - Can you find the duplicate indexes for me please
+
+Find-SqlDuplicateIndex -SqlServer sql2016n1 
 
 <# Unused Indexes #>
 
