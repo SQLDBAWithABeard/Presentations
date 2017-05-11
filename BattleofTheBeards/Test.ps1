@@ -30,7 +30,7 @@ Describe "Testing for Presentation" {
         It "Should have One PowerShell ISE Process" {
             (Get-Process powershell_ise -ErrorAction SilentlyContinue).Count | Should Be 1
         }
-                It "Mail Should be closed" {
+        It "Mail Should be closed" {
             (Get-Process HxMail -ErrorAction SilentlyContinue).COunt | Should Be 0
         }
         It "Tweetium should be closed" {
