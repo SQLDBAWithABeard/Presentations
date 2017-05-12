@@ -175,8 +175,10 @@ Find-DbaOrphanedFile -SqlInstance SQL2016N2 -RemoteOnly | Remove-Item
 
 <# Start-Up Parameters #>
 
-# Rob - Add 2371 to sql 2016 N3 adn compare with n1 and n2
+## Hey we are getting different results between our production server SQL2016N3 and our dev and Test N1 and N2
+## Why is that????
 
+Get-DbaStartupParameter -SqlServer SQL2016N3, SQL2016N1,SQL2016N2 | ogv
 
 <## INDEXES ##>
 
