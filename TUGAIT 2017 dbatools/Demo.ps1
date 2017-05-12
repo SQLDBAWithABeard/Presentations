@@ -23,6 +23,7 @@ Test-SqlConnection -SqlServer $SQLServers
 Get-DbaUptime -SqlServer $servers -WindowsOnly
 
 
+
 <#
     Get TCP port
     Use -Detailed to find all instances on the server
@@ -119,7 +120,24 @@ Test-DbaMaxMemory -SqlServer SQL2012Ser08AG1 ,SQL2012Ser08AG2, SQL2012Ser08AG3 |
 Test-DbaMaxMemory -SqlServer ROB-XPS
 
 
-<# Test Set Tempdb #>
+<#
+    Temdb
+
+    By default only best practices rules not in use are showed. Use -Detailed to get also the ones already in use
+#>
+Test-SqlTempDbConfiguration -SqlServer ROB-XPS
+
+Test-SqlTempDbConfiguration -SqlServer ROB-XPS -Detailed
+
+<#
+    Disclaimer: The function will not perform any actions that would shrink or delete data files.
+    If a user desires this, they will need to reduce tempdb so that it is â€œsmallerâ€ than what the
+    function will size it to before running the function.
+
+    You can force the number of files
+    You have to say the total size you want for tempdb
+#>
+Set-SqlTempDbConfiguration -SqlServer ROB-XPS -DataFileCount 4 -datafilesizemb 4096
 
 
 <# DBCC CheckDb #>
@@ -129,10 +147,11 @@ Test-DbaMaxMemory -SqlServer ROB-XPS
 
 # When was the last good CheckDb - Cláudio please explain how to do it in T-SQL
 # I'll do it like this!!
-$2016Servers = $SQLServers.Where{$_ -like '*2016*'}
+$2016Servers = $SQLServers.Where{$_ -like '*2016*'} #Note: the .Where method only works on PowerShell v4+
 Get-DbaLastGoodCheckDb -SqlServer $2016servers -Detailed | ogv
 
 <# Find-DBAStoredProcedure #>
+
 
 
 <# Test-DBAIdentity #>
@@ -163,13 +182,46 @@ Test-DbaIdentityUsage -SqlInstance ROB-XPS, ROB-XPS\DAVE -NoSystemDb | ogv
 
 Test-DbaIdentityUsage -SqlInstance $2016Servers -NoSystemDb | Ogv
 
-<# Get-DBAFreeSpace #>
 
 
-<# Find-DatabaseAutoGrowthEvent #>
 
+<# Find-DbaDatabaseGrowthEvent #>
+Invoke-Sqlcmd2 -ServerInstance ROB-XPS -Query "DROP DATABASE IF EXISTS [AutoGrowth]"
+
+$queryCreateDatabase = @"
+CREATE DATABASE AutoGrowth;
+DBCC SHRINKFILE (N'AutoGrowth' , 1)
+DBCC SHRINKFILE (N'AutoGrowth_log' , 1)
+ALTER DATABASE [AutoGrowth] MODIFY FILE ( NAME = N'AutoGrowth', FILEGROWTH = 1024KB )
+ALTER DATABASE [AutoGrowth] MODIFY FILE ( NAME = N'AutoGrowth_log', FILEGROWTH = 1024KB )
+"@
+Invoke-Sqlcmd2 -ServerInstance ROB-XPS -Query $queryCreateDatabase
+
+
+$queryForceAutoGrowthEvents = @"
+DROP TABLE IF EXISTS ToGrow
+CREATE TABLE ToGrow
+(
+    ID BIGINT PRIMARY KEY IDENTITY(1,1)
+    ,SomeText VARCHAR(8000) DEFAULT(REPLICATE('A', 80000))
+)
+DECLARE @Iteration INT = 1
+WHILE (@Iteration < 2000)
+	BEGIN
+		INSERT INTO ToGrow (SomeText)
+		DEFAULT VALUES;
+
+		SET @Iteration += 1;
+	END
+"@
+Invoke-Sqlcmd2 -ServerInstance ROB-XPS -Query $queryForceAutoGrowthEvents -Database AutoGrowth
 
 <# Read-DBAtransactionlog #>
+Read-DbaTransactionLog -SqlInstance ROB-XPS -Database AutoGrowth | OGV
+
+<# Get-DbaDatabaseFreespace #>
+Get-DbaDatabaseFreespace -SqlServer ROB-XPS -Database AutoGrowth | ogv
+
 
 
 <# Orphaned File #>
