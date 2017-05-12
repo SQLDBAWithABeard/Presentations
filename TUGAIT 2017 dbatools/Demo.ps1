@@ -1,21 +1,39 @@
 <# Where the magic happens#>
-
+Return ' Hey Beardy This is a Demo!! '
+$SQLServers = (Get-VM -ComputerName beardnuc | Where-Object {$_.Name -like '*SQL*'  -and $_.State -eq 'Running'}).Name
 
 <#
 Get-Help Always start with get-help
 #>
 
 
-<# Latency - test-SQLConnection - Uptime - tcpport #>
+<#
+    Test Latency
+    You can use a custom query and define the number of retries
+#>
+Test-SqlNetworkLatency -SqlServer $SQLServers -Query "SELECT * FROM master.sys.databases" -Count 4
+
+#Test connection to instances
+Test-SqlConnection -SqlServer $SQLServers
+
+<#
+    Get UpTime
+    Can be only SQL or only Windows
+#>
+Get-DbaUptime -SqlServer $servers -WindowsOnly
 
 
-<# SP_configure difference between two servers and copy Windows to Linux 
+<#
+    Get TCP port
+    Use -Detailed to find all instances on the server
+#>
+Get-DbaTcpPort -SqlServer $servers -Detailed | Format-Table
+
+
+<# SP_configure difference between two servers and copy Windows to Linux
 
 NEEDS COMMENTS -0 RMS
 #>
-
-Return ' Hey Beardy This is a Demo!! '
-$SQLServers = (Get-VM -ComputerName beardnuc | Where-Object {$_.Name -like '*SQL*'  -and $_.State -eq 'Running'}).Name
 
 ## We have to compare the Configuration for 2 servers to make sure that the new server is the same as the old one
 ## We are going to show that (some) dbatools commands work with SQL on Linux :-)
@@ -40,7 +58,7 @@ $propcompare = foreach ($prop in $linuxSpConfigure) {
     'Linux setting' = $prop.RunningValue
     'Windows Setting' = $WinSPConfigure | Where DisplayName -eq $prop.DisplayName | Select -ExpandProperty RunningValue
     }
-} 
+}
 ## Put them in Out-GridView
 $propcompare | ogv
 }
@@ -75,7 +93,7 @@ $linuxConfigPath = 'C:\Temp\Linuxconfig.sql'
 Export-SqlSpConfigure -SqlServer $linuxSQL -SqlCredential $cred -Path $LinuxConfigPath
 notepad $linuxConfigPath
 
-# if we export the windows configuration 
+# if we export the windows configuration
 $WinConfigPath = 'C:\Temp\Winconfig.sql'
 Export-SqlSpConfigure -SqlServer $WinSQl1 -Path $winConfigPath
 notepad $winConfigPath
@@ -190,13 +208,13 @@ Get-DbaHelpIndex -SqlServer sql2016N1 -Databases Viennadbareports -IncludeStats 
 
 ## Rob - Can you find the duplicate indexes for me please
 
-Find-SqlDuplicateIndex -SqlServer sql2016n1 
+Find-SqlDuplicateIndex -SqlServer sql2016n1
 
 Find-SqlDuplicateIndex -SqlServer sql2016n1 -IncludeOverlapping
 
 ## Cláudio to create overlapping indexes in AdventureWorks2014
 
-Find-SqlDuplicateIndex -SqlServer ROB-XPS -IncludeOverLapping 
+Find-SqlDuplicateIndex -SqlServer ROB-XPS -IncludeOverLapping
 
 <# Unused Indexes #>
 
@@ -226,7 +244,7 @@ $SQLServers.ForEach{$testCases += @{Name = $_}}
 
 ## The best way to create an SMO object these days
 
-$srv = Connect-DbaSqlServer -SqlServer SQL2017CTP2 
+$srv = Connect-DbaSqlServer -SqlServer SQL2017CTP2
 
 $srv | Get-Member -MemberType Property
 
@@ -259,7 +277,7 @@ Get-DbaBackupHistory -SqlServer SQL2016N1 -Databases VideoDemodbareports -Raw| o
 
 Backup-DbaDatabase -SqlInstance sql2016n1 -Databases Viennadbareports -BackupDirectory \\SQL2016N2\SQLBackups | Restore-DbaDatabase -SqlServer sql2016n2 -DatabaseName Lisbondbareports
 
-## But what if you use the same server it wont work 
+## But what if you use the same server it wont work
 Backup-DbaDatabase -SqlInstance sql2016n1 -Databases Viennadbareports -BackupDirectory \\SQL2016N2\SQLBackups | Restore-DbaDatabase -SqlServer sql2016n1 -DatabaseName Lisbondbareports -DestinationFilePrefix Lisbon
 <# Chrissy's blog post about a restore server #>
 
