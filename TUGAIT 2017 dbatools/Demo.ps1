@@ -220,7 +220,7 @@ Invoke-Sqlcmd2 -ServerInstance ROB-XPS -Query $queryForceAutoGrowthEvents -Datab
 Read-DbaTransactionLog -SqlInstance ROB-XPS -Database AutoGrowth | OGV
 
 <# Get-DbaDatabaseFreespace #>
-Get-DbaDatabaseFreespace -SqlServer ROB-XPS -Database AutoGrowth | ogv
+Get-DbaDatabaseFreespace -SqlServer ROB-XPS -Database AutoGrowth | OGV
 
 
 
@@ -256,7 +256,54 @@ Get-DbaHelpIndex -SqlServer sql2016N1 -Databases Viennadbareports -IncludeStats 
 
 <# Duplicate Indexes #>
 
+
 ## ADD DUPLICATE INDEXES - RMS
+$CreateDuplicatedIndexes = @"
+IF EXISTS (SELECT * FROM sys.indexes WHERE name = 'IX_ProdId' AND [object_id] = object_id('Sales.SalesOrderDetail'))
+	DROP INDEX [Sales].[SalesOrderDetail].[IX_ProdId]
+
+CREATE NONCLUSTERED INDEX [IX_ProdId] ON [Sales].[SalesOrderDetail]
+(
+	[ProductID] ASC
+)
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE name = 'IX_SalesOrderDetail_ProductID__ICarrierTrackingNumber' AND [object_id] = object_id('Sales.SalesOrderDetail'))
+	DROP INDEX [Sales].[SalesOrderDetail].[IX_SalesOrderDetail_ProductID__ICarrierTrackingNumber]
+
+CREATE NONCLUSTERED INDEX [IX_SalesOrderDetail_ProductID__ICarrierTrackingNumber] ON [Sales].[SalesOrderDetail]
+(
+	[ProductID] ASC
+)
+INCLUDE
+(
+	[CarrierTrackingNumber]
+)
+
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_SalesOrderDetail_ProductID__FUnitPrice' AND object_id = object_id('Sales.SalesOrderDetail'))
+	DROP INDEX [Sales].[SalesOrderDetail].[IX_SalesOrderDetail_ProductID__FUnitPrice]
+
+CREATE NONCLUSTERED INDEX [IX_SalesOrderDetail_ProductID__FUnitPrice] ON [Sales].[SalesOrderDetail]
+(
+	[ProductID] ASC
+)
+INCLUDE
+(
+	[CarrierTrackingNumber]
+)
+WHERE ([UnitPrice] > 100)
+
+
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_SalesOrderDetail_ProductID__FUnitPrice1000' AND object_id = object_id('Sales.SalesOrderDetail'))
+	DROP INDEX [Sales].[SalesOrderDetail].[IX_SalesOrderDetail_ProductID__FUnitPrice1000]
+
+CREATE NONCLUSTERED INDEX [IX_SalesOrderDetail_ProductID__FUnitPrice1000] ON [Sales].[SalesOrderDetail]
+(
+	[ProductID] ASC
+)
+WHERE ([UnitPrice] > 1000)
+"@
+Invoke-Sqlcmd2 -ServerInstance ROB-XPS -Database AdventureWorks2014
+
 
 ## Rob - Can you find the duplicate indexes for me please
 
