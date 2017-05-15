@@ -4,7 +4,7 @@
 <#
 Get-Help Always start with get-help
 #>
-
+ 
 
 <# Latency - test-SQLConnection - Uptime - tcpport #>
 
@@ -24,9 +24,8 @@ $SQLServers = (Get-VM -ComputerName beardnuc | Where-Object {$_.Name -like '*SQL
 $linuxSQL = 'LinuxvNextCTP14'
 $WinSQl1 = 'SQL2017CTP2'
 $cred = Get-Credential -UserName SA -Message "Linux SQL Auth"
-$linux = Connect-DbaSqlServer -SqlServer $linuxSQL  -Credential $cred -ConnectTimeout 60
+$linux = Connect-DbaSqlServer -SqlServer $linuxSQL  -Credential $cred
 $win = Connect-DbaSqlServer -SqlServer $WinSQl1
-
 
 ## Then we shall create a simple function to compare the two spconfigures with Get-DbaSpConfigure
 Function Compare-WinLinuxConfigs
@@ -48,10 +47,6 @@ $propcompare | ogv
 
 Compare-WinLinuxConfigs
 
-## Set to a windows server as it is quicker
-$linuxSQL = 'SQL2016N1'
-$linux = Connect-DbaSqlServer -SqlServer $linuxSQL
-
 ## lets alter the default backup compression setting
 $win.Configuration.Properties['DefaultBackupCompression'].ConfigValue = 1
 $win.Configuration.Alter()
@@ -66,7 +61,6 @@ Copy-SqlSpConfigure -Source $WinSQl1 -Destination $linuxSQL -DestinationSqlCrede
 Compare-WinLinuxConfigs
 
 ## Now lets alter the linux server and compare
-
 $linux.Configuration.Properties['DefaultBackupCompression'].ConfigValue = 0
 $linux.Configuration.Alter()
 Compare-WinLinuxConfigs
@@ -75,7 +69,6 @@ Compare-WinLinuxConfigs
 # Maybe the new server is not built yet
 # Maybe we need to have the configuration in a file for auditing
 # Lets export it to file with Export-SqlSpConfigure
-
 $linuxConfigPath = 'C:\Temp\Linuxconfig.sql'
 Export-SqlSpConfigure -SqlServer $linuxSQL -SqlCredential $cred -Path $LinuxConfigPath
 notepad $linuxConfigPath
@@ -104,7 +97,6 @@ Test-DbaMaxMemory -SqlServer SQL2012Ser08AG1 ,SQL2012Ser08AG2, SQL2012Ser08AG3 |
 
 ## What if we have 2 instances?
 Test-DbaMaxMemory -SqlServer ROB-XPS
-
 
 <# Test Set Tempdb #>
 
@@ -144,14 +136,12 @@ Invoke-SQLCmd2 -ServerInstance ROB-XPS -Database AdventureWorks2014 -Query $Quer
 Test-DbaIdentityUsage -SqlInstance ROB-XPS -NoSystemDb -Threshold 70 | ogv
 
 ## You can look at a whole server
-Test-DbaIdentityUsage -SqlInstance ROB-XPS, ROB-XPS\DAVE -NoSystemDb | ogv
+Test-DbaIdentityUsage -SqlInstance ROB-XPS -NoSystemDb | ogv
 
 ## or a number of servers
 
 Test-DbaIdentityUsage -SqlInstance $2016Servers -NoSystemDb | Ogv
 
-
-## 30 minutes
 <# Get-DBAFreeSpace #>
 
 
@@ -163,29 +153,8 @@ Test-DbaIdentityUsage -SqlInstance $2016Servers -NoSystemDb | Ogv
 
 <# Orphaned File #>
 
-## We are running out of space Rob
-## Clean up the Orphaned Files
-
-## I can find them like this
-
-Find-DbaOrphanedFile -SqlServer SQL2016N2 | ogv
-
-## How much space are they using up ?
-
-((Find-DbaOrphanedFile -SqlInstance SQL2016N2 -RemoteOnly | Get-ChildItem | Select -ExpandProperty Length | Measure-Object -Sum)).Sum / 1MB
-
-## Hmm Probably better remove them
-Find-DbaOrphanedFile -SqlInstance SQL2016N2 -RemoteOnly | Remove-Item -Whatif
-
-## Lets remove them!!
-Find-DbaOrphanedFile -SqlInstance SQL2016N2 -RemoteOnly | Remove-Item
 
 <# Start-Up Parameters #>
-
-## Hey we are getting different results between our production server SQL2016N3 and our dev and Test N1 and N2
-## Why is that????
-
-Get-DbaStartupParameter -SqlServer SQL2016N3, SQL2016N1,SQL2016N2 | ogv
 
 <## INDEXES ##>
 
@@ -193,18 +162,9 @@ Get-DbaHelpIndex -SqlServer sql2016N1 -Databases Viennadbareports -IncludeStats 
 
 <# Duplicate Indexes #>
 
-## ADD DUPLICATE INDEXES - RMS
+## ADD DUPLCIATE INDEXES - RMS
 
-## Rob - Can you find the duplicate indexes for me please
-
-Find-SqlDuplicateIndex -SqlServer sql2016n1 
-
-Find-SqlDuplicateIndex -SqlServer sql2016n1 -IncludeOverlapping -FilePath  c:\temp\indexes.txt
-notepad c:\temp\indexes.txt
-
-## Cláudio to create overlapping indexes in AdventureWorks2014
-
-Find-SqlDuplicateIndex -SqlServer ROB-XPS -IncludeOverLapping 
+Find-SqlDuplicateIndex -SqlServer sql2016n1
 
 <# Unused Indexes #>
 
@@ -240,7 +200,7 @@ $srv | Get-Member -MemberType Property
 
 $srv.Version
 
-$srv.Databases.Name
+$srv.Databases
 
 $srv.LoginMode
 
@@ -252,13 +212,8 @@ $srv.Databases['DBA-Admin'].Script()
 
 $srv.Databases['DBA-Admin'].tables[0].script()
 
-<# Remove-SQLDatabaseSafely #>
-
-Remove-SQLDatabaseSafely -SqlServer ROB-XPS -Databases ProviderDemo -BackupFolder C:\MSSQL\Backup 
 
 <# Backup history #>
-
-Get-DbaLastBackup -sqlserver sql2016n1 | ogv
 
 Get-DbaBackupHistory -SqlServer SQL2016N1 | ogv
 
@@ -270,26 +225,14 @@ Get-DbaBackupHistory -SqlServer SQL2016N1 -Databases VideoDemodbareports -Raw| o
 
 <# Restore to a new server #>
 
-Backup-DbaDatabase -SqlInstance sql2016n1 -Databases Viennadbareports -BackupDirectory \\SQL2016N2\SQLBackups | Restore-DbaDatabase -SqlServer sql2016n2 -DatabaseName Lisbondbareports
-
-## But what if you use the same server it wont work 
-
-Backup-DbaDatabase -SqlInstance sql2016n1 -Databases Viennadbareports -BackupDirectory \\SQL2016N2\SQLBackups | Restore-DbaDatabase -SqlServer sql2016n1 -DatabaseName Lisbondbareports -DestinationFilePrefix Lisbon
 
 <# Chrissy's blog post about a restore server #>
 
 
+<# remove-SQLDatabaseSafely #>
+
 
 <# Copy-SQLJob #>
 
-Copy-SqlJob -Source SQL ## write this Rob
-
 
 <# Pester Tests #>
-
-cd GIT:\dbatools-scripts
-code-insiders .\TestConfig.json
-code-insiders '.\Pester Test Backup Share - Server level.Tests.ps1'
-
-$Config = (Get-Content TestConfig.JSON) -join "`n" | ConvertFrom-Json
-Invoke-Pester

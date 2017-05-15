@@ -5,7 +5,7 @@ Get-Module Pester
 cd 'presentations:\TUGAIT 2017 - Pester'
 . .\Get-SpeakerFace.ps1
 New-Fixture -Name Get-SpeakerBeard 
-cd TUGATest
+dir 
 
 $Faces = (Get-SpeakerFace)
 ## Now look in the folder
