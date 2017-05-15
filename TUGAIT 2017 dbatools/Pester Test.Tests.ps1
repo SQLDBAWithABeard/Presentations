@@ -93,6 +93,11 @@ Start-Sleep -seconds 5
 $srv = Connect-DbaSqlServer -SqlServer SQL2016N2
 $srv.Databases.Where{$_.Name -like 'Orphan*'}.ForEach{$srv.DetachDatabase($_.Name,$false,$false)}
 
+
+## do backup to get the Z drive
+
+(Get-SqlAgentJob -ServerInstance sql2016n1 |Where-Object Name -like '*user*full*big*').Start()
+
 #>
 
 Describe "Testing NUC" {
@@ -221,6 +226,7 @@ Describe "Testing for Demo"{
     It "has Orphaned Files ready"{
         (Find-DbaOrphanedFile -SqlServer SQL2016N2).Count | Should Be 30
     }
+   
 }
 
 

@@ -46,6 +46,7 @@ $cred = Get-Credential -UserName SA -Message "Linux SQL Auth"
 $linux = Connect-DbaSqlServer -SqlServer $linuxSQL  -Credential $cred -ConnectTimeout 60
 $win = Connect-DbaSqlServer -SqlServer $WinSQl1
 
+
 ## Then we shall create a simple function to compare the two spconfigures with Get-DbaSpConfigure
 Function Compare-WinLinuxConfigs
 {
@@ -65,6 +66,10 @@ $propcompare | ogv
 }
 
 Compare-WinLinuxConfigs
+
+## Set to a windows server as it is quicker
+$linuxSQL = 'SQL2016N1'
+$linux = Connect-DbaSqlServer -SqlServer $linuxSQL
 
 ## lets alter the default backup compression setting
 $win.Configuration.Properties['DefaultBackupCompression'].ConfigValue = 1
@@ -182,8 +187,10 @@ Test-DbaIdentityUsage -SqlInstance ROB-XPS, ROB-XPS\DAVE -NoSystemDb | ogv
 
 Test-DbaIdentityUsage -SqlInstance $2016Servers -NoSystemDb | Ogv
 
+=======
 
-
+## 30 minutes
+<# Get-DBAFreeSpace #>
 
 <# Find-DbaDatabaseGrowthEvent #>
 Invoke-Sqlcmd2 -ServerInstance ROB-XPS -Query "DROP DATABASE IF EXISTS [AutoGrowth]"
@@ -309,7 +316,8 @@ Invoke-Sqlcmd2 -ServerInstance ROB-XPS -Database AdventureWorks2014
 
 Find-SqlDuplicateIndex -SqlServer sql2016n1
 
-Find-SqlDuplicateIndex -SqlServer sql2016n1 -IncludeOverlapping
+Find-SqlDuplicateIndex -SqlServer sql2016n1 -IncludeOverlapping -FilePath  c:\temp\indexes.txt
+notepad c:\temp\indexes.txt
 
 ## Cláudio to create overlapping indexes in AdventureWorks2014
 
@@ -349,7 +357,7 @@ $srv | Get-Member -MemberType Property
 
 $srv.Version
 
-$srv.Databases
+$srv.Databases.Name
 
 $srv.LoginMode
 
@@ -361,8 +369,13 @@ $srv.Databases['DBA-Admin'].Script()
 
 $srv.Databases['DBA-Admin'].tables[0].script()
 
+<# Remove-SQLDatabaseSafely #>
+
+Remove-SQLDatabaseSafely -SqlServer ROB-XPS -Databases ProviderDemo -BackupFolder C:\MSSQL\Backup 
 
 <# Backup history #>
+
+Get-DbaLastBackup -sqlserver sql2016n1 | ogv
 
 Get-DbaBackupHistory -SqlServer SQL2016N1 | ogv
 
@@ -377,14 +390,23 @@ Get-DbaBackupHistory -SqlServer SQL2016N1 -Databases VideoDemodbareports -Raw| o
 Backup-DbaDatabase -SqlInstance sql2016n1 -Databases Viennadbareports -BackupDirectory \\SQL2016N2\SQLBackups | Restore-DbaDatabase -SqlServer sql2016n2 -DatabaseName Lisbondbareports
 
 ## But what if you use the same server it wont work
+
 Backup-DbaDatabase -SqlInstance sql2016n1 -Databases Viennadbareports -BackupDirectory \\SQL2016N2\SQLBackups | Restore-DbaDatabase -SqlServer sql2016n1 -DatabaseName Lisbondbareports -DestinationFilePrefix Lisbon
+
 <# Chrissy's blog post about a restore server #>
 
-
-<# Remove-SQLDatabaseSafely #>
 
 
 <# Copy-SQLJob #>
 
+Copy-SqlJob -Source SQL ## write this Rob
+
 
 <# Pester Tests #>
+
+cd GIT:\dbatools-scripts
+code-insiders .\TestConfig.json
+code-insiders '.\Pester Test Backup Share - Server level.Tests.ps1'
+
+$Config = (Get-Content TestConfig.JSON) -join "`n" | ConvertFrom-Json
+Invoke-Pester
