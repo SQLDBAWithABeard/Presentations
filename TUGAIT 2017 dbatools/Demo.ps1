@@ -1,21 +1,40 @@
 <# Where the magic happens#>
-
+Return ' Hey Beardy This is a Demo!! '
+$SQLServers = (Get-VM -ComputerName beardnuc | Where-Object {$_.Name -like '*SQL*'  -and $_.State -eq 'Running'}).Name
 
 <#
 Get-Help Always start with get-help
 #>
 
 
-<# Latency - test-SQLConnection - Uptime - tcpport #>
+<#
+    Test Latency
+    You can use a custom query and define the number of retries
+#>
+Test-SqlNetworkLatency -SqlServer $SQLServers -Query "SELECT * FROM master.sys.databases" -Count 4
+
+#Test connection to instances
+Test-SqlConnection -SqlServer $SQLServers
+
+<#
+    Get UpTime
+    Can be only SQL or only Windows
+#>
+Get-DbaUptime -SqlServer $servers -WindowsOnly
 
 
-<# SP_configure difference between two servers and copy Windows to Linux 
+
+<#
+    Get TCP port
+    Use -Detailed to find all instances on the server
+#>
+Get-DbaTcpPort -SqlServer $servers -Detailed | Format-Table
+
+
+<# SP_configure difference between two servers and copy Windows to Linux
 
 NEEDS COMMENTS -0 RMS
 #>
-
-Return ' Hey Beardy This is a Demo!! '
-$SQLServers = (Get-VM -ComputerName beardnuc | Where-Object {$_.Name -like '*SQL*'  -and $_.State -eq 'Running'}).Name
 
 ## We have to compare the Configuration for 2 servers to make sure that the new server is the same as the old one
 ## We are going to show that (some) dbatools commands work with SQL on Linux :-)
@@ -41,7 +60,7 @@ $propcompare = foreach ($prop in $linuxSpConfigure) {
     'Linux setting' = $prop.RunningValue
     'Windows Setting' = $WinSPConfigure | Where DisplayName -eq $prop.DisplayName | Select -ExpandProperty RunningValue
     }
-} 
+}
 ## Put them in Out-GridView
 $propcompare | ogv
 }
@@ -80,7 +99,7 @@ $linuxConfigPath = 'C:\Temp\Linuxconfig.sql'
 Export-SqlSpConfigure -SqlServer $linuxSQL -SqlCredential $cred -Path $LinuxConfigPath
 notepad $linuxConfigPath
 
-# if we export the windows configuration 
+# if we export the windows configuration
 $WinConfigPath = 'C:\Temp\Winconfig.sql'
 Export-SqlSpConfigure -SqlServer $WinSQl1 -Path $winConfigPath
 notepad $winConfigPath
@@ -106,7 +125,24 @@ Test-DbaMaxMemory -SqlServer SQL2012Ser08AG1 ,SQL2012Ser08AG2, SQL2012Ser08AG3 |
 Test-DbaMaxMemory -SqlServer ROB-XPS
 
 
-<# Test Set Tempdb #>
+<#
+    Temdb
+
+    By default only best practices rules not in use are showed. Use -Detailed to get also the ones already in use
+#>
+Test-SqlTempDbConfiguration -SqlServer ROB-XPS
+
+Test-SqlTempDbConfiguration -SqlServer ROB-XPS -Detailed
+
+<#
+    Disclaimer: The function will not perform any actions that would shrink or delete data files.
+    If a user desires this, they will need to reduce tempdb so that it is â€œsmallerâ€ than what the
+    function will size it to before running the function.
+
+    You can force the number of files
+    You have to say the total size you want for tempdb
+#>
+Set-SqlTempDbConfiguration -SqlServer ROB-XPS -DataFileCount 4 -datafilesizemb 4096
 
 
 <# DBCC CheckDb #>
@@ -116,10 +152,11 @@ Test-DbaMaxMemory -SqlServer ROB-XPS
 
 # When was the last good CheckDb - Cláudio please explain how to do it in T-SQL
 # I'll do it like this!!
-$2016Servers = $SQLServers.Where{$_ -like '*2016*'}
+$2016Servers = $SQLServers.Where{$_ -like '*2016*'} #Note: the .Where method only works on PowerShell v4+
 Get-DbaLastGoodCheckDb -SqlServer $2016servers -Detailed | ogv
 
 <# Find-DBAStoredProcedure #>
+
 
 
 <# Test-DBAIdentity #>
@@ -150,15 +187,48 @@ Test-DbaIdentityUsage -SqlInstance ROB-XPS, ROB-XPS\DAVE -NoSystemDb | ogv
 
 Test-DbaIdentityUsage -SqlInstance $2016Servers -NoSystemDb | Ogv
 
+=======
 
 ## 30 minutes
 <# Get-DBAFreeSpace #>
 
+<# Find-DbaDatabaseGrowthEvent #>
+Invoke-Sqlcmd2 -ServerInstance ROB-XPS -Query "DROP DATABASE IF EXISTS [AutoGrowth]"
 
-<# Find-DatabaseAutoGrowthEvent #>
+$queryCreateDatabase = @"
+CREATE DATABASE AutoGrowth;
+DBCC SHRINKFILE (N'AutoGrowth' , 1)
+DBCC SHRINKFILE (N'AutoGrowth_log' , 1)
+ALTER DATABASE [AutoGrowth] MODIFY FILE ( NAME = N'AutoGrowth', FILEGROWTH = 1024KB )
+ALTER DATABASE [AutoGrowth] MODIFY FILE ( NAME = N'AutoGrowth_log', FILEGROWTH = 1024KB )
+"@
+Invoke-Sqlcmd2 -ServerInstance ROB-XPS -Query $queryCreateDatabase
 
+
+$queryForceAutoGrowthEvents = @"
+DROP TABLE IF EXISTS ToGrow
+CREATE TABLE ToGrow
+(
+    ID BIGINT PRIMARY KEY IDENTITY(1,1)
+    ,SomeText VARCHAR(8000) DEFAULT(REPLICATE('A', 80000))
+)
+DECLARE @Iteration INT = 1
+WHILE (@Iteration < 2000)
+	BEGIN
+		INSERT INTO ToGrow (SomeText)
+		DEFAULT VALUES;
+
+		SET @Iteration += 1;
+	END
+"@
+Invoke-Sqlcmd2 -ServerInstance ROB-XPS -Query $queryForceAutoGrowthEvents -Database AutoGrowth
 
 <# Read-DBAtransactionlog #>
+Read-DbaTransactionLog -SqlInstance ROB-XPS -Database AutoGrowth | OGV
+
+<# Get-DbaDatabaseFreespace #>
+Get-DbaDatabaseFreespace -SqlServer ROB-XPS -Database AutoGrowth | OGV
+
 
 
 <# Orphaned File #>
@@ -193,18 +263,65 @@ Get-DbaHelpIndex -SqlServer sql2016N1 -Databases Viennadbareports -IncludeStats 
 
 <# Duplicate Indexes #>
 
+
 ## ADD DUPLICATE INDEXES - RMS
+$CreateDuplicatedIndexes = @"
+IF EXISTS (SELECT * FROM sys.indexes WHERE name = 'IX_ProdId' AND [object_id] = object_id('Sales.SalesOrderDetail'))
+	DROP INDEX [Sales].[SalesOrderDetail].[IX_ProdId]
+
+CREATE NONCLUSTERED INDEX [IX_ProdId] ON [Sales].[SalesOrderDetail]
+(
+	[ProductID] ASC
+)
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE name = 'IX_SalesOrderDetail_ProductID__ICarrierTrackingNumber' AND [object_id] = object_id('Sales.SalesOrderDetail'))
+	DROP INDEX [Sales].[SalesOrderDetail].[IX_SalesOrderDetail_ProductID__ICarrierTrackingNumber]
+
+CREATE NONCLUSTERED INDEX [IX_SalesOrderDetail_ProductID__ICarrierTrackingNumber] ON [Sales].[SalesOrderDetail]
+(
+	[ProductID] ASC
+)
+INCLUDE
+(
+	[CarrierTrackingNumber]
+)
+
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_SalesOrderDetail_ProductID__FUnitPrice' AND object_id = object_id('Sales.SalesOrderDetail'))
+	DROP INDEX [Sales].[SalesOrderDetail].[IX_SalesOrderDetail_ProductID__FUnitPrice]
+
+CREATE NONCLUSTERED INDEX [IX_SalesOrderDetail_ProductID__FUnitPrice] ON [Sales].[SalesOrderDetail]
+(
+	[ProductID] ASC
+)
+INCLUDE
+(
+	[CarrierTrackingNumber]
+)
+WHERE ([UnitPrice] > 100)
+
+
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'IX_SalesOrderDetail_ProductID__FUnitPrice1000' AND object_id = object_id('Sales.SalesOrderDetail'))
+	DROP INDEX [Sales].[SalesOrderDetail].[IX_SalesOrderDetail_ProductID__FUnitPrice1000]
+
+CREATE NONCLUSTERED INDEX [IX_SalesOrderDetail_ProductID__FUnitPrice1000] ON [Sales].[SalesOrderDetail]
+(
+	[ProductID] ASC
+)
+WHERE ([UnitPrice] > 1000)
+"@
+Invoke-Sqlcmd2 -ServerInstance ROB-XPS -Database AdventureWorks2014
+
 
 ## Rob - Can you find the duplicate indexes for me please
 
-Find-SqlDuplicateIndex -SqlServer sql2016n1 
+Find-SqlDuplicateIndex -SqlServer sql2016n1
 
 Find-SqlDuplicateIndex -SqlServer sql2016n1 -IncludeOverlapping -FilePath  c:\temp\indexes.txt
 notepad c:\temp\indexes.txt
 
 ## Cláudio to create overlapping indexes in AdventureWorks2014
 
-Find-SqlDuplicateIndex -SqlServer ROB-XPS -IncludeOverLapping 
+Find-SqlDuplicateIndex -SqlServer ROB-XPS -IncludeOverLapping
 
 <# Unused Indexes #>
 
@@ -234,7 +351,7 @@ $SQLServers.ForEach{$testCases += @{Name = $_}}
 
 ## The best way to create an SMO object these days
 
-$srv = Connect-DbaSqlServer -SqlServer SQL2017CTP2 
+$srv = Connect-DbaSqlServer -SqlServer SQL2017CTP2
 
 $srv | Get-Member -MemberType Property
 
@@ -272,7 +389,7 @@ Get-DbaBackupHistory -SqlServer SQL2016N1 -Databases VideoDemodbareports -Raw| o
 
 Backup-DbaDatabase -SqlInstance sql2016n1 -Databases Viennadbareports -BackupDirectory \\SQL2016N2\SQLBackups | Restore-DbaDatabase -SqlServer sql2016n2 -DatabaseName Lisbondbareports
 
-## But what if you use the same server it wont work 
+## But what if you use the same server it wont work
 
 Backup-DbaDatabase -SqlInstance sql2016n1 -Databases Viennadbareports -BackupDirectory \\SQL2016N2\SQLBackups | Restore-DbaDatabase -SqlServer sql2016n1 -DatabaseName Lisbondbareports -DestinationFilePrefix Lisbon
 
