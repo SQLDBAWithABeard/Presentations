@@ -1,6 +1,7 @@
 <# Where the magic happens#>
 Return ' Hey Beardy This is a Demo!! '
 $SQLServers = (Get-VM -ComputerName beardnuc | Where-Object {$_.Name -like '*SQL*'  -and $_.State -eq 'Running'}).Name
+$singleServer = "sql2016"
 
 <#
 Get-Help Always start with get-help
@@ -14,7 +15,9 @@ Get-Help Always start with get-help
 Test-SqlNetworkLatency -SqlServer $SQLServers -Query "SELECT * FROM master.sys.databases" -Count 4
 
 #Test connection to instances
-Test-SqlConnection -SqlServer $SQLServers
+Test-SqlConnection -SqlServer $OneSQLServer
+
+$SQLServers | % {Test-SqlConnection -SqlServer $_}
 
 <#
     Get UpTime
@@ -28,7 +31,7 @@ Get-DbaUptime -SqlServer $servers -WindowsOnly
     Get TCP port
     Use -Detailed to find all instances on the server
 #>
-Get-DbaTcpPort -SqlServer $servers -Detailed | Format-Table
+Get-DbaTcpPort -SqlServer $servers | Format-Table
 
 
 <# SP_configure difference between two servers and copy Windows to Linux
@@ -45,7 +48,6 @@ $WinSQl1 = 'SQL2017CTP2'
 $cred = Get-Credential -UserName SA -Message "Linux SQL Auth"
 $linux = Connect-DbaSqlServer -SqlServer $linuxSQL  -Credential $cred -ConnectTimeout 60
 $win = Connect-DbaSqlServer -SqlServer $WinSQl1
-
 
 ## Then we shall create a simple function to compare the two spconfigures with Get-DbaSpConfigure
 Function Compare-WinLinuxConfigs
@@ -122,7 +124,7 @@ Test-DbaMaxMemory -SqlServer SQL2012Ser08AG1 ,SQL2012Ser08AG2, SQL2012Ser08AG3  
 Test-DbaMaxMemory -SqlServer SQL2012Ser08AG1 ,SQL2012Ser08AG2, SQL2012Ser08AG3 | ogv
 
 ## What if we have 2 instances?
-Test-DbaMaxMemory -SqlServer ROB-XPS
+Test-DbaMaxMemory -SqlServer $singleServer
 
 
 <#
@@ -130,9 +132,9 @@ Test-DbaMaxMemory -SqlServer ROB-XPS
 
     By default only best practices rules not in use are showed. Use -Detailed to get also the ones already in use
 #>
-Test-SqlTempDbConfiguration -SqlServer ROB-XPS
+Test-SqlTempDbConfiguration -SqlServer $singleServer
 
-Test-SqlTempDbConfiguration -SqlServer ROB-XPS -Detailed
+Test-SqlTempDbConfiguration -SqlServer $singleServer -Detailed
 
 <#
     Disclaimer: The function will not perform any actions that would shrink or delete data files.
@@ -142,7 +144,7 @@ Test-SqlTempDbConfiguration -SqlServer ROB-XPS -Detailed
     You can force the number of files
     You have to say the total size you want for tempdb
 #>
-Set-SqlTempDbConfiguration -SqlServer ROB-XPS -DataFileCount 4 -datafilesizemb 4096
+Set-SqlTempDbConfiguration -SqlServer $singleServer -DataFileCount 4 -datafilesizemb 4096
 
 
 <# DBCC CheckDb #>
@@ -153,7 +155,7 @@ Set-SqlTempDbConfiguration -SqlServer ROB-XPS -DataFileCount 4 -datafilesizemb 4
 # When was the last good CheckDb - Cláudio please explain how to do it in T-SQL
 # I'll do it like this!!
 $2016Servers = $SQLServers.Where{$_ -like '*2016*'} #Note: the .Where method only works on PowerShell v4+
-Get-DbaLastGoodCheckDb -SqlServer $2016servers -Detailed | ogv
+Get-DbaLastGoodCheckDb -SqlServer $2016servers | ogv
 
 <# Find-DBAStoredProcedure #>
 
@@ -170,7 +172,7 @@ VALUES
 ( 'The Beards Favourite Shift','10:00:00.0000000','11:00:00.0000000',GetDate())
 "@
 
-Invoke-SQLCmd2 -ServerInstance ROB-XPS -Database AdventureWorks2014 -Query $Query
+Invoke-SQLCmd2 -ServerInstance $singleServer -Database AdventureWorks2014 -Query $Query
 
 ## Arithmetic overflow error converting IDENTITY to data type tinyint.
 
@@ -190,19 +192,27 @@ Test-DbaIdentityUsage -SqlInstance $2016Servers -NoSystemDb | Ogv
 =======
 
 ## 30 minutes
-<# Get-DBAFreeSpace #>
-
 <# Find-DbaDatabaseGrowthEvent #>
-Invoke-Sqlcmd2 -ServerInstance ROB-XPS -Query "DROP DATABASE IF EXISTS [AutoGrowth]"
+Invoke-Sqlcmd2 -ServerInstance $singleServer -Query "IF EXISTS (SELECT 1 FROM sys.databases WHERE name = 'AutoGrowth')
+BEGIN
+	ALTER DATABASE [AutoGrowth] SET  SINGLE_USER WITH ROLLBACK IMMEDIATE
+	DROP DATABASE IF EXISTS [AutoGrowth]
+END
+CREATE DATABASE AutoGrowth;"
 
-$queryCreateDatabase = @"
-CREATE DATABASE AutoGrowth;
+
+$queryConfigureDatabase = @"
 DBCC SHRINKFILE (N'AutoGrowth' , 1)
 DBCC SHRINKFILE (N'AutoGrowth_log' , 1)
 ALTER DATABASE [AutoGrowth] MODIFY FILE ( NAME = N'AutoGrowth', FILEGROWTH = 1024KB )
 ALTER DATABASE [AutoGrowth] MODIFY FILE ( NAME = N'AutoGrowth_log', FILEGROWTH = 1024KB )
 "@
-Invoke-Sqlcmd2 -ServerInstance ROB-XPS -Query $queryCreateDatabase
+Invoke-Sqlcmd2 -ServerInstance $singleServer -Query $queryConfigureDatabase
+
+
+
+<# Get-DbaDatabaseFreespace #>
+Get-DbaDatabaseFreespace -SqlServer $singleServer -Database AutoGrowth | OGV
 
 
 $queryForceAutoGrowthEvents = @"
@@ -221,13 +231,17 @@ WHILE (@Iteration < 2000)
 		SET @Iteration += 1;
 	END
 "@
-Invoke-Sqlcmd2 -ServerInstance ROB-XPS -Query $queryForceAutoGrowthEvents -Database AutoGrowth
+Invoke-Sqlcmd2 -ServerInstance $singleServer -Query $queryForceAutoGrowthEvents -Database AutoGrowth
+
+
+Find-DbaDatabaseGrowthEvent -SqlInstance $singleServer -Database AutoGrowth | OGV
+
 
 <# Read-DBAtransactionlog #>
-Read-DbaTransactionLog -SqlInstance ROB-XPS -Database AutoGrowth | OGV
+Read-DbaTransactionLog -SqlInstance $singleServer -Database AutoGrowth | OGV
 
 <# Get-DbaDatabaseFreespace #>
-Get-DbaDatabaseFreespace -SqlServer ROB-XPS -Database AutoGrowth | OGV
+Get-DbaDatabaseFreespace -SqlServer $singleServer -Database AutoGrowth | OGV
 
 
 
@@ -390,7 +404,6 @@ Get-DbaBackupHistory -SqlServer SQL2016N1 -Databases VideoDemodbareports -Raw| o
 Backup-DbaDatabase -SqlInstance sql2016n1 -Databases Viennadbareports -BackupDirectory \\SQL2016N2\SQLBackups | Restore-DbaDatabase -SqlServer sql2016n2 -DatabaseName Lisbondbareports
 
 ## But what if you use the same server it wont work
-
 Backup-DbaDatabase -SqlInstance sql2016n1 -Databases Viennadbareports -BackupDirectory \\SQL2016N2\SQLBackups | Restore-DbaDatabase -SqlServer sql2016n1 -DatabaseName Lisbondbareports -DestinationFilePrefix Lisbon
 
 <# Chrissy's blog post about a restore server #>
