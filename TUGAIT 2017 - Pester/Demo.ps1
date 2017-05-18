@@ -5,10 +5,12 @@ Get-Module Pester
 cd 'presentations:\TUGAIT 2017 - Pester'
 . .\Get-SpeakerFace.ps1
 New-Fixture -Name Get-SpeakerBeard 
+
+## Now look in the folder
 dir 
 
 $Faces = (Get-SpeakerFace)
-## Now look in the folder
+
 Invoke-Pester
 ## Not so good lets add a check if the command exists
 <# 
@@ -495,15 +497,13 @@ Add to tests and save
   Invoke-Pester
 
  ## So what about if we want to list the top and bottom ranked beards (according to
- ## the Cognitive Service) We will need to 
-
-
-Invoke-Pester
+ ## the Cognitive Service) We will need to write the test first
 
 
 <#
 
 Add to test and save
+
 
 
  $here = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -581,14 +581,6 @@ Add to test and save
             $Result.Beard | Should Be 0.2
             $Result.ImageUrl | Should Be 'http://tugait.pt/2017/wp-content/uploads/2017/04/JaapBrasser-262x272.jpg'
          }
-             It 'Checks the Mock was called for Speaker Face' {
-        $assertMockParams = @{
-            'CommandName' = 'Get-SpeakerFace'
-            'Times' = 2
-            'Exactly' = $true
-        }
-        Assert-MockCalled @assertMockParams 
-    }
         It "Returns the Top 1 Ranked Beards" {
             (Get-SpeakerBeard -Top 1).beard.Count | Should Be 1
     }
@@ -601,9 +593,18 @@ Add to test and save
             It "Returns the Bottom  5 Ranked Beards" {
             (Get-SpeakerBeard -Bottom 5).beard.Count | Should Be 5
     }
+                 It 'Checks the Mock was called for Speaker Face' {
+        $assertMockParams = @{
+            'CommandName' = 'Get-SpeakerFace'
+            'Times' = 6
+            'Exactly' = $true
+        }
+        Assert-MockCalled @assertMockParams 
+    }
      }
      
   }
+
 
 #>
 
@@ -617,7 +618,6 @@ add to function and save
  function Get-SpeakerBeard {
      param(
          $Speaker,
-         $Webpage = (Invoke-WebRequest http://tugait.pt/2017/speakers/),
          $Faces ,
          [switch]$Detailed,
          [switch]$ShowImage,
@@ -675,7 +675,118 @@ add to function and save
 
 <#
 
+Add to tests and save
 
+
+ $here = Split-Path -Parent $MyInvocation.MyCommand.Path
+ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
+ . "$here\$sut"
+ $CommandName = $sut.Replace(".ps1", '')
+ Describe "Tests for the $CommandName Command" {
+     It "Command $CommandName exists" {
+         Get-Command $CommandName -ErrorAction SilentlyContinue | Should Not BE NullOrEmpty
+     }
+     Context "$CommandName Input" {
+         BeforeAll {
+             $MockFace = (Get-Content faces.JSON) -join "`n" | ConvertFrom-Json
+             Mock Get-SpeakerFace {$MockFace}
+         }
+         ## For Checking parameters
+         It 'When there is no speaker in the array should return a useful message' {
+             Get-SpeakerBeard -Speaker 'Chrissy LeMaire' | Should Be 'No Speaker with a name like that - You entered Chrissy LeMaire'
+         }
+          It 'Checks the Mock was called for Speaker Face' {
+        $assertMockParams = @{
+            'CommandName' = 'Get-SpeakerFace'
+            'Times' = 1
+            'Exactly' = $true
+        }
+        Assert-MockCalled @assertMockParams 
+    }
+ 
+     }
+     Context "$CommandName Execution" {
+         ## Ensuring the code follows the expected path
+         BeforeAll {
+             $MockFace = (Get-Content faces.JSON) -join "`n" | ConvertFrom-Json
+             Mock Get-SpeakerFace {$MockFace}
+             Mock Start-Process {}
+         }
+        It 'Opens the image if ShowImage switch used' {
+            Get-SpeakerBeard -Speaker Jaap -ShowImage | Should Be 0.2
+        }
+        It "Opens the image if ShowImage switch used and Detailed Switch" {
+            $Result = (Get-SpeakerBeard -Speaker Jaap -Detailed -ShowImage)
+            $Result.Name | Should Be 'JaapBrasser'
+            $Result.Beard | Should Be 0.2
+            $Result.ImageUrl | Should Be 'http://tugait.pt/2017/wp-content/uploads/2017/04/JaapBrasser-262x272.jpg'
+         }
+        It 'Checks the Mock was called for Speaker Face' {
+        $assertMockParams = @{
+            'CommandName' = 'Get-SpeakerFace'
+            'Times' = 2
+            'Exactly' = $true
+        }
+        Assert-MockCalled @assertMockParams 
+    }
+           It 'Checks the Mock was called for Start-Process' {
+        $assertMockParams = @{
+            'CommandName' = 'Start-Process'
+            'Times' = 2
+            'Exactly' = $true
+        }
+        Assert-MockCalled @assertMockParams 
+    }
+     }
+     Context "$CommandName Output" {
+         ## Probably most of tests here
+                  BeforeAll {
+             $MockFace = (Get-Content faces.JSON) -join "`n" | ConvertFrom-Json
+             Mock Get-SpeakerFace {$MockFace}
+         }
+         It "Should Return the Beard Value for a Speaker" {
+             Get-SpeakerBeard -Speaker Jaap | Should Be 0.2
+         }
+         It "Should Return Speaker Name, Beard Value and URL if Detailed Specified" {
+            $Result = (Get-SpeakerBeard -Speaker Jaap -Detailed)
+            $Result.Name | Should Be 'JaapBrasser'
+            $Result.Beard | Should Be 0.2
+            $Result.ImageUrl | Should Be 'http://tugait.pt/2017/wp-content/uploads/2017/04/JaapBrasser-262x272.jpg'
+         }
+        It "Returns the Top 1 Ranked Beards" {
+            (Get-SpeakerBeard -Top 1).beard.Count | Should Be 1
+    }
+            It "Returns the Bottom  1 Ranked Beards" {
+            (Get-SpeakerBeard -Bottom 1).beard.Count | Should Be 1
+    }
+            It "Returns the Top 5 Ranked Beards" {
+            (Get-SpeakerBeard -Top 5).beard.Count | Should Be 5
+    }
+            It "Returns the Bottom  5 Ranked Beards" {
+            (Get-SpeakerBeard -Bottom 5).beard.Count | Should Be 5
+    }
+    It 'Checks the Mock was called for Speaker Face' {
+        $assertMockParams = @{
+            'CommandName' = 'Get-SpeakerFace'
+            'Times' = 6
+            'Exactly' = $true
+        }
+        Assert-MockCalled @assertMockParams 
+     }
+     }
+
+## Add Script Analyser Rules
+            Context "Testing $commandName for Script Analyser" {
+                $Rules = Get-ScriptAnalyzerRule 
+                $Name = $sut.Split('.')[0]
+                foreach ($rule in $rules) { 
+                    $i = $rules.IndexOf($rule)
+                    It "passes the PSScriptAnalyzer Rule number $i - $rule  " {
+                        (Invoke-ScriptAnalyzer -Path "$here\$sut" -IncludeRule $rule.RuleName ).Count | Should Be 0 
+                    }
+                }
+            }     
+  }
 
 #>
 
@@ -690,13 +801,12 @@ Invoke-ScriptAnalyzer -path .\Get-SpeakerBeard.ps1
 ## Now write the code to fix it
 
 <#
-Add to fucntion and save
+Add to function and save
 
 
  function Get-SpeakerBeard {
      param(
          $Speaker,
-         $Webpage = (Invoke-WebRequest http://tugait.pt/2017/speakers/),
          $Faces ,
          [switch]$Detailed,
          [switch]$ShowImage,
@@ -1042,7 +1152,7 @@ Invoke-Pester -Show Header
 ## You can return the results as an XML file for 
 ## consumption by another system
 
-Invoke-Pester -OutputFile c:\temp\PesterResults.xml -OutputFormat NUnitXml
+Invoke-Pester -Show Summary,Header -OutputFile c:\temp\PesterResults.xml -OutputFormat NUnitXml
 ii C:\temp\PesterResults.xml
 
 ## or you can save them to a variable with the PassThru Parameter
