@@ -1,4 +1,9 @@
 Return "This is a demo beardy"
+## run before the powerpoint Rob
+$Faces = (Get-SpeakerFace)
+## If you forget
+$faces = (Get-Content faces.JSON) -join "`n" | ConvertFrom-Json
+
 ## lets start with some simple
 Import-Module Pester
 Get-Module Pester 
@@ -9,7 +14,7 @@ New-Fixture -Name Get-SpeakerBeard
 ## Now look in the folder
 dir 
 
-$Faces = (Get-SpeakerFace)
+
 
 Invoke-Pester
 ## Not so good lets add a check if the command exists
@@ -127,7 +132,7 @@ $faces | gm
 ## If only we could save that to disk and return it when we needed
 ## This is ONE way of doing this there are others
 
-$faces | ConvertTo-Json -Depth 5  | out-file faces.json  ## The depth value is important here
+# $faces | ConvertTo-Json -Depth 5  | out-file faces.json  ## The depth value is important here
 Get-Content .\faces.json
 $a = (Get-Content faces.JSON) -join "`n" | ConvertFrom-Json
 $a
