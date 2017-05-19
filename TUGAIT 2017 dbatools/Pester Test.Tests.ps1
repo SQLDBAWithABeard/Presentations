@@ -23,6 +23,12 @@ catch
     Write-Warning "FAILED to start SQL"
 }
 
+try{
+    Start-Process powershell.exe -ArgumentList '-noprofile -commandGet-Process Freedome* | Stop-Process -Force' -Verb Runas
+}
+catch{
+    Write-Warning "Failed to stop freedome"
+}
 
 import-module sqlserver
 import-module dbatools
@@ -151,6 +157,9 @@ Context "THEBEARD_Domain" {
 
 Describe "Testing XPS" {
   Context "XPS" {
+        It "Freedome is stopped" {
+            (Get-Process FreeDome* ) | Should BeNullOrEmpty
+        }
         It "DBEngine is running" {
             (Get-Service mssqlserver).Status | Should Be Running
         }
