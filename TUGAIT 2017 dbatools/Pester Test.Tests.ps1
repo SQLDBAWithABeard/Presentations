@@ -23,6 +23,12 @@ catch
     Write-Warning "FAILED to start SQL"
 }
 
+try{
+    Start-Process powershell.exe -ArgumentList '-noprofile -commandGet-Process Freedome* | Stop-Process -Force' -Verb Runas
+}
+catch{
+    Write-Warning "Failed to stop freedome"
+}
 
 import-module sqlserver
 import-module dbatools
@@ -111,7 +117,7 @@ Describe "Testing NUC" {
                     $VM.State | Should Be 'Running'
                   }
 			    }
-    }
+    
 Context "THEBEARD_Domain" {
             $NUCServers = 'BeardDC1','BeardDC2','LinuxvNextCTP14','SQL2005Ser2003','SQL2012Ser08AG3','SQL2012Ser08AG1','SQL2012Ser08AG2','SQL2014Ser12R2','SQL2016N1','SQL2016N2','SQL2016N3','SQLVnextN1','SQL2008Ser12R2'
             foreach($VM in $NUCServers)
@@ -121,7 +127,7 @@ Context "THEBEARD_Domain" {
 				}
                 }
     }
-
+}
     Context "SQL State" {
         $SQLServers = (Get-VM -ComputerName beardnuc | Where-Object {$_.Name -like '*SQL*'  -and $_.State -eq 'Running'}).Name
         foreach($Server in $SQLServers)
@@ -151,6 +157,9 @@ Context "THEBEARD_Domain" {
 
 Describe "Testing XPS" {
   Context "XPS" {
+        It "Freedome is stopped" {
+            (Get-Process FreeDome* ) | Should BeNullOrEmpty
+        }
         It "DBEngine is running" {
             (Get-Service mssqlserver).Status | Should Be Running
         }
@@ -169,9 +178,9 @@ Describe "Testing XPS" {
 } #end describe
 Describe "Testing for Presentation" {
     Context "Rob-XPS" {
-        It "Should have One PowerShell ISE Process" {
+        <# It "Should have One PowerShell ISE Process" {
             (Get-Process powershell_ise -ErrorAction SilentlyContinue).Count | Should Be 1
-        }
+        }#>
         It "Shoudl have Code Insiders Open" {
              (Get-Process 'Code - Insiders'  -ErrorAction SilentlyContinue) | Should Not BeNullOrEmpty
         }
