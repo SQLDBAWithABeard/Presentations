@@ -20,7 +20,7 @@ Test-SqlConnection -SqlServer $SQLServers
     Get UpTime
     Can be only SQL or only Windows
 #>
-Get-DbaUptime -SqlServer $servers -WindowsOnly
+Get-DbaUptime -SqlServer $SQLServers -WindowsOnly 
 
 
 
@@ -28,7 +28,7 @@ Get-DbaUptime -SqlServer $servers -WindowsOnly
     Get TCP port
     Use -Detailed to find all instances on the server
 #>
-Get-DbaTcpPort -SqlServer $servers -Detailed | Format-Table
+Get-DbaTcpPort -SqlServer $sqlservers -Detailed | Format-Table
 
 
 <# SP_configure difference between two servers and copy Windows to Linux
