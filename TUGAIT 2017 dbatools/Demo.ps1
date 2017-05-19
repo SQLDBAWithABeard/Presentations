@@ -1,7 +1,7 @@
 <# Where the magic happens#>
 Return ' Hey Beardy This is a Demo!! '
 $SQLServers = (Get-VM -ComputerName beardnuc | Where-Object {$_.Name -like '*SQL*'  -and $_.State -eq 'Running'}).Name
-$singleServer = "sql2016"
+$singleServer = "sql2016n1"
 
 <#
 Get-Help Always start with get-help
