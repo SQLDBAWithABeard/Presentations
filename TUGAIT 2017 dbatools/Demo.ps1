@@ -1,38 +1,31 @@
 <# Where the magic happens#>
-Return ' Hey Beardy This is a Demo!! '
-$SQLServers = (Get-VM -ComputerName beardnuc | Where-Object {$_.Name -like '*SQL*'  -and $_.State -eq 'Running'}).Name
-$singleServer = "sql2016n1"
+Return 'Hey Beardy This is a Demo!! '
+$SQLServers = (Get-VM -ComputerName beardnuc | Where-Object {$_.Name -like '*SQL2016N1' -or $_.Name -Like '*SQL*2012*' -or $_.Name -Like '*SQL*2014*' -or $_.Name -Like '*SQL*2008*'  -or $_.Name -Like '*SQL*2005*'  -and $_.State -eq 'Running'}).Name
+$singleServer = "Rob-XPS"
 
 <#
 Get-Help Always start with get-help
+
+Get-Help  Test-SQLConnection -Full
 #>
  
+ #Test connection to instances
+Test-SqlConnection -SqlServer $SingleServer
+
+$SQLServers[0..3] | % {Test-SqlConnection -SqlServer $_}
 
 <#
     Test Latency
     You can use a custom query and define the number of retries
 #>
-Test-SqlNetworkLatency -SqlServer $SQLServers -Query "SELECT * FROM master.sys.databases" -Count 4
-
-#Test connection to instances
-Test-SqlConnection -SqlServer $OneSQLServer
-
-$SQLServers | % {Test-SqlConnection -SqlServer $_}
-
-<#
-    Get UpTime
-    Can be only SQL or only Windows
-#>
-Get-DbaUptime -SqlServer $SQLServers -WindowsOnly 
-
-
+Test-SqlNetworkLatency -SqlServer $SQLServers -Query "SELECT * FROM master.sys.databases" -Count 4 | Format-Table
 
 <#
     Get TCP port
     Use -Detailed to find all instances on the server
 #>
 
-Get-DbaTcpPort -SqlServer $sqlservers -Detailed | Format-Table
+Get-DbaTcpPort -SqlServer $sqlservers -Detailed -WarningAction SilentlyContinue| Format-Table -AutoSize
 
 
 
@@ -45,57 +38,58 @@ NEEDS COMMENTS -0 RMS
 ## We are going to show that (some) dbatools commands work with SQL on Linux :-)
 
 ## First we will use Connect-DbaSqlServer - the best way to create a validated SMO object
-$linuxSQL = 'LinuxvNextCTP14'
+$WinSQL2 = 'SQL2016N1'
 $WinSQl1 = 'SQL2017CTP2'
 $cred = Get-Credential -UserName SA -Message "Linux SQL Auth"
-$linux = Connect-DbaSqlServer -SqlServer $linuxSQL  -Credential $cred
+$win2 = Connect-DbaSqlServer -SqlServer $WinSQL2  -Credential $cred
 $win = Connect-DbaSqlServer -SqlServer $WinSQl1
 
 ## Then we shall create a simple function to compare the two spconfigures with Get-DbaSpConfigure
-Function Compare-WinLinuxConfigs
+Function Compare-SPConfigs
 {
     #Get the configurations
-$linuxSpConfigure = Get-DbaSpConfigure  -SqlServer $linuxSQL -SqlCredential $cred
+$win2SpConfigure = Get-DbaSpConfigure  -SqlServer $WinSQL2 -SqlCredential $cred
 $WinSPConfigure = Get-DbaSpConfigure -SqlServer $WinSQl1
 #Compare them
-$propcompare = foreach ($prop in $linuxSpConfigure) {
+$propcompare = foreach ($prop in $win2SpConfigure) {
     [pscustomobject]@{
     Config = $prop.DisplayName
-    'Linux setting' = $prop.RunningValue
-    'Windows Setting' = $WinSPConfigure | Where DisplayName -eq $prop.DisplayName | Select -ExpandProperty RunningValue
+    'Instance 2 setting' = $prop.RunningValue
+    'Instance 1 Setting' = $WinSPConfigure | Where DisplayName -eq $prop.DisplayName | Select -ExpandProperty RunningValue
     }
 }
 ## Put them in Out-GridView
 $propcompare | ogv
 }
 
-Compare-WinLinuxConfigs
+Compare-SPConfigs
 
 ## lets alter the default backup compression setting
-$win.Configuration.Properties['DefaultBackupCompression'].ConfigValue = 1
+
+$win.Configuration.Properties['DefaultBackupCompression'].ConfigValue = 0
 $win.Configuration.Alter()
 
 # and compare them
-Compare-WinLinuxConfigs
+Compare-SPConfigs
 
 # so know we need to make them the same
-Copy-SqlSpConfigure -Source $WinSQl1 -Destination $linuxSQL -DestinationSqlCredential $cred -Configs DefaultBackupCompression
+Copy-SqlSpConfigure -Source $WinSQl1 -Destination $WinSQL2 -DestinationSqlCredential $cred -Configs DefaultBackupCompression
 
 # and compare them
-Compare-WinLinuxConfigs
+Compare-SPConfigs
 
 ## Now lets alter the linux server and compare
-$linux.Configuration.Properties['DefaultBackupCompression'].ConfigValue = 0
-$linux.Configuration.Alter()
-Compare-WinLinuxConfigs
+$win2.Configuration.Properties['DefaultBackupCompression'].ConfigValue = 0
+$win2.Configuration.Alter()
+Compare-SPConfigs
 
 # They are different - Maybe we dont have the servers connected
 # Maybe the new server is not built yet
 # Maybe we need to have the configuration in a file for auditing
 # Lets export it to file with Export-SqlSpConfigure
-$linuxConfigPath = 'C:\Temp\Linuxconfig.sql'
-Export-SqlSpConfigure -SqlServer $linuxSQL -SqlCredential $cred -Path $LinuxConfigPath
-notepad $linuxConfigPath
+$WinSQL2ConfigPath = 'C:\Temp\Linuxconfig.sql'
+Export-SqlSpConfigure -SqlServer $WinSQL2 -SqlCredential $cred -Path $WinSQL2ConfigPath
+notepad $WinSQL2ConfigPath
 
 # if we export the windows configuration
 $WinConfigPath = 'C:\Temp\Winconfig.sql'
@@ -103,10 +97,10 @@ Export-SqlSpConfigure -SqlServer $WinSQl1 -Path $winConfigPath
 notepad $winConfigPath
 
 # We can use it to make the linux server the same - remember we changed the backup  compression
-Import-SqlSpConfigure -Path $WinConfigPath -SqlServer $linuxSQL -SqlCredential $cred
+Import-SqlSpConfigure -Path $WinConfigPath -SqlServer $WinSQL2 -SqlCredential $cred
 
 
-Compare-WinLinuxConfigs
+Compare-SPConfigs
 
 <# Test- Set Max Memory #>
 
@@ -129,7 +123,7 @@ Test-DbaMaxMemory -SqlServer $singleServer
 #>
 Test-SqlTempDbConfiguration -SqlServer $singleServer
 
-Test-SqlTempDbConfiguration -SqlServer $singleServer -Detailed
+Test-SqlTempDbConfiguration -SqlServer $singleServer -Detailed | ft -AutoSize -Wrap
 
 <#
     Disclaimer: The function will not perform any actions that would shrink or delete data files.
@@ -148,12 +142,12 @@ Set-SqlTempDbConfiguration -SqlServer $singleServer -DataFileCount 4 -datafilesi
 
 # When was the last good CheckDb - Cláudio please explain how to do it in T-SQL
 # I'll do it like this!!
-$2016Servers = $SQLServers.Where{$_ -like '*2016*'} #Note: the .Where method only works on PowerShell v4+
+$2016Servers = $SQLServers.Where{$_ -like '*2016*' -or $_ -like '*2014*'} #Note: the .Where method only works on PowerShell v4+
 Get-DbaLastGoodCheckDb -SqlServer $2016servers | ogv
 
 <# Find-DBAStoredProcedure #>
 
-
+Find-DbaStoredProcedure -SqlInstance $singleserver -database AdventureWorks2014 -Pattern 'Name' |ogv
 
 <# Test-DBAIdentity #>
 
@@ -240,8 +234,17 @@ Get-DbaDatabaseFreespace -SqlServer $singleServer -Database AutoGrowth | OGV
 
 <# Orphaned File #>
 
+$Files = Find-DbaOrphanedFile -SqlServer SQL2016N2
+$Files 
+
+(($Files |% { Get-ChildItem $_.RemoteFileName | Select -ExpandProperty Length} ) | Measure-Object -Sum).Sum / 1Mb
+
+$Files.RemoteFileName  | Remove-Item -Force
+
 
 <# Start-Up Parameters #>
+
+## Get-DbaStartupParameter -SqlInstance  SQL2016N1,SQL2016N2,SQL2016N3 
 
 <## INDEXES ##>
 
@@ -250,7 +253,7 @@ Get-DbaHelpIndex -SqlServer sql2016N1 -Databases Viennadbareports -IncludeStats 
 <# Duplicate Indexes #>
 
 ## ADD DUPLICATE INDEXES - RMS
-$CreateDuplicatedIndexes = @"
+$query= @"
 IF EXISTS (SELECT * FROM sys.indexes WHERE name = 'IX_ProdId' AND [object_id] = object_id('Sales.SalesOrderDetail'))
 	DROP INDEX [Sales].[SalesOrderDetail].[IX_ProdId]
 
@@ -294,14 +297,14 @@ CREATE NONCLUSTERED INDEX [IX_SalesOrderDetail_ProductID__FUnitPrice1000] ON [Sa
 )
 WHERE ([UnitPrice] > 1000)
 "@
-Invoke-Sqlcmd2 -ServerInstance ROB-XPS -Database AdventureWorks2014
+Invoke-Sqlcmd2 -ServerInstance ROB-XPS -Database AdventureWorks2014 -query $query
 
 
 ## Rob - Can you find the duplicate indexes for me please
 
-Find-SqlDuplicateIndex -SqlServer sql2016n1
+Find-SqlDuplicateIndex -SqlServer ROB-XPS
 
-Find-SqlDuplicateIndex -SqlServer sql2016n1 -IncludeOverlapping -FilePath  c:\temp\indexes.txt
+Find-SqlDuplicateIndex -SqlServer ROB-XPS -IncludeOverlapping -FilePath  c:\temp\indexes.txt
 notepad c:\temp\indexes.txt
 
 ## Cláudio to create overlapping indexes in AdventureWorks2014
