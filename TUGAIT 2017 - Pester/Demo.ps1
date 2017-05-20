@@ -1,4 +1,8 @@
 Return "This is a demo beardy"
+
+cd 'presentations:\TUGAIT 2017 - Pester'
+. .\Get-SpeakerFace.ps1
+
 ## run before the powerpoint Rob
 $Faces = (Get-SpeakerFace)
 ## If you forget
@@ -7,8 +11,7 @@ $faces = (Get-Content faces.JSON) -join "`n" | ConvertFrom-Json
 ## lets start with some simple
 Import-Module Pester
 Get-Module Pester 
-cd 'presentations:\TUGAIT 2017 - Pester'
-. .\Get-SpeakerFace.ps1
+
 New-Fixture -Name Get-SpeakerBeard 
 
 ## Now look in the folder
