@@ -22,7 +22,7 @@ psedit Git:\Functions\Test-OLAInstance.ps1
 
 Write-Output " But if you want a report, you may have to wait 3 minutes!!"
 Test-OLAInstance -Instance $SQLServers  -Share 'C:\MSSQL\Backup' -CheckForBackups -NoDatabaseRestoreCheck -Report
-
+$Results = Test-OLAInstance -Instance $SQLServers  -Share 'C:\MSSQL\Backup' -CheckForBackups -NoDatabaseRestoreCheck 
 ## But you can also create a Different report like this
 
 $Path = 'Git:\Functions\Test-OLA.ps1'
