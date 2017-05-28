@@ -1,8 +1,8 @@
 ﻿<# Download #>
 #Invoke-Expression (Invoke-WebRequest https://git.io/vn1hQ)
 
-Write-Host "Hey! you are demoing, right? Please select a block of code!" -ForegroundColor Red -BackgroundColor Black
-return
+#Write-Host "Hey! you are demoing, right? Please select a block of code!" -ForegroundColor Red -BackgroundColor Black
+#return
 
 #<#
 #    If sql server authentication is needed
@@ -23,8 +23,8 @@ return
 
 
 #Build server list
-$serverList = "sql2000", "sql2005","sql2008","sql2012","sql2014", "sqlcluster", "sql2016a","sql2016\SQLEXPRESS","sql2016\STANDARDRTM"
-$centralServer = "sql2016"
+$serverList = (Get-VM -ComputerName beardnuc | Where-Object {$_.Name -like '*SQL2016N1' -or $_.Name -Like '*SQL*2012*' -or $_.Name -Like '*SQL*2014*' -or $_.Name -Like '*SQL*2008*'  -or $_.Name -Like '*SQL*2005*'  -and $_.State -eq 'Running'}).Name
+$centralServer = "rob-xps"
 $centralDB = "dbatoolsBestPractices_SQL2"
 
 Invoke-Sqlcmd2 -ServerInstance $centralServer -Query "CREATE DATABASE [$centralDB]"
