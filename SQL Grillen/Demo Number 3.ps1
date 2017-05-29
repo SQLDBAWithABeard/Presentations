@@ -38,13 +38,10 @@ $Tests
 
 $Tests | Get-Member
 
-$results.TestResult |Select-Object -First 5
+$Tests.TestResult |Select-Object -First 5
 
-$results.TestResult.Where{$_.Passed -eq $true}.COunt
+$Tests.TestResult.Where{$_.Passed -eq $true}.Count
 
-$results.TestResult.Where{$_.Passed -ne $true}.COunt
+$Tests.TestResult.Where{$_.Passed -ne $true}.Count
 
 $Tests.TestResult |Select-Object Name, Passed, FailureMessage |  ft -AutoSize -Wrap
-
-## I can take the results object and convert it JSON (This is for the Powerbi :-) )
-$results.TestResult | ConvertTo-Json -Depth 10 | Out-File C:\temp\totalTestResults.json 
