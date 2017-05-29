@@ -73,10 +73,10 @@ Describe "Do things Exist" {
     }
     Context "Networks" {
         It "Should have 4 Network Adapters" {
-            (Get-NetAdapter).Count | Should be 4
+            (Get-NetAdapter).Count | Should be 5
         }
         It "Should have correct DNS Servers" {
-            (Get-DnsClientServerAddress -InterfaceAlias 'FreedomeVPNConnection').Serveraddresses | Should Be @('198.18.1.89')
+            (Get-DnsClientServerAddress -InterfaceAlias 'FreedomeVPNConnection').Serveraddresses | Should Be @('198.18.1.45')
         }
         (Get-DnsClientServerAddress -InterfaceAlias 'vEthernet (Beard Internal)').Serveraddresses.ForEach{
             It "DNS Server $($_) should respond to ping" {
