@@ -100,11 +100,11 @@ Describe "Do things Exist" {
         It "Should have SSMS 2016" {
             $Programmes.Where{$_.displayname -eq 'SQL Server 2016 Management Studio'} | Should Not BeNullOrEmpty
         }
-        It "Should have SSMS 17 RC" {
-            $Programmes.Where{$_.displayname -eq 'Microsoft SQL Server Management Studio - 17.0 RC3'} | Should Not BeNullOrEmpty
+        It "Should have SSMS 17.1" {
+            $Programmes.Where{$_.displayname -eq 'Microsoft SQL Server Management Studio - 17.1'} | Should Not BeNullOrEmpty
         }
         It "SSMS 17 RC should be version 14.0.17028.0" {
-            $Programmes.Where{$_.displayname -eq 'Microsoft SQL Server Management Studio - 17.0 RC3'}.DisplayVersion | Should Be 14.0.17028.0
+            $Programmes.Where{$_.displayname -eq 'Microsoft SQL Server Management Studio - 17.1'}.DisplayVersion | Should Be 14.0.17119.0
         }
     }
 }
