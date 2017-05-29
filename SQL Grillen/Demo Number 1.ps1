@@ -1,5 +1,5 @@
 ## Pester Demo
-
+#Requires -RunAsAdministrator
 
 Describe "Do things Exist" {
     BeforeAll {
