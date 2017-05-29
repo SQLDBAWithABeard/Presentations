@@ -3,7 +3,7 @@
 $SQLServers = 'ROB-XPS' ,'ROB-XPS\SQL2016','ROB-XPS\DAVE'
 
 Describe 'Testing Access to Backup Share' -Tag Server, Backup {
-if(!$SQLServers){Write-Warning "No Servers to Look at - Check the config.json"}
+if(!$SQLServers){Write-Warning "No Servers to Look at"}
 ## create the test cases array
 $testCases= @()
 $SQLServers.ForEach{$testCases += @{Name = $_}}
@@ -14,8 +14,7 @@ $SQLServers.ForEach{$testCases += @{Name = $_}}
 }
 
 Describe "Testing Database Collation" -Tag Server,Collation{
-## This is getting a list of server name from Hyper-V - You can chagne this to a list of SQL instances
-if(!$SQLServers){Write-Warning "No Servers to Look at - Check the config.json"}
+if(!$SQLServers){Write-Warning "No Servers to Look at"}
 $testCases= @()
     $SQLServers.ForEach{$testCases += @{Name = $_}}
     It "<Name> databases have the right collation" -TestCases $testCases {
@@ -29,8 +28,7 @@ $testCases= @()
 ## Sometimes Test Cases dont work - Cant create a loop of test cases
 Describe "Testing Last Known Good DBCC" -Tag Database, DBCC{
 
- ## This is getting a list of server name from Hyper-V - You can chagne this to a list of SQL instances
-if(!$SQLServers){Write-Warning "No Servers to Look at - Check the config.json"}
+if(!$SQLServers){Write-Warning "No Servers to Look at"}
    foreach($Server in $SQLServers)
     {
         $DBCCTests = Get-DbaLastGoodCheckDb -SqlServer $Server -Exclude tempdb -ErrorAction SilentlyContinue -WarningAction SilentlyContinue
