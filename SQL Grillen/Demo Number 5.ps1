@@ -32,21 +32,22 @@
 ## 
 ##    Not a quick task and as you can imagine prone to human mistakes
 
+## So I wrote a function to Paramteise the Pester tests
 cls 
 ."GIT:\Functions\Test-OLAInstance.ps1"
-Test-OLAInstance -Instance rob-xps,'rob-xps\dave', 'ROB-XPS\SQL2016' -Share C:\MSSQL\BACKUP -NoDatabaseRestoreCheck -CheckForBackups 
 
+## Now I can run against any number of Servers
 $results = Test-OLAInstance -Instance rob-xps,'rob-xps\dave', 'ROB-XPS\SQL2016' -Share C:\MSSQL\BACKUP -NoDatabaseRestoreCheck -CheckForBackups 
 
 $results
 
-$results.TestResult |Select-Object -First 5
-
-$results.TestResult.Where{$_.Passed -eq $true}.COunt
-
-$results.TestResult.Where{$_.Passed -ne $true}.COunt
-
+## I can take the results object and convert it JSON (This is for the Powerbi :-) )
 $results.TestResult | ConvertTo-Json -Depth 10 | Out-File C:\temp\OlaTestResults.json 
+
+
+## I can also create a HTML page for the results
+## Unfortunately New Pester broke the old reportunit and it looked rubbish
+## But we can do this
 
 $SQLServers = 'rob-xps','rob-xps\dave', 'ROB-XPS\SQL2016'
 
@@ -54,7 +55,7 @@ $Path = 'Git:\Functions\Test-OLA.ps1'
 
 foreach($Server in $SQLServers)
 {
-
+    ## Create Parameter block for running Pester
     $Script = @{
     Path = $Path;
     Parameters = @{ Instance = $Server;
@@ -65,15 +66,19 @@ foreach($Server in $SQLServers)
     }
     }
 
+## Set some variables
 $Date = Get-Date -Format ddMMyyyHHmmss
 $tempFolder = 'c:\temp\ReportsIndividual\'
 $InstanceName = $Server.Replace('\','-')
 $File = $tempFolder + $InstanceName 
 $XML = $File + '.xml'
 
+## Run Pester only showing failures and outputting ALL results to a file
 Invoke-Pester -Script $Script -OutputFile $xml -OutputFormat NUnitXml -show fails
 }
 Push-Location $tempFolder
+
+## Once Tests have run
 #download and extract ReportUnit.exe
 $url = 'http://relevantcodes.com/Tools/ReportUnit/reportunit-1.2.zip'
 $fullPath = Join-Path $tempFolder $url.Split("/")[-1]
@@ -87,3 +92,5 @@ Expand-Archive -Path $fullPath -DestinationPath $tempFolder
 $HTML = $tempFolder  + 'index.html'
 & .\reportunit.exe $tempFolder
 ii $HTML
+
+## But Powerbi is better I think :-)
