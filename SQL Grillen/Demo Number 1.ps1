@@ -1,6 +1,11 @@
 ## Pester Demo
+
+## RUN THEN Talk
+
+
 #Requires -RunAsAdministrator
 #Requires -Module dbatools
+#Requires -Module sqlserver
 
 Describe "Do things Exist" {
     BeforeAll {
@@ -23,6 +28,23 @@ Describe "Do things Exist" {
         }
         It "DAVE SQL Instance exists" {
             (Test-SqlConnection -SqlServer ROB-XPS\DAVE).ConnectSuccess -eq $true | Should Be $true
+        }
+        $srv = New-Object Microsoft.SqlServer.Management.Smo.Server ROB-XPS
+        $Errorlog = $srv.ErrorLogPath + '\ERRORLOG'
+        It "Error Log contains SQL Server is Ready - Contains works with Files" {
+            
+            $Errorlog | Should Contain "SQL Server is now ready for client connections"
+        }
+
+        It "Error Log shows CHECKDB finished without errors notice the .* any number of any character" {
+            $Errorlog | Should Contain "CHECKDB for database.*finished without errors"
+            ## WHat is this doing ?
+        }
+        It "Logins contain THEBEARD\Rob" {
+            $srv.logins.Name -contains 'THEBEARD\Rob' |Should Be $true
+        }
+        It "$($srv.Name) has an operator - using BeNullOrEmpty and NOT" {
+            $srv.JobServer.Operators | Should Not BeNullOrEmpty
         }
     }
     Context "Windows Features" {
@@ -77,7 +99,7 @@ Describe "Do things Exist" {
             (Get-NetAdapter).Count | Should be 5
         }
         It "Should have correct DNS Servers" {
-            (Get-DnsClientServerAddress -InterfaceAlias 'FreedomeVPNConnection').Serveraddresses | Should Be @('198.18.1.45')
+            (Get-DnsClientServerAddress -InterfaceAlias 'FreedomeVPNConnection').Serveraddresses | Should Be @('198.18.0.13')
         }
         (Get-DnsClientServerAddress -InterfaceAlias 'vEthernet (Beard Internal)').Serveraddresses.ForEach{
             It "DNS Server $($_) should respond to ping" {
