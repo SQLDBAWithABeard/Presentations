@@ -38,4 +38,10 @@ $Tests
 
 $Tests | Get-Member
 
+$results.TestResult |Select-Object -First 5
+
+$results.TestResult.Where{$_.Passed -eq $true}.COunt
+
+$results.TestResult.Where{$_.Passed -ne $true}.COunt
+
 $Tests.TestResult |Select-Object Name, Passed, FailureMessage |  ft -AutoSize -Wrap
