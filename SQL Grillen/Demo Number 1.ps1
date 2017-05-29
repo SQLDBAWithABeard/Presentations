@@ -1,5 +1,6 @@
 ## Pester Demo
 #Requires -RunAsAdministrator
+#Requires -Module dbatools
 
 Describe "Do things Exist" {
     BeforeAll {
