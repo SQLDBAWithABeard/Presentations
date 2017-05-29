@@ -32,7 +32,7 @@
 ## 
 ##    Not a quick task and as you can imagine prone to human mistakes
 
-## So I wrote a function to Paramteise the Pester tests
+## So I wrote a function to Paramtise the Pester tests
 cls 
 ."GIT:\Functions\Test-OLAInstance.ps1"
 
