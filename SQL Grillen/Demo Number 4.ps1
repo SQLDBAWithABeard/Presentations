@@ -1,7 +1,7 @@
 ## Use a configuration file
 
 Get-Content GIT:\dbatools-scripts-local\TestConfig.json
-code-insiders C:\Users\mrrob\OneDrive\Documents\GitHub\dbatools-scripts-local\dbatools-scripts-local\TestConfig.json
+code-insiders C:\Users\mrrob\OneDrive\Documents\GitHub\dbatools-scripts-local\TestConfig.json
 cls 
 ## Get SOme SQL Server Names
 
