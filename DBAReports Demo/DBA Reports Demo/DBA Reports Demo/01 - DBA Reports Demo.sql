@@ -16,8 +16,8 @@ Select IL.ServerName,
 		IL.Environment,
 		IL.location
 FROM dbo.InstanceList IL
---   where IL.Environment = 'Prod'
---   AND IL.Location = 'Bolton'
+where IL.Environment = 'Prod'
+AND IL.Location = 'Bolton'
 
 -- Generic infromation about servers and clients
 
