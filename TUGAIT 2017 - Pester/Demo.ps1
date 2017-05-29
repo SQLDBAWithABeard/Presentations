@@ -17,9 +17,8 @@ New-Fixture -Name Get-SpeakerBeard
 ## Now look in the folder
 dir 
 
-
-
 Invoke-Pester
+
 ## Not so good lets add a check if the command exists
 <# 
  Add to Tests and Save
