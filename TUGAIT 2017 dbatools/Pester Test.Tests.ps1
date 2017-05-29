@@ -157,6 +157,9 @@ Context "THEBEARD_Domain" {
 
 Describe "Testing XPS" {
   Context "XPS" {
+        It "Freedome is stopped" {
+            (Get-Process FreeDome* ) | Should BeNullOrEmpty
+        }
         It "DBEngine is running" {
             (Get-Service mssqlserver).Status | Should Be Running
         }
@@ -214,7 +217,7 @@ Describe "Testing for Demo"{
         (Get-DnsClientServerAddress -InterfaceAlias 'Ethernet 3').Serveraddresses | Should Be @('10.0.0.1','10.0.0.2')
     }
     It "Should have correct gateway for alias"{
-        (Get-NetIPConfiguration -InterfaceAlias 'Ethernet 3').Ipv4DefaultGateway.NextHop | Should Be '10.0.0.1'
+        (Get-NetIPConfiguration -InterfaceAlias 'Ethernet 3').Ipv4DefaultGateway.NextHop | Should Be '10.0.0.10'
     }
     It "Max Memory on SQl2012SerAG1 2 and 3 should be 2147483647" {
         (Connect-DbaSqlServer SQL2012Ser08AG1).Configuration.MaxServerMemory.RunValue | Should Be 2147483647

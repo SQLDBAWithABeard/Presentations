@@ -38,9 +38,9 @@ NEEDS COMMENTS -0 RMS
 ## We are going to show that (some) dbatools commands work with SQL on Linux :-)
 
 ## First we will use Connect-DbaSqlServer - the best way to create a validated SMO object
-$WinSQL2 = 'LinuxvNextCTP14'
+$WinSQL2 = 'SQL2016N1'
 $WinSQl1 = 'SQL2017CTP2'
-$cred = Get-Credential -UserName SA -Message "SQL Auth"
+$cred = Get-Credential -UserName SA -Message "Linux SQL Auth"
 $win2 = Connect-DbaSqlServer -SqlServer $WinSQL2  -Credential $cred
 $win = Connect-DbaSqlServer -SqlServer $WinSQl1
 
