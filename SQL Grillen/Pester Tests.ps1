@@ -4,7 +4,7 @@
 cd presentations:\
 try
 {
-    Start-Process powershell.exe -ArgumentList '-noprofile -command Get-Service MS*DAVE*,SQLAgent*DAVE,SQLSERVERAGENT,MSSQLSERVER,SQLAgent*SQL2016,MSSQL$SQL2016 | Start-Service' -Verb runas
+    Start-Process powershell.exe -ArgumentList '-noprofile -command Get-Service MS*DAVE*,SQLAgent*DAVE,SQLSERVERAGENT,MSSQLSERVER,SQLAgent*SQL2016,MSSQL*SQL2016 | Start-Service' -Verb runas
 }
 catch
 {
@@ -100,13 +100,13 @@ Describe "Testing for Presentation" {
             (Get-VM SQL2017CTP2 -ErrorAction SilentlyContinue).State | Should Be 'Running'
         }
         It "Should Have PowerBi Open" {
-            Get-Process PBIDesktop | Should Not BeNullOrEmpty
+            Get-Process PBIDesktop  -ErrorAction SilentlyContinue| Should Not BeNullOrEmpty
         }
         It "Should have one PowerBi Open" {
-            (Get-Process PBIDesktop).Count | Should Be 1
+            (Get-Process PBIDesktop -ErrorAction SilentlyContinue).Count | Should Be 1
         }
         It "Should have the RIGHT PowerBi Open!" {
-            (Get-Process PBIDesktop).MainWindowTitle | Should Be "Test Ola Report - Power BI Desktop"
+            (Get-Process PBIDesktop -ErrorAction SilentlyContinue).MainWindowTitle | Should Be "Test Ola Report - Power BI Desktop"
         }
     }
 }
