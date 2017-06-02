@@ -87,7 +87,7 @@ Describe "Do things Exist" {
             (Get-ChildItem "C:\Program Files (x86)\Jenkins\jenkins.exe").VersionInfo.FileVersion | Should Be '1.1.0.0'
         }
         It "File should have been created on this date"{
-            (Get-ChildItem C:\MSSQL\BACKUP\ROB-XPS\WideWorldImporters\FULL\ROB-XPS_WideWorldImporters_FULL_20170528_145031.bak).CreationTime | Should Be '05/28/2017 14:50:31'
+            (Get-ChildItem C:\MSSQL\BACKUP\ROB-XPS\WideWorldImporters\FULL\ROB-XPS_WideWorldImporters_FULL_20170528_145031.bak).CreationTime | Should Be '05/28/2017 15:50:31'
         }
         It "Newest Backup File should be less than 30 minutes old"{
             $File = Get-ChildItem C:\MSSQL\BACKUP\ROB-XPS\thebeardsdatabase\LOG | Sort-Object LastWriteTime -Descending | Select-Object -First 1
@@ -96,21 +96,13 @@ Describe "Do things Exist" {
     }
     Context "Networks" {
         It "Should have 4 Network Adapters" {
-            (Get-NetAdapter).Count | Should be 5
+            (Get-NetAdapter).Count | Should be 4
         }
         It "Should have correct DNS Servers" {
-            (Get-DnsClientServerAddress -InterfaceAlias 'FreedomeVPNConnection').Serveraddresses | Should Be @('198.18.0.13')
-        }
-        (Get-DnsClientServerAddress -InterfaceAlias 'vEthernet (Beard Internal)').Serveraddresses.ForEach{
-            It "DNS Server $($_) should respond to ping" {
-                (Test-Connection $_ -Count 1 -Quiet -ErrorAction SilentlyContinue ) | Should Be $true
-            }
+            (Get-DnsClientServerAddress -InterfaceAlias 'FreedomeVPNConnection').Serveraddresses | Should Be @('198.18.2.9')
         }
         It "Should have the Correct Gateway"{
-            (Get-NetIPConfiguration -InterfaceAlias 'WIFI').Ipv4DefaultGateway.NextHop | Should Be '192.168.1.1'
-        }
-        It "Gateway should respond to ping" {
-            (Test-Connection (Get-NetIPConfiguration -InterfaceAlias 'WIFI').Ipv4DefaultGateway.NextHop -Count 1 -Quiet -ErrorAction SilentlyContinue ) | Should Be $true
+            (Get-NetIPConfiguration -InterfaceAlias 'WIFI').Ipv4DefaultGateway.NextHop | Should Be '172.16.254.254'
         }
     }
     Context "Programmes"{
