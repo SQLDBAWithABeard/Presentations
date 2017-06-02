@@ -114,10 +114,10 @@ Describe "Testing for Presentation" {
 Describe "Testing for Demo"{
     Context "All" {
         It "Should have DNS Servers for correct interface" {
-            (Get-DnsClientServerAddress -InterfaceAlias 'Ethernet 2' -ErrorAction SilentlyContinue).Serveraddresses | Should Be @()
+            (Get-DnsClientServerAddress -InterfaceAlias 'FreedomeVPNConnection' -ErrorAction SilentlyContinue).Serveraddresses | Should Be @('198.18.2.9')
         }
         It "Should have correct gateway for alias"{
-            (Get-NetIPConfiguration -InterfaceAlias 'Ethernet 2' -ErrorAction SilentlyContinue).Ipv4DefaultGateway.NextHop | Should Be '192.168.1.1'
+            (Get-NetIPConfiguration -InterfaceAlias 'Wifi' -ErrorAction SilentlyContinue).Ipv4DefaultGateway.NextHop | Should Be '172.16.254.254'
         }
         It "Should have version 4.0.3 Pester Module installed" {
             (Get-Module Pester).Version | Should Be 4.0.3
@@ -146,143 +146,12 @@ Describe "Testing for Demo"{
         }
     }
     Context "Demo 1" {
-        $cred = Import-Clixml C:\backup\sql2017ctp2Rob.xml
-        It "The Server SQL2017CTP2 retunrs a ping" {
-            (Test-Connection SQL2017CTP2 -Count 1 -Quiet -ErrorAction SilentlyContinue ) | Should Be $true
-        }
-        It "Default SQL Instance exists" {
-            (Test-SqlConnection -SqlServer ROB-XPS).ConnectSuccess -eq $true | Should Be $true
-        }
-        It "SQL2016 SQL Instance exists" {
-            (Test-SqlConnection -SqlServer ROB-XPS\SQL2016).ConnectSuccess -eq $true | Should Be $true
-        }
-        It "DAVE SQL Instance exists" {
-            (Test-SqlConnection -SqlServer ROB-XPS\DAVE).ConnectSuccess -eq $true | Should Be $true
-        }
-        It "Hyper-V is enabled" {
-            (Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V).State | Should Be 'Enabled'
-        }
-        It "IIS should be disabled" {
-            (Get-WindowsOptionalFeature -Online -FeatureName IIS-WebServerRole).State | Should Be 'Disabled'
-        }
-        It "SMBv1 should be removed from SQL2017CTP2" {
-            (Get-WindowsFeature -ComputerName sql2017ctp2 -Credential $cred -Name FS-SMB1).InstallState | Should Be 'Removed'
-        }
-        It ".NET 4.6 should be installed" {
-            (Get-WindowsFeature -ComputerName sql2017ctp2 -Credential $cred -Name Net-Framework-45-Core).InstallState | SHould Be 'Installed'
-        }
-        It "ROB-XPS Operating System Version" {
-            (Get-WmiObject -ComputerName ROB-XPS -Class Win32_OperatingSystem).Version | Should Be '10.0.15063'
-        }
-        It "The Backup Folder exists" {
-            Test-Path C:\MSSQL\BACKUP | Should Be $true
-        }
-        It "The Backup Share exists and is accessible by Default SQL Server" {
-            Test-SqlPath -SqlServer ROB-XPS -Path C:\MSSQL\BACKUP | Should Be $true
-        }
-        It "The Backup Share exists and is accessible by DAVE SQL Server" {
-            Test-SqlPath -SqlServer ROB-XPS\DAVE -Path C:\MSSQL\BACKUP | Should Be $true
-        }
-        It "The Backup Share exists and is accessible by SQL2016 SQL Server" {
-            Test-SqlPath -SqlServer ROB-XPS\SQL2016 -Path C:\MSSQL\BACKUP | Should Be $true
-        }
-        It "Should have the jenkins file" {
-            Test-Path 'C:\Program Files (x86)\Jenkins\jenkins.exe' | should be $true
-        }
-        It "Octopus Deploy Packages Should have at least two files" {
-            (Get-ChildItem C:\Octopus\Packages\TheBeard).Count | Should BeGreaterThan 1
-        }
-        It "Jenkins Exe should be of this version" {
-            (Get-ChildItem "C:\Program Files (x86)\Jenkins\jenkins.exe").VersionInfo.FileVersion | Should Be '1.1.0.0'
-        }
-        It "File should have been created on this date" {
-            (Get-ChildItem C:\MSSQL\BACKUP\ROB-XPS\WideWorldImporters\FULL\ROB-XPS_WideWorldImporters_FULL_20170528_145031.bak).CreationTime | Should Be '05/28/2017 14:50:31'
-        }
-        It "Newest Backup File should be less than 30 minutes old" {
-            $File = Get-ChildItem C:\MSSQL\BACKUP\ROB-XPS\thebeardsdatabase\LOG | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-            $File.LastWriteTime| Should BeGreaterThan (Get-Date).AddMinutes(-30)
-        }
-        It "Should have 5 Network Adapters" {
-            (Get-NetAdapter).Count | Should be 5
-        }
-        It "Should have correct DNS Servers" {
-            (Get-DnsClientServerAddress -InterfaceAlias 'FreedomeVPNConnection').Serveraddresses | Should Be @('198.18.0.45')
-        }
-        (Get-DnsClientServerAddress -InterfaceAlias 'vEthernet (Beard Internal)').Serveraddresses.ForEach{
-            It "DNS Server $($_) should respond to ping" {
-                (Test-Connection $_ -Count 1 -Quiet -ErrorAction SilentlyContinue ) | Should Be $true
-            }
-        }
-        It "Should have the Correct Gateway" {
-            (Get-NetIPConfiguration -InterfaceAlias 'WIFI').Ipv4DefaultGateway.NextHop | Should Be '192.168.1.1'
-        }
-        It "Gateway should respond to ping" {
-            (Test-Connection (Get-NetIPConfiguration -InterfaceAlias 'WIFI').Ipv4DefaultGateway.NextHop -Count 1 -Quiet -ErrorAction SilentlyContinue ) | Should Be $true
-        }
-        BeforeAll {
-            $Programmes = Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*
-        }
-        It "Should have Google Chrome" {
-            $Programmes.Where{'Google Chrome'} | Should Not BeNullOrEmpty
-        }
-        It "Should have SSMS 2016" {
-            $Programmes.Where{$_.displayname -eq 'SQL Server 2016 Management Studio'} | Should Not BeNullOrEmpty
-        }
-        It "Should have SSMS 17.1" {
-            $Programmes.Where{$_.displayname -eq 'Microsoft SQL Server Management Studio - 17.1'} | Should Not BeNullOrEmpty
-        }
-        It "SSMS 17 RC should be version 14.0.17028.0" {
-            $Programmes.Where{$_.displayname -eq 'Microsoft SQL Server Management Studio - 17.1'}.DisplayVersion | Should Be 14.0.17119.0
-        }
+        Invoke-Pester 'Presentations:\SQL Grillen\Demo Number 1.ps1'
     }
-    ."GIT:\Presentations\SQL Grillen\Test-SQLSDefaults.ps1"
-    $Parms = @{
-        Servers                    = 'ROB-XPS' , 'ROB-XPS\SQL2016', 'ROB-XPS\DAVE';
-        SQLAdmins                  = 'THEBEARD\Rob', 'THEBEARD\SQLAdmins';
-        BackupDirectory            = 'C:\MSSQL\Backup';
-        DataDirectory              = 'C:\MSSQL\Data\';
-        LogDirectory               = 'C:\MSSQL\Logs\';
-        MaxMemMb                   = '4096';
-        Collation                  = 'Latin1_General_CI_AS';
-        TempFiles                  = 4 ;
-        OlaSysFullFrequency        = 'Daily';
-        OlaSysFullStartTime        = '00:00:00';
-        OlaUserFullSchedule        = 'Weekly';
-        OlaUserFullFrequency       = 1 ; ## 1 for Sunday
-        OlaUserFullStartTime       = '00:00:00';
-        OlaUserDiffSchedule        = 'Daily';
-        OlaUserDiffFrequency       = 1; ## 126 for every day except Sunday
-        OlaUserDiffStartTime       = '00:00:00';
-        OlaUserLogSubDayInterval   = 4;
-        OlaUserLoginterval         = 'Hour';
-        HasSPBlitz                 = $true;
-        HasSPBlitzCache            = $True; 
-        HasSPBlitzIndex            = $True;
-        HasSPAskBrent              = $true;
-        HASSPBlitzTrace            = $true;
-        HasSPWhoisActive           = $true;
-        LogWhoIsActiveToTable      = $true;
-        LogSPBlitzToTable          = $true;
-        LogSPBlitzToTableEnabled   = $true;
-        LogSPBlitzToTableScheduled = $true;
-        LogSPBlitzToTableSchedule  = 'Weekly'; 
-        LogSPBlitzToTableFrequency = 2 ; # 2 means Monday 
-        LogSPBlitzToTableStartTime = '03:00:00'
+    Context "Demo 2" {
+        Invoke-Pester 'Presentations:\SQL Grillen\Demo Number 2.ps1'
     }
-      
-    Test-SQLDefault @Parms
-
     Context "Demo 5" {
-        It "Should have the correct folders" {
-            Test-Path C:\temp\Reports | Should Be $true
-            Test-Path C:\temp\ReportsIndividual | Should Be $true 
-        }
-        It "Shold Not have any XML files in the report folder" {
-            (Get-ChildItem C:\temp\ReportsIndividual\*xml).Count | Should Be 0 
-        }
-        It "Shold Not have any HTML files in the report folder" {
-            (Get-ChildItem C:\temp\ReportsIndividual\*html).Count | Should Be 0 
-        }
-
+        Invoke-Pester 'Presentations:\SQL Grillen\Demo Number 5.ps1'
     }
 }
