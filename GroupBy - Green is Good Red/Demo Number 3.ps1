@@ -1,6 +1,6 @@
 ## Test Cases and Tags
 
-cd 'Presentations:\SQL Grillen'
+cd 'Presentations:\GroupBy - Green is Good Red'
 
 ## You can ask Pester to run all of the *.Tests.ps1 files in a folder
 ## With Invoke-Pester

@@ -114,10 +114,10 @@ Describe "Testing for Presentation" {
 Describe "Testing for Demo"{
     Context "All" {
         It "Should have DNS Servers for correct interface" {
-            (Get-DnsClientServerAddress -InterfaceAlias 'FreedomeVPNConnection' -ErrorAction SilentlyContinue).Serveraddresses | Should Be @('198.18.2.9')
+            (Get-DnsClientServerAddress -InterfaceAlias 'FreedomeVPNConnection' -ErrorAction SilentlyContinue).Serveraddresses | Should Be @('198.18.50.137')
         }
         It "Should have correct gateway for alias"{
-            (Get-NetIPConfiguration -InterfaceAlias 'Wifi' -ErrorAction SilentlyContinue).Ipv4DefaultGateway.NextHop | Should Be '172.16.254.254'
+            (Get-NetIPConfiguration -InterfaceAlias 'Wifi' -ErrorAction SilentlyContinue).Ipv4DefaultGateway.NextHop | Should Be '192.168.1.1'
         }
         It "Should have version 4.0.3 Pester Module installed" {
             (Get-Module Pester).Version | Should Be 4.0.3
@@ -146,12 +146,12 @@ Describe "Testing for Demo"{
         }
     }
     Context "Demo 1" {
-       # Invoke-Pester 'Presentations:\SQL Grillen\Demo Number 1.ps1'
+        Invoke-Pester 'Presentations:\GroupBy - Green is Good Red\Demo Number 1.ps1'
     }
     Context "Demo 2" {
-       # Invoke-Pester 'Presentations:\SQL Grillen\Demo Number 2.ps1'
+        Invoke-Pester 'Presentations:\GroupBy - Green is Good Red\Demo Number 2.ps1'
     }
     Context "Demo 5" {
-       # Invoke-Pester 'Presentations:\SQL Grillen\Demo Number 5.ps1'
+        Invoke-Pester 'Presentations:\GroupBy - Green is Good Red\Demo Number 5.ps1'
     }
 }
