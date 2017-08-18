@@ -6,7 +6,7 @@ Return 'Oi Beardy, You may be an MVP but this is a demo, don''t run the whole th
 ## *Some things may not work* :-)
 ## You should use Install-Module dbatools -Scope CurrentUser
 
-Import-Module GIT:\dbatools\dbatools.psd1
+Import-Module GIT:\dbatools\dbatools.psd1 -Verbose
 $cred = Import-Clixml C:\MSSQL\sa.cred
 
 ## Lets look at the commands
@@ -42,21 +42,21 @@ Start-DbaMigration -Source ROB-XPS\SQL2016 -Destination ROB-XPS\Bolton -BackupRe
 
 ## Everyone tests their restores correct?
 ## Lets back up those new databases to a Network Share
-Backup-DbaDatabase -SqlInstance Rob-XPS\Bolton -BackupDirectory \\ROB-XPS\Migration 
+Backup-DbaDatabase -SqlInstance Rob-XPS\SQL2016 -BackupDirectory \\ROB-XPS\Migration 
 
 #Open up the default file location 
 Import-Module SqlServer
-Invoke-Item (Get-Item SQLSERVER:\SQL\Rob-XPS\Bolton).DefaultFile
+Invoke-Item (Get-Item SQLSERVER:\SQL\Rob-XPS\SQL2016).DefaultFile
 
 # and test ALL of our backups :-)
-Test-DbaLastBackup -SqlInstance Rob-XPS\Bolton | Out-GridView
+Test-DbaLastBackup -SqlInstance Rob-XPS\SQL2016  | Out-GridView
 
-## You 'Could' just verify them
-Test-DbaLastBackup -SqlInstance Rob-XPS\Bolton -Destination Rob-XPS\SQL2016 -VerifyOnly | Out-GridView
+## You 'could' just verify them
+Test-DbaLastBackup -SqlInstance Rob-XPS\SQL2016 -Destination Rob-XPS\SQL2016 -VerifyOnly | Out-GridView
 
 ## So you can see there are a lot of backup and restore and copy commands available. I urge you to explore them
 ## Use Find-DbaCommand
-## Take a look at the Community presentations 
+## Take a look at the community presentations 
 
 Start-Process 'https://github.com/sqlcollaborative/community-presentations'
 
@@ -119,7 +119,7 @@ Get-DbaRestoreHistory -SqlInstance Rob-XPS\BOLTON -Last
 ## more detail
 Get-DbaRestoreHistory -SqlInstance Rob-XPS\BOLTON -Last | select -First 1 | Select *
 
-# I dont have any but DbMail History
+# I dont have any but you can also check DbMail History
 Get-DbaDbMailHistory -SqlInstance Rob-XPS\SQL2016 
 
 ## Who changed my database and what did they do?
@@ -176,6 +176,27 @@ Get-DbaDatabasePartitionScheme -SqlInstance bolton -SqlCredential $cred -Databas
 # more detail
 Get-DbaDatabasePartitionScheme -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters | Select *
 
+# Export the create tables TSQL for my database please
+
+$Db = 'OctopusDeploy'
+if(!(Test-Path c:\temp\$db))
+{
+    New-Item c:\temp\$db -ItemType Directory
+}
+
+if (!(Test-Path c:\temp\$db\Tables)) {
+    New-Item c:\temp\$db\Tables -ItemType Directory
+}
+cd c:\temp\$db\Tables
+foreach ($t in $tables)
+{
+    $file = $t.Schema + $t.Name + '.sql'
+    $T | Export-DbaScript -Path $file
+}
+Explorer C:\temp\$Db
+cd presentations:\
+
+## You could do the same with Views, triggers, stored procedures etc
 
 # Maybe you want to look at execution plans
 # C:\Users\mrrob\OneDrive\Documents\GitHub\Presentations\DBAReports Demo\DBA Reports Demo\DBA Reports Demo\01 - DBA Reports Demo.sql
@@ -254,7 +275,7 @@ Find-DbaTrigger -SqlInstance bolton -SqlCredential $cred -Pattern TotalPurchaseY
 
 Find-DbaCommand Find*
 
-## What depends on this table. Which table? I'll know it when I see it (bottom one)
+## What depends on this table? Which table? I'll know it when I see it (bottom one)
 
 Get-DbaTable -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters | Out-GridView -PassThru | Get-DbaDependency
 

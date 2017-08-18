@@ -1,7 +1,7 @@
 ## F5 this one Rob because then you find out you arent running as Administrator
  #Requires -RunAsAdministrator
 cd presentations:\
-# Import-Module GIT:\dbatools\dbatools.psd1 -Verbose
+Import-Module GIT:\dbatools\dbatools.psd1 -Verbose
 (Get-DbaTable -SqlInstance Rob-XPS\SQL2016 -Database DBA-Admin -Table ManchesterDemo).Drop() 
 $script = @"
 CREATE TABLE [dbo].[ManchesterDemo](
@@ -11,6 +11,18 @@ CREATE TABLE [dbo].[ManchesterDemo](
 "@
 Invoke-Sqlcmd -ServerInstance Rob-xps\SQL2016 -Database DBA-Admin -Query $script 
    
+Describe "Network Settings" {
+    It "SHould have correct adapter" {
+        (Get-NetAdapter -Name 'vEthernet (Beard Internal)' -ErrorAction SilentlyContinue ).Name | Should Be 'vEthernet (Beard Internal)'
+    }
+    It "Should have the correct address" {
+        (Get-NetIPAddress -InterfaceAlias 'vEthernet (Beard Internal)'  -ErrorAction SilentlyContinue).Ipaddress | Should be '10.0.0.1'
+    }
+    It "Should have the correct DNS Server" {
+        (Get-DnsClientServerAddress -InterfaceAlias 'vEthernet (Beard Internal)' -AddressFamily IPv4).ServerAddresses | Should Be '10.0.0.1' 
+    }
+}
+
 Describe "SQL State" {
     $SQLServers = 'ROB-XPS\SQL2016','ROB-XPS\Bolton'
     foreach ($Server in $SQLServers) {
@@ -69,7 +81,7 @@ Describe "Testing for Presentation" {
         }
 
         It "Should have the correct PowerPoint Presentation Open" {
-            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'Green is Good - Red is Bad - PowerPoint'
+            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'dbatools - PowerPoint'
         }
         It "Mail Should be closed" {
             (Get-Process HxMail -ErrorAction SilentlyContinue).COunt | Should Be 0
@@ -142,7 +154,7 @@ Describe "Testing for Demo - Bolton Instance" {
         (Get-DbaCredential -SqlInstance $sql ).Count | Should Be 0
     }
     It "Should not have an audit" {
-        (Get-DbaServerAudit -SqlInstance $SQL ).Count | Should Be 0
+        (Get-DbaServerAudit -SqlInstance $SQL -Silent).Count | Should Be 0
     }
     It "Should not have an audit specification" {
         (Get-DbaServerAuditSpecification -SqlInstance $SQL).Count | Should Be 0
