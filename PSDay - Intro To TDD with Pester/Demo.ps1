@@ -13,13 +13,13 @@ $Description = "This is a demo module for demoing Plaster and TDD with Pester an
 
 $plaster = @{
     TemplatePath = "GIT:\PlasterTemplate" #(Split-Path $manifestProperties.Path)
-    DestinationPath = "Git:\BeardModule"
+    DestinationPath = "Git:\$ModuleName"
     FullName = "Rob Sewell"
     ModuleName = $ModuleName
     ModuleDesc = $Description
     Version = "0.9.0"
     GitHubUserName = "SQLDBAWithABeard"
-    GitHubRepo = "BeardModule"
+    GitHubRepo = $ModuleName
     }
     If(!(Test-Path $plaster.DestinationPath))
     {
@@ -29,21 +29,21 @@ $plaster = @{
 
     ## lets have a look what has been created
 
-    cd Git:\BeardModule
+    cd Git:\$ModuleName
     code-insiders . 
 
     ## Publish to GitHub using this function from Jeff Hicks to create a repo
 
     . Git:\Functions\New-GitHubRepository.ps1
 
-    $Repo = New-GitHubRepository -Name BeardModule -Description $Description
+    $Repo = New-GitHubRepository -Name $ModuleName -Description $Description
 
     Start-Process $Repo.URL
 
     git init
     git add *
     git commit -m "Added framework using Plaster Template"
-    git remote add origin https://github.com/SQLDBAWithABeard/BeardModule.git
+    git remote add origin $Repo.Clone
     git push -u origin master
 
 ## Lets write a function to analyse the beards on this page
@@ -54,7 +54,7 @@ Start-Process http://tugait.pt/2017/speakers/
 
 ## Run then talk
 . 'Presentations:\PSDay - Intro To TDD with Pester\Get-SpeakerFace.ps1'
-Copy-Item -Path 'Presentations:\PSDay - Intro To TDD with Pester\Get-SpeakerFace.ps1' -Destination Git:\BeardModule\functions
+Copy-Item -Path 'Presentations:\PSDay - Intro To TDD with Pester\Get-SpeakerFace.ps1' -Destination Git:\$ModuleName\functions
 git add .\functions\Get-SpeakerFace.ps1
 git commit -m "Added Get-SpeakerFace"
 
