@@ -1,7 +1,7 @@
 ## F5 this one Rob because then you find out you arent running as Administrator
  #Requires -RunAsAdministrator
 cd presentations:\
-Import-Module GIT:\dbatools\dbatools.psd1 -Verbose
+#Import-Module GIT:\dbatools\dbatools.psd1 -Verbose
 (Get-DbaTable -SqlInstance Rob-XPS\SQL2016 -Database DBA-Admin -Table ManchesterDemo).Drop() 
 $script = @"
 CREATE TABLE [dbo].[ManchesterDemo](

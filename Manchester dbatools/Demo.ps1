@@ -6,7 +6,7 @@ Return 'Oi Beardy, You may be an MVP but this is a demo, don''t run the whole th
 ## *Some things may not work* :-)
 ## You should use Install-Module dbatools -Scope CurrentUser
 
-Import-Module GIT:\dbatools\dbatools.psd1 -Verbose
+# Import-Module GIT:\dbatools\dbatools.psd1 -Verbose
 $cred = Import-Clixml C:\MSSQL\sa.cred
 
 ## Lets look at the commands
