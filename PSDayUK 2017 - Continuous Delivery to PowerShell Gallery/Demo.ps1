@@ -29,7 +29,7 @@ $plaster = @{
     FullName = "Rob Sewell"
     ModuleName = $ModuleName
     ModuleDesc = $Description
-    Version = '0.9.18'
+    Version = '0.9.19'
     GitHubUserName = "SQLDBAWithABeard"
     GitHubRepo = $ModuleName
     }

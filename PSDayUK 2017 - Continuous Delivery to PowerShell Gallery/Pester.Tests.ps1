@@ -1,13 +1,13 @@
-cd 'Presentations:\PSDay - Intro To TDD with Pester'
+cd 'Presentations:\PSDayUK 2017 - Continuous Delivery to PowerShell Gallery'
 Describe "Network Settings" {
     It "Should have correct adapter" {
-        (Get-NetAdapter -Name 'vEthernet (Beard Internal)' -ErrorAction SilentlyContinue ).Name | Should Be 'vEthernet (Beard Internal)'
+       # (Get-NetAdapter -Name 'vEthernet (Beard Internal)' -ErrorAction SilentlyContinue ).Name | Should Be 'vEthernet (Beard Internal)'
     }
     It "Should have the correct address" {
-        (Get-NetIPAddress -InterfaceAlias 'vEthernet (Beard Internal)'  -ErrorAction SilentlyContinue).Ipaddress | Should be '10.0.0.1'
+      #  (Get-NetIPAddress -InterfaceAlias 'vEthernet (Beard Internal)'  -ErrorAction SilentlyContinue).Ipaddress | Should be '10.0.0.1'
     }
     It "Should have the correct DNS Server" {
-        (Get-DnsClientServerAddress -InterfaceAlias 'vEthernet (Beard Internal)' -AddressFamily IPv4).ServerAddresses | Should Be '10.0.0.1' 
+      #  (Get-DnsClientServerAddress -InterfaceAlias 'vEthernet (Beard Internal)' -AddressFamily IPv4).ServerAddresses | Should Be '10.0.0.1' 
     }
 }
 
@@ -36,7 +36,7 @@ Describe "Testing for Presentation" {
             (Get-Process slack* -ErrorAction SilentlyContinue).Count | Should BE 0
         }
         It "Prompt should be Presentations" {
-            (Get-Location).Path | Should Be 'Presentations:\PSDay - Intro To TDD with Pester'
+            (Get-Location).Path | Should Be 'Presentations:\PSDayUK 2017 - Continuous Delivery to PowerShell Gallery'
         }
         It "Should be running as rob-xps\mrrob" {
             whoami | Should Be 'rob-xps\mrrob'
