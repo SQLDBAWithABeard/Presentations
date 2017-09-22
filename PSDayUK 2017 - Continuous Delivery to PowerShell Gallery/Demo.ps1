@@ -182,6 +182,7 @@ Get-Content C:\temp\PesterResults.xml | Out-CurrentFile
 
 Get-Content "$Presentation\a02 - function.ps1" | Set-Content .\functions\Get-SpeakerBeard.ps1
 git add .\functions\Get-SpeakerBeard.ps1
+# Yes I know!
 git commit -m "Beard command - Code, output, functionality, help, PSScriptAnalyzer"
 
 Invoke-Pester "$Presentation\03 - Pester-Test.ps1" 
@@ -257,3 +258,23 @@ Get-SpeakerBeard -Speaker RobSewell -Detailed -ShowImage
 Get-SpeakerBeard -Top 5
 
 Get-SpeakerBeard -Speaker LonnyNiederstadt -Detailed -ShowImage
+
+## Just for fun :-)
+
+## Just for fun
+
+$url = 'https://newsqldbawiththebeard.files.wordpress.com/2017/04/wp_20170406_07_31_20_pro.jpg'
+
+$jsonBody = @{url = $url} | ConvertTo-Json
+    $apiUrl = "https://westus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false&returnFaceAttributes=age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur"
+    $apiKey = $Env:MS_Faces_Key
+    $headers = @{ "Ocp-Apim-Subscription-Key" = $apiKey }
+    $analyticsResults = Invoke-RestMethod -Method Post -Uri $apiUrl -Headers $headers -Body $jsonBody -ContentType "application/json"  -ErrorAction Stop
+    $analyticsResults 
+    $analyticsResults[0] | fl
+    $analyticsResults[0].faceAttributes | select * |fl
+    $analyticsResults[0].faceAttributes.facialhair.beard
+
+    Start-Process $url
+
+## I DO Have the Top Beard ;-)
