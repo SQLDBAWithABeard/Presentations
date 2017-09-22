@@ -1,13 +1,13 @@
 cd 'Presentations:\PSDayUK 2017 - Continuous Delivery to PowerShell Gallery'
 Describe "Network Settings" {
     It "Should have correct adapter" {
-       # (Get-NetAdapter -Name 'vEthernet (Beard Internal)' -ErrorAction SilentlyContinue ).Name | Should Be 'vEthernet (Beard Internal)'
+        (Get-NetAdapter -ErrorAction SilentlyContinue ).Name -contains 'Wifi' | Should Be $true
     }
     It "Should have the correct address" {
-      #  (Get-NetIPAddress -InterfaceAlias 'vEthernet (Beard Internal)'  -ErrorAction SilentlyContinue).Ipaddress | Should be '10.0.0.1'
+        (Get-NetIPAddress -InterfaceAlias 'WiFi'  -ErrorAction SilentlyContinue).Where{$_.AddressFamily -eq 'Ipv4'}.Ipaddress | Should be '172.16.1.50'
     }
     It "Should have the correct DNS Server" {
-      #  (Get-DnsClientServerAddress -InterfaceAlias 'vEthernet (Beard Internal)' -AddressFamily IPv4).ServerAddresses | Should Be '10.0.0.1' 
+      (Get-DnsClientServerAddress -InterfaceAlias 'WiFi' -AddressFamily IPv4).ServerAddresses | Should Be @('172.16.0.1','8.8.8.8')
     }
 }
 
@@ -24,7 +24,7 @@ Describe "Testing for Presentation" {
         }
 
         It "Should have the correct PowerPoint Presentation Open" {
-            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'dbatools - PowerPoint'
+            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'Continuous Delivery For Modules To PowerShell Gallery - PowerPoint'
         }
         It "Mail Should be closed" {
             (Get-Process HxMail -ErrorAction SilentlyContinue).COunt | Should Be 0
