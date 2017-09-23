@@ -1,4 +1,4 @@
-These are the new release notes
+These are the new release notes even when it all goes wrong!!!!!!!!!!!!!
 
 This has a number of important changes in that it is
 
@@ -6,7 +6,6 @@ This has a number of important changes in that it is
     - Magical
     - Just So much better than the previous version - Really it is
     - It has many new features and everything
-    - And Christian didnt do the test by hand
 
 
-Was first demonstrated in Stuttgart
+Was first demonstrated in London
