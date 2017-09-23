@@ -1,7 +1,7 @@
 Return "This is a demo beardy"
 
 ## You can find everything here https://github.com/SQLDBAWithABeard/Presentations/tree/master/PSDay%20-%20Intro%20To%20TDD%20with%20Pester
-$Presentation = 'Presentations:\PSDay - Intro To TDD with Pester'
+$Presentation = 'Presentations:\PSDayUK 2017 - Continuous Delivery to PowerShell Gallery'
 
 cd $Presentation
 Invoke-Pester .\Pester.Tests.ps1
