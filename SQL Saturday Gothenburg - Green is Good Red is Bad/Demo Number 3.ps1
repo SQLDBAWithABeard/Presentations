@@ -4,6 +4,9 @@ cd 'Presentations:\SQL Saturday Gothenburg - Green is Good Red is Bad'
 cls 
 Invoke-Pester -Tag Backup
 
+cls 
+Invoke-Pester -Tag DiskSpace
+
 cls
 Invoke-Pester -tag Collation
 
@@ -39,6 +42,11 @@ Invoke-Pester -Tag PowerPlan
 cls 
 Invoke-Pester -Tag AdHoc
 
+cls 
+Invoke-Pester -Tag Compatability
+
+cls 
+Invoke-Pester -Tag Owner
 
 cls
 Invoke-Pester -Tag Server

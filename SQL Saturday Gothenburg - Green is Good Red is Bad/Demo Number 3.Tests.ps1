@@ -4,7 +4,10 @@ $SQLServers = 'ROB-XPS', 'ROB-XPS\DAVE', 'ROB-XPS\SQL2016'
 $BackupShare = 'C:\MSSQL\Backup'
 $MaxVLFs = 50
 $MaxLatency = New-TimeSpan -Seconds 1
+$MinDiskPercent = 10
 $TargetJobOwner = 'sa'
+$TargetDatabaseOwner = 'sa'
+
 Describe 'Testing Access to Backup Share' -Tag Instance, Backup {
     ## This is getting a list of server name from Hyper-V - You can chagne this to a list of SQL instances
     ## $SQLServers = (Get-VM -ComputerName beardnuc| Where-Object {$_.Name -like "*SQL2016*" -and $_.State -eq 'Running'}).Name
@@ -168,6 +171,7 @@ Describe 'Testing Linked Servers' -Tag LinkedServer, Instance {
     }
 }
 
+
 Describe 'Testing Job Owners' -Tag JobOwner, Agent {
     ## This is getting a list of server name from Hyper-V - You can chagne this to a list of SQL instances
     ## $SQLServers = (Get-VM -ComputerName beardnuc| Where-Object {$_.Name -like "*SQL2016*" -and $_.State -eq 'Running'}).Name
@@ -191,17 +195,75 @@ Describe 'Testing Job Owners' -Tag JobOwner, Agent {
         }
     }
 }
-
 Describe 'Testing FullRecovery Model' -Tag Backup, Database {
     ## This is getting a list of server name from Hyper-V - You can chagne this to a list of SQL instances
     ## $SQLServers = (Get-VM -ComputerName beardnuc| Where-Object {$_.Name -like "*SQL2016*" -and $_.State -eq 'Running'}).Name
     if (!$SQLServers) {Write-Warning "No Servers to Look at - Check the config.json"}
     $SQLServers.ForEach{
         Context "Testing Full Recovery Model on  $_" {
-            $Results = Test-DbaFullRecoveryModel -SqlInstance $_ 
+            $Results = Test-DbaFullRecoveryModel -SqlInstance $_ -Detailed
             $Results.ForEach{
                 It "$($_.Database) Should have had a Full backup if in Full Recovery Model" {
                     $_.ConfiguredRecoveryModel | Should Be $_.ActualRecoveryModel
+                }
+            }
+        }
+    }
+}
+
+
+Describe 'Testing Database Owner' -Tag Owner, Database {
+    ## This is getting a list of server name from Hyper-V - You can chagne this to a list of SQL instances
+    ## $SQLServers = (Get-VM -ComputerName beardnuc| Where-Object {$_.Name -like "*SQL2016*" -and $_.State -eq 'Running'}).Name
+    if (!$SQLServers) {Write-Warning "No Servers to Look at - Check the config.json"}
+    $SQLServers.ForEach{
+        Context "Testing Database Owners on  $_" {
+            $Results = Test-DbaDatabaseOwner -SqlInstance $_ -TargetLogin $TargetDatabaseOwner
+            $Results.ForEach{
+                It "$($_.Database) Owner should be $TargetDatabaseOwner" {
+                    $_.CurrentOwner | Should Be $_.TargetOwner
+                }
+            }
+        }
+    }
+}
+
+
+Describe 'Testing Database Compatability' -Tag Compatability, Database {
+    ## This is getting a list of server name from Hyper-V - You can chagne this to a list of SQL instances
+    ## $SQLServers = (Get-VM -ComputerName beardnuc| Where-Object {$_.Name -like "*SQL2016*" -and $_.State -eq 'Running'}).Name
+    if (!$SQLServers) {Write-Warning "No Servers to Look at - Check the config.json"}
+    $SQLServers.ForEach{
+        Context "Testing Database Compatability on  $_" {
+            $Results = Test-DbaDatabaseCompatibility -SqlInstance $_ -Detailed
+            $Results.ForEach{
+                It "$($_.Database) compatability should be the same as the server compatability" {
+                    $_.DatabaseCompatibility | Should Be $_.ServerLevel
+                }
+            }
+        }
+    }
+}
+
+
+
+Describe 'Testing DiskSpace' -Tag DiskSpace, Server {
+    ## This is getting a list of server name from Hyper-V - You can chagne this to a list of SQL instances
+    ## $SQLServers = (Get-VM -ComputerName beardnuc| Where-Object {$_.Name -like "*SQL2016*" -and $_.State -eq 'Running'}).Name
+    if (!$SQLServers) {Write-Warning "No Servers to Look at - Check the config.json"}
+    $SQLServers.ForEach{
+        Context "Testing DiskSpace on  $_" {
+            $Results = Get-DbaDiskSpace -SqlInstance $_ 
+            if($Results.COunt -gt 1){
+            $Results.ForEach{
+                It "Drive $($_.Name) - Label $($_.Label) Should have more than $MinDiskPercent % free" {
+                    $_.PercentFree | SHould BeGreaterThan $MinDiskPercent
+                }
+            }
+            }
+            else {
+            It "Drive $($Results.Name) - Label $($Results.Label) Should have more than $MinDiskPercent % free" {
+                    $Results.PercentFree | SHould BeGreaterThan $MinDiskPercent
                 }
             }
         }
