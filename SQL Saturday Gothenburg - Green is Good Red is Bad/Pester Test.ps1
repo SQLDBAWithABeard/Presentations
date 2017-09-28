@@ -47,7 +47,7 @@ Describe "Testing for Presentation" {
             (Get-Process slack* -ErrorAction SilentlyContinue).Count | Should BE 0
         }
         It "Prompt should be Presentations" {
-            (Get-Location).Path | Should Be 'Presentations:\'
+            (Get-Location).Path | Should Be 'Presentations:\SQL Saturday Holland - Intro To Pester'
         }
         It "Should be running as rob-xps\mrrob" {
             whoami | Should Be 'rob-xps\mrrob'
