@@ -29,7 +29,7 @@ $plaster = @{
     FullName = "Rob Sewell"
     ModuleName = $ModuleName
     ModuleDesc = $Description
-    Version = '0.9.19'
+    Version = '0.9.21'
     GitHubUserName = "SQLDBAWithABeard"
     GitHubRepo = $ModuleName
     }
@@ -66,7 +66,7 @@ Start-Process http://tugait.pt/2017/speakers/
 ## The Get-SpeakerFace function uses the Microsoft Cognative Services Faces API and gets a number of properties for each image
 
 ## Run then talk
-. 'Presentations:\PSDay - Intro To TDD with Pester\Get-SpeakerFace.ps1'
+. 'Presentations:\PSDayUK 2017 - Continuous Delivery to PowerShell Gallery\Get-SpeakerFace.ps1'
 Copy-Item -Path $Presentation\Get-SpeakerFace.ps1 -Destination Git:\$ModuleName\functions
 git add .\functions\Get-SpeakerFace.ps1
 git commit -m "Added Get-SpeakerFace"
