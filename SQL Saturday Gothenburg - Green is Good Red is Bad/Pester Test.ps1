@@ -1,6 +1,3 @@
-
-cd Presentations:\ 
-
 Describe "Testing XPS" {
   Context "XPS" {
         It "DBEngine is running" {
@@ -35,7 +32,7 @@ Describe "Testing for Presentation" {
         }
 
         It "Should have the correct PowerPoint Presentation Open" {
-            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'Green is Good - Red is Bad - PowerPoint'
+            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'belgium-precon (1) - PowerPoint'
         }
         It "Mail Should be closed" {
             (Get-Process HxMail -ErrorAction SilentlyContinue).COunt | Should Be 0
@@ -47,22 +44,22 @@ Describe "Testing for Presentation" {
             (Get-Process slack* -ErrorAction SilentlyContinue).Count | Should BE 0
         }
         It "Prompt should be Presentations" {
-            (Get-Location).Path | Should Be 'Presentations:\SQL Saturday Holland - Intro To Pester'
+            (Get-Location).Path | Should Be 'Presentations:\SQL Saturday Gothenburg - Green is Good Red is Bad'
         }
         It "Should be running as rob-xps\mrrob" {
             whoami | Should Be 'rob-xps\mrrob'
         }
         It "Bolton should be running"{
-            (Get-VM -Name Bolton).State | Should Be 'Running'
+            (Get-VM -Name Bolton).State | Should Not Be 'Running'
         }
         It "Bolton Should respond to ping" {
-            Test-Connection Bolton -Count 1 -Quiet -ErrorAction SilentlyContinue |Should Be $true
+            Test-Connection Bolton -Count 1 -Quiet -ErrorAction SilentlyContinue |Should Not Be $true
         }
-        It "Should have Pester version 4.0.3 imported" {
-            (Get-Module Pester).Version | Should Be '4.0.3'
+        It "Should have Pester version 4.0.8 imported" {
+            (Get-Module Pester).Version | Should Be '4.0.8'
         }
-        It "Should have dbatools version 0.9.25 imported" {
-            (Get-Module dbatools).Version | Should Be '0.9.25'
+        It "Should have dbatools version 0.9.54 imported" {
+            (Get-Module dbatools).Version | Should Be '0.9.54'
         }
     }
 }

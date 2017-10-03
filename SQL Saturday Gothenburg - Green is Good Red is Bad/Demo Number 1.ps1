@@ -2,7 +2,6 @@
 ## Just a failsafe ;-)
 # Return "This is a demo Beardy!"
 
-cd Presentations:\
 ## Does it exist ?
 
 Describe "Do things Exist" {
@@ -10,8 +9,8 @@ Describe "Do things Exist" {
         It "The Server returns a ping - This will fail - Wrong Server Name" {
             (Test-Connection Exeter -Count 1 -Quiet -ErrorAction SilentlyContinue ) | Should Be $true
         }
-        It "The Server SQL2016N1 returns a ping" {
-            (Test-Connection Bolton -Count 1 -Quiet -ErrorAction SilentlyContinue ) | Should Be $true
+        It "The Server Bolton returns a ping" {
+            (Test-Connection Bolton -Count 1 -Quiet -ErrorAction SilentlyContinue ) | Should Be $false
         }
         It "Rob-XPS Operating System Version" {
             (Get-CimInstance -ClassName Win32_OperatingSystem).Version | Should Be '10.0.15063'
@@ -51,10 +50,10 @@ Describe "Do things Exist" {
             }
         }
         It "Should have the Correct Gateway"{
-            (Get-NetIPConfiguration -InterfaceAlias 'Wifi').Ipv4DefaultGateway.NextHop | Should Be '172.16.0.1'
+            (Get-NetIPConfiguration -InterfaceAlias 'Wifi').Ipv4DefaultGateway.NextHop | Should Be '10.127.0.1'
         }
         It "Gateway should respond to ping" {
-            (Test-Connection (Get-NetIPConfiguration -InterfaceAlias 'Wifi').Ipv4DefaultGateway.NextHop -Count 1 -Quiet -ErrorAction SilentlyContinue ) | Should Be $false
+            (Test-Connection (Get-NetIPConfiguration -InterfaceAlias 'Wifi').Ipv4DefaultGateway.NextHop -Count 1 -Quiet -ErrorAction SilentlyContinue ) | Should Be $true
         }
     }
    <#

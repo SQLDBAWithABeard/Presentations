@@ -1,5 +1,8 @@
-    cd Presentations:\
-    & '.\PS Saturday Stuttgart - Green is Good Red is Bad\Test-SQLSDefaults.ps1'
+    # cd Presentations:\
+    & 'Presentations:\PS Saturday Stuttgart - Green is Good Red is Bad\Test-SQLSDefaults.ps1'
+
+## This is how it works - but I have no VMs here
+
     $Parms = @{
       Servers = 'ROB-XPS' ,'ROB-XPS\DAVE','ROB-XPS\SQL2016';
       SQLAdmins = 'THEBEARD\Rob','THEBEARD\SQLAdmins';
@@ -33,4 +36,4 @@
       LogSPBlitzToTableFrequency = 2 ; # 2 means Monday 
       LogSPBlitzToTableStartTime  = '03:00:00'}
       
-      Test-SQLDefault @Parms
+     # Test-SQLDefault @Parms
