@@ -4,10 +4,10 @@ Describe "Network Settings" {
         (Get-NetAdapter -ErrorAction SilentlyContinue ).Name -contains 'Wifi' | Should Be $true
     }
     It "Should have the correct address" {
-        (Get-NetIPAddress -InterfaceAlias 'WiFi'  -ErrorAction SilentlyContinue).Where{$_.AddressFamily -eq 'Ipv4'}.Ipaddress | Should be '172.16.1.105'
+        (Get-NetIPAddress -InterfaceAlias 'WiFi'  -ErrorAction SilentlyContinue).Where{$_.AddressFamily -eq 'Ipv4'}.Ipaddress | Should be '10.127.74.214'
     }
     It "Should have the correct DNS Server" {
-      (Get-DnsClientServerAddress -InterfaceAlias 'WiFi' -AddressFamily IPv4).ServerAddresses | Should Be @('8.8.8.8','172.16.1.1')
+      (Get-DnsClientServerAddress -InterfaceAlias 'WiFi' -AddressFamily IPv4).ServerAddresses | Should Be @('195.130.130.134', '195.130.131.134')
     }
 }
 
@@ -24,7 +24,7 @@ Describe "Testing for Presentation" {
         }
 
         It "Should have the correct PowerPoint Presentation Open" {
-            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'DataMinds - Introduction to Pester - PowerPoint'
+            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'DataMinds- Introduction to Pester - PowerPoint'
         }
         It "Mail Should be closed" {
             (Get-Process HxMail -ErrorAction SilentlyContinue).COunt | Should Be 0
