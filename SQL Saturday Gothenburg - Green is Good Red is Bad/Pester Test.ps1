@@ -32,7 +32,7 @@ Describe "Testing for Presentation" {
         }
 
         It "Should have the correct PowerPoint Presentation Open" {
-            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'belgium-precon (1) - PowerPoint'
+            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'Green Is Good - Red is Bad - PowerPoint'
         }
         It "Mail Should be closed" {
             (Get-Process HxMail -ErrorAction SilentlyContinue).COunt | Should Be 0
@@ -50,23 +50,23 @@ Describe "Testing for Presentation" {
             whoami | Should Be 'rob-xps\mrrob'
         }
         It "Bolton should be running"{
-            (Get-VM -Name Bolton).State | Should Not Be 'Running'
+            (Get-VM -Name Bolton).State | Should Be 'Running'
         }
         It "Bolton Should respond to ping" {
-            Test-Connection Bolton -Count 1 -Quiet -ErrorAction SilentlyContinue |Should Not Be $true
+            Test-Connection Bolton -Count 1 -Quiet -ErrorAction SilentlyContinue |Should Be $true
         }
         It "Should have Pester version 4.0.8 imported" {
             (Get-Module Pester).Version | Should Be '4.0.8'
         }
-        It "Should have dbatools version 0.9.54 imported" {
-            (Get-Module dbatools).Version | Should Be '0.9.54'
+        It "Should have dbatools version 0.9.62 imported" {
+            (Get-Module dbatools).Version | Should Be '0.9.62'
         }
     }
 }
 
 Describe "Testing for Demo"{
     It "Should have DNS Servers for correct interface - not if v6" {
-        (Get-DnsClientServerAddress -InterfaceAlias 'vEthernet (Beard Internal)').Serveraddresses | Should Be @('10.0.0.1')
+        (Get-DnsClientServerAddress -InterfaceAlias 'vEthernet (Beard Internal)').Serveraddresses | Should Be @('0.0.0.0')
     }
     It "Should have correct gateway for alias - not if v6 "{
         (Get-NetIPConfiguration -InterfaceAlias 'vEthernet (Beard Internal)').Ipv4DefaultGateway.NextHop | Should Be '0.0.0.0'
