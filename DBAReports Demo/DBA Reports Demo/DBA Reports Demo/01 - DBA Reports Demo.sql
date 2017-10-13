@@ -100,6 +100,7 @@ where D.Name = 'Name of Database 175'
  WHERE d.LastLogBackupDate = '0001-01-01 00:00:00.0000000'
  and d.RecoveryModel = 'full'
  GROUP BY Location,Environment
+ 
 
 ---- Job Detail Information is in the AgentJobDetail table this holds information about every job that ran
 Select IL.ServerName,
