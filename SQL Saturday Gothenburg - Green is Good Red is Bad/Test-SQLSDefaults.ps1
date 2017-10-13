@@ -296,6 +296,7 @@ param(
 )
 foreach($Server in $Servers)
     {
+        $skip = $true
     if($Server.Contains('\'))
     {
     $ServerName = $Server.Split('\')[0]
@@ -313,13 +314,16 @@ foreach($Server in $Servers)
        continue
         }
        if ([bool](Test-WSMan -ComputerName $ServerName -ErrorAction SilentlyContinue))
-       {}
+       {
+           $skip = $true
+       }
        else
        {Write-Error "PSRemoting is not enabled on $ServerName Please enable and retry"
        continue}
     Describe "$Server" {
+        $kip = $true
         BeforeAll {
-           # $Scriptblock = {
+            $Scriptblock = {
             [pscustomobject]$Return = @{}
             $srv = ''
             $Server = $Server
@@ -382,17 +386,23 @@ foreach($Server in $Servers)
             $Return.Alerts82345Exist = ($srv.JobServer.Alerts |Where {$_.Messageid -eq 823 -or $_.Messageid -eq 824 -or $_.Messageid -eq 825}).Count
             $Return.Alerts82345Enabled = ($srv.JobServer.Alerts |Where {$_.Messageid -eq 823 -or $_.Messageid -eq 824 -or $_.Messageid -eq 825 -and $_.IsEnabled -eq $true}).Count
             $Return.SysDatabasesFullBackupToday = $srv.Databases.Where{$_.IsSystemObject -eq $true -and $_.Name -ne 'tempdb' -and $_.LastBackupDate -lt (Get-Date).AddDays(-1)}.Count
-          #  Return $Return
-          # }
-           # $Return = Invoke-Command -ScriptBlock $Scriptblock -ComputerName $ServerName
+          Return $Return
+           }
+           try {
+            $Return = Invoke-Command -ScriptBlock $Scriptblock -ComputerName $ServerName -ErrorAction Stop
+        }
+           catch {
+               $Skip = $true
+           }
+            
             }
        Context 'Server' {
-        It 'Should Exist and respond to ping' {
+        It 'Should Exist and respond to ping'-Skip:$true {
             $connect = Test-Connection $ServerName -count 1 -Quiet 
             $Connect|Should Be $true
         }
         if($connect -eq $false){break}
-       It 'Should have SQL Server Installed' {  
+       It 'Should have SQL Server Installed'-Skip:$true {  
             $Return.SQLRegKey | Should Not Be NullOrEmpty
         }
         } # End Context 
@@ -411,22 +421,22 @@ foreach($Server in $Servers)
         $MSSQLService = (Get-CimInstance -ClassName Win32_Service -Filter "Name = '$SQLService'" )
         $SQLAgentService = (Get-CimInstance -ClassName Win32_Service -Filter "Name = '$AgentService'")
         }
-        It 'SQL DB Engine should be running' {
+        It 'SQL DB Engine should be running'-Skip:$true {
             $MSSQLService.State | Should Be 'Running'
         }
-        It 'SQL Db Engine should be Automatic Start' {
+        It 'SQL Db Engine should be Automatic Start'-Skip:$true {
             $MSSQLService.StartMode |should be 'Auto'
         }
-        It 'SQL Agent should be running' {
+        It 'SQL Agent should be running'-Skip:$true {
             $SQLAgentService.State | Should Be 'Running'
         }
-        It 'SQL Agent should be Automatic Start' {
+        It 'SQL Agent should be Automatic Start'-Skip:$true {
             $SQLAgentService.StartMode |should be 'Auto'
         }
         } # End Context 
       <# Context 'FireWall' {   
-        It 'Should have a Firewall connection for SQL Browser' {
-            $Scriptblock = {Get-NetFirewallRule -Name 'SQL Browser Service - Allow'} 
+        It 'Should have a Firewall connection for SQL Browser'-Skip:$true {
+            $Scriptblock =-Skip:$true {Get-NetFirewallRule -Name 'SQL Browser Service - Allow'} 
             $State = Invoke-Command -ComputerName $ServerName -ScriptBlock $Scriptblock 
             $State | Should Be $true
         }
@@ -469,162 +479,162 @@ foreach($Server in $Servers)
 
     #>
        Context 'Databases' {
-            It 'Should have a DBA-Admin Database' {
+            It 'Should have a DBA-Admin Database'-Skip:$true {
             $Return.DbaAdminDB |Should Be $true
             }
-            It 'Databases should have a normal Status - No Restoring, Recovery Pending etc' {
+            It 'Databases should have a normal Status - No Restoring, Recovery Pending etc'-Skip:$true {
             $Return.DatabasesStatus |Should Be 0
             }
-            It 'System Databases Shol dhave been backed up within the last 24 hours' {
+            It 'System Databases Shol dhave been backed up within the last 24 hours'-Skip:$true {
             $Return.SysDatabasesFullBackupToday | SHould be 0
             }
         } # End Context 
         Context 'Users' {
-        It "Should have $SQLAdmins as a login" {
+        It "Should have $SQLAdmins as a login"-Skip:$true {
                     $Return.SQLAdmins | Should Be $True
         }
-        It "$SQLAdmins Should be sysadmin" {
+        It "$SQLAdmins Should be sysadmin"-Skip:$true {
                     $Return.SQLAdmin|Should Be $true
         }
         } # End Context 
         Context 'Defaults'{
-        It "Should have a default Backup Directory of $BackupDirectory" {
+        It "Should have a default Backup Directory of $BackupDirectory"-Skip:$true {
             $Return.BackupDirectory |Should Be $BackupDirectory
         }
-        It "Should have a default Data Directory of $DataDirectory" {
+        It "Should have a default Data Directory of $DataDirectory"-Skip:$true {
             $Return.DataDirectory |Should Be $DataDirectory
         }
-        It "Should have a default Log Directory of $LogDirectory " {
+        It "Should have a default Log Directory of $LogDirectory "-Skip:$true {
             $Return.LogDirectory |Should Be $LogDirectory 
         }
-        It "Should have a Max Memory Setting of $MaxMemMb" {
+        It "Should have a Max Memory Setting of $MaxMemMb"-Skip:$true {
             $Return.MaxMemMb |Should Be $MaxMemMb
         }
-        It "Should have a Collation of $Collation" {
+        It "Should have a Collation of $Collation" -Skip:$true {
             $Return.Collation |Should Be $Collation
         }
-        it "Should have $tempFiles tempdb files" {
+        it "Should have $tempFiles tempdb files" -Skip:$skip {
             $Return.tempFiles| Should be $tempFiles
         }
-        It 'Should have Alerts for Severity 20 and above' {
+        It 'Should have Alerts for Severity 20 and above' -Skip:$skip {
         $Return.Alerts20SeverityPlusExist | Should Be 6
         }
-        It 'Severity 20 and above Alerts should be enabled' {
+        It 'Severity 20 and above Alerts should be enabled' -Skip:$skip {
         $Return.Alerts20SeverityPlusEnabled | Should Be 6
         }
-        It 'Should have alerts for 823,824 and 825' {
+        It 'Should have alerts for 823,824 and 825' -Skip:$skip {
         $Return.Alerts82345Exist |Should Be 3
         }
         } # End Context 
         Context 'Agent Jobs' {
-        It 'Should have Agent Jobs' {
+        It 'Should have Agent Jobs' -Skip:$true {
             $Return.AgentJobs |Should BeGreaterthan 0
         }
-        It 'Should have Ola Hallengrens maintenance Solution' {
+        It 'Should have Ola Hallengrens maintenance Solution' -Skip:$true {
           $Return.OlaProcs | Should Be $True
         }
-        It 'Should have Restore Proc for Ola Hallengrens Maintenance Solution' {
+        It 'Should have Restore Proc for Ola Hallengrens Maintenance Solution' -Skip:$true {
             $Return.RestoreProc | Should Be $True
             }
-        It 'The Full System Database Backup should be enabled' {
+        It 'The Full System Database Backup should be enabled' -Skip:$true {
             $Return.OlaSysFullEnabled | Should Be $True
         }
-        It 'The Full System Database Backup should be scheduled' {
+        It 'The Full System Database Backup should be scheduled' -Skip:$true {
             $Return.OlaSysFullScheduled | Should Be $True
         }
-        It "The Full System Database Backup should be scheduled $OlaSysFullFrequency" {
+        It "The Full System Database Backup should be scheduled $OlaSysFullFrequency" -Skip:$true {
             $Return.OlaSysFullFrequency.value| Should Be $OlaSysFullFrequency 
         }
-        It "The Full System Database Backup should be scheduled at $OlaSysFullStartTime" {
+        It "The Full System Database Backup should be scheduled at $OlaSysFullStartTime" -Skip:$true {
             $Return.OlaSysFullStartTime| Should Be $OlaSysFullStartTime
         }
-        It 'The Full User Database Backup should be enabled' {     
+        It 'The Full User Database Backup should be enabled' -Skip:$true {     
             $Return.OlaUserFullEnabled| Should Be $True
         }
-        It 'The Full User Database Backup should be scheduled' {
+        It 'The Full User Database Backup should be scheduled' -Skip:$true {
             $Return.OlaUserFullScheduled | Should Be $True
         }
-        It "The Full User Database Backup should be scheduled Weekly $OlaUserFullSchedule" {
+        It "The Full User Database Backup should be scheduled Weekly $OlaUserFullSchedule" -Skip:$true {
             $Return.OlaUserFullSchedule.value | Should Be $OlaUserFullSchedule
         }
-        It "The Full user Database Backup should be scheduled Weekly on a $OlaUserFullFrequency" {
+        It "The Full user Database Backup should be scheduled Weekly on a $OlaUserFullFrequency" -Skip:$true {
             $Return.OlaUserFullFrequency| Should Be $OlaUserFullFrequency
         }
-        It "The Full User Database Backup should be scheduled at $OlaUserFullStartTime" {
+        It "The Full User Database Backup should be scheduled at $OlaUserFullStartTime" -Skip:$true {
             $return.OlaUserFullStartTime| Should Be $OlaUserFullStartTime
         }
-        It 'The Diff User Database Backup should be enabled' {
+        It 'The Diff User Database Backup should be enabled' -Skip:$true {
             $Return.OlaUserDiffEnabled| Should Be $True
         }
-        It 'The Diff User Database Backup should be scheduled' {
+        It 'The Diff User Database Backup should be scheduled' -Skip:$true {
             $Return.OlaUserDiffScheduled| Should Be $True
         }
-        It "The Diff User Database Backup should be scheduled Daily Except Sunday = $OlaUserDiffSchedule" {
+        It "The Diff User Database Backup should be scheduled Daily Except Sunday = $OlaUserDiffSchedule" -Skip:$true {
             $Return.OlaUserDiffSchedule.Value| Should Be $OlaUserDiffSchedule
         }
-        It "The Diff User Database Backup should be scheduled Daily Except Sunday = $OlaUserDiffFrequency" {
+        It "The Diff User Database Backup should be scheduled Daily Except Sunday = $OlaUserDiffFrequency" -Skip:$true {
             $Return.OlaUserDiffFrequency| Should Be $OlaUserDiffFrequency
         }
-        It "The Diff User Database Backup should be scheduled at $OlaUserDiffStartTime" {
+        It "The Diff User Database Backup should be scheduled at $OlaUserDiffStartTime" -Skip:$true {
             $Return.OlaUserDiffStartTime| Should Be $OlaUserDiffStartTime 
         }
-        It 'The Log User Database Backup should be enabled' {
+        It 'The Log User Database Backup should be enabled' -Skip:$true {
             $Return.OlaUserLogEnabled| Should Be $true
         }
-        It 'The Log User Database Backup should be scheduled' {
+        It 'The Log User Database Backup should be scheduled' -Skip:$true {
             $Return.OlaUserLogScheduled| Should Be $True
         }
-        It 'The Log User Database Backup should be scheduled Daily' {
+        It 'The Log User Database Backup should be scheduled Daily' -Skip:$true {
             $Return.OlaUserLogSchedule.Value  | Should Be 'Daily'
         }
-        It 'The Log User Database Backup should be scheduled Daily' {
+        It 'The Log User Database Backup should be scheduled Daily' -Skip:$true {
             $Return.OlaUserLogFrequency| Should Be 1
         }
-        It "The Log User Database Backup should be scheduled for every $OlaUserLogSubDayInterval" {
+        It "The Log User Database Backup should be scheduled for every $OlaUserLogSubDayInterval" -Skip:$true {
             $Return.OlaUserLogSubDayInterval| Should Be $OlaUserLogSubDayInterval
             }
-        It "The Log User Database Backup should be scheduled for every $OlaUserLoginterval" {
+        It "The Log User Database Backup should be scheduled for every $OlaUserLoginterval" -Skip:$true {
             $Return.OlaUserLoginterval.Value| Should Be $OlaUserLoginterval 
         }
-        It "Should have the Log SP_WhoisActive to Table Agent Job $LogWhoIsActiveToTable" {
+        It "Should have the Log SP_WhoisActive to Table Agent Job $LogWhoIsActiveToTable" -Skip:$true {
             $Return.LogWhoIsActiveToTable| Should Be $LogWhoIsActiveToTable 
         }
-        It "Should have the Log SP_Blitz to Table Agent Job $LogSPBlitzToTable" {
+        It "Should have the Log SP_Blitz to Table Agent Job $LogSPBlitzToTable" -Skip:$true {
             $Return.LogSPBlitzToTable| Should Be $LogSPBlitzToTable 
         }
-        It "Log SP_Blitz to Table Agent Job Should Be Enabled" {
+        It "Log SP_Blitz to Table Agent Job Should Be Enabled" -Skip:$true {
             $Return.LogSPBlitzToTableEnabled| Should Be $LogSPBlitzToTableEnabled
         }
-        It "Log SP_Blitz to Table Agent Job Should Be Scheduled" {
+        It "Log SP_Blitz to Table Agent Job Should Be Scheduled" -Skip:$true {
             $Return.LogSPBlitzToTableScheduled| Should Be $LogSPBlitzToTableScheduled
         }
-        It "Log SP_Blitz to Table Agent Job Should Be Scheduled $LogSPBlitzToTableSchedule" {
+        It "Log SP_Blitz to Table Agent Job Should Be Scheduled $LogSPBlitzToTableSchedule" -Skip:$true {
             $Return.LogSPBlitzToTableSchedule.Value| Should Be $LogSPBlitzToTableSchedule
         }
-        It "Log SP_Blitz to Table Agent Job Should Be Scheduled Weekly on a $LogSPBlitzToTableFrequency" {
+        It "Log SP_Blitz to Table Agent Job Should Be Scheduled Weekly on a $LogSPBlitzToTableFrequency" -Skip:$true {
             $Return.LogSPBlitzToTableFrequency| Should Be $LogSPBlitzToTableFrequency
         }
-        It "Log SP_WhoisActive to Table Agent Job Should Be Scheduled at $LogSPBlitzToTableStartTime" {
+        It "Log SP_WhoisActive to Table Agent Job Should Be Scheduled at $LogSPBlitzToTableStartTime" -Skip:$true {
             $Return.LogSPBlitzToTableStartTime| Should Be $LogSPBlitzToTableStartTime
         }  
         } # End Context Agent Jobs
         Context 'DBA Scripts' {
-        It "Should Have sp_Blitz $HasSPBlitz"{
+        It "Should Have sp_Blitz $HasSPBlitz"-Skip:$true {
           $Return.HasSPBlitz |Should Be $HasSPBlitz
           }    
-        It "Should Have sp_BlitzCache $HasSPBlitzCache" {
+        It "Should Have sp_BlitzCache $HasSPBlitzCache" -Skip:$true {
         $Return.HasSPBlitzCache | Should Be $HasSPBlitzCache
         }     
-        It "Should Have sp_BlitzIndex $HasSPBlitzIndex" {
+        It "Should Have sp_BlitzIndex $HasSPBlitzIndex" -Skip:$true {
         $Return.HasSPBlitzIndex | Should Be $HasSPBlitzIndex
         }
-        It "Should Have sp_AskBrent $HasSPAskBrent" {
+        It "Should Have sp_AskBrent $HasSPAskBrent" -Skip:$true {
         $Return.HasSPAskBrent | Should Be $HasSPAskBrent
         }
-        It "Should Have sp_BlitzTrace $HASSPBlitzTrace" {
+        It "Should Have sp_BlitzTrace $HASSPBlitzTrace" -Skip:$true {
         $Return.HASSPBlitzTrace | Should Be $HASSPBlitzTrace
         }
-        It "Should Have sp_WhoIsActive $HasSPWhoisActive" {
+        It "Should Have sp_WhoIsActive $HasSPWhoisActive" -Skip:$true {
         $Return.HasSPWhoisActive | Should Be $HasSPWhoisActive
         } 
         }
