@@ -2,6 +2,14 @@
 ## Just a failsafe ;-)
 # Return "This is a demo Beardy!"
 
+# Install-Module Pester -Scope CurrentUser
+
+# Update-Module Pester -Force
+
+Get-Module Pester -ListAvailable
+
+Get-Module Pester
+
 ## Does it exist ?
 
 Describe "Do things Exist" {
@@ -10,7 +18,7 @@ Describe "Do things Exist" {
             (Test-Connection Exeter -Count 1 -Quiet -ErrorAction SilentlyContinue ) | Should Be $true
         }
         It "The Server Bolton returns a ping" {
-            (Test-Connection Bolton -Count 1 -Quiet -ErrorAction SilentlyContinue ) | Should Be $false
+            (Test-Connection Bolton -Count 1 -Quiet -ErrorAction SilentlyContinue ) | Should Be $true
         }
         It "Rob-XPS Operating System Version" {
             (Get-CimInstance -ClassName Win32_OperatingSystem).Version | Should Be '10.0.15063'
