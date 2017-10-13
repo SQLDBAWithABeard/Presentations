@@ -66,7 +66,7 @@ Describe "Testing for Presentation" {
 
 Describe "Testing for Demo"{
     It "Should have DNS Servers for correct interface - not if v6" {
-        (Get-DnsClientServerAddress -InterfaceAlias 'vEthernet (Beard Internal)').Serveraddresses | Should Be @('0.0.0.0')
+        (Get-DnsClientServerAddress -InterfaceAlias 'vEthernet (Beard Internal)').Serveraddresses | Should Be @('10.0.0.1')
     }
     It "Should have correct gateway for alias - not if v6 "{
         (Get-NetIPConfiguration -InterfaceAlias 'vEthernet (Beard Internal)').Ipv4DefaultGateway.NextHop | Should Be '0.0.0.0'
