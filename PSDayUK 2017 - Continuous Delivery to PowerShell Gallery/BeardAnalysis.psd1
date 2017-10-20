@@ -12,7 +12,7 @@
 RootModule = 'BeardAnalysis.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.9.21'
+ModuleVersion = '0.9.22'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
