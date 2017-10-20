@@ -24,7 +24,7 @@ Describe "Testing for Presentation" {
         }
 
         It "Should have the correct PowerPoint Presentation Open" {
-            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'SentryOne - Introduction to Pester - PowerPoint'
+            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'SentryOne- Introduction to Pester - PowerPoint'
         }
         It "Mail Should be closed" {
             (Get-Process HxMail -ErrorAction SilentlyContinue).COunt | Should Be 0
