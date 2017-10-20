@@ -279,6 +279,7 @@ Get-Help Get-SpeakerBeard -Examples
 
 Invoke-Pester -Show Summary,Header -OutputFile c:\temp\PesterResults.xml -OutputFormat NUnitXml
 # create new file in VS Code
+# Doesn't work I've filed an issue :-) https://github.com/PowerShell/vscode-powershell/issues/1060
 $psEditor.Workspace.NewFile()
 # Results into new file
 Get-Content C:\temp\PesterResults.xml | Out-CurrentFile
