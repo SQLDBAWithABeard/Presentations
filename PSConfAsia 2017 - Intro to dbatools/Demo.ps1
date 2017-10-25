@@ -1,9 +1,6 @@
 cd presentations:\
 Return 'Oi Beardy, You may be an MVP but this is a demo, don''t run the whole thing, fool!!'
 
-## We are going to use the development branch because it's cool and has all the latest funky
-## The aim is for this to be released on Tuesday
-## *Some things may not work* :-)
 ## You should use Install-Module dbatools -Scope CurrentUser
 
 # Import-Module GIT:\dbatools\dbatools.psd1 -Verbose
