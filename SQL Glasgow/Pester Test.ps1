@@ -32,7 +32,7 @@ Describe "Testing for Presentation" {
         }
 
         It "Should have the correct PowerPoint Presentation Open" {
-            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'summit-precon - PowerPoint'
+            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'Green Is Good - Red is Bad - PowerPoint'
         }
         It "Mail Should be closed" {
             (Get-Process HxMail -ErrorAction SilentlyContinue).Count | Should Be 0
@@ -41,7 +41,7 @@ Describe "Testing for Presentation" {
             (Get-Process WWAHost -ErrorAction SilentlyContinue).Count | Should Be 0
         }
         It "Slack should be closed" {
-           # (Get-Process slack* -ErrorAction SilentlyContinue).Count | Should BE 0
+            (Get-Process slack* -ErrorAction SilentlyContinue).Count | Should BE 0
         }
         It "Prompt should be Presentations" {
             (Get-Location).Path | Should Be 'Presentations:\SQL Glasgow'
