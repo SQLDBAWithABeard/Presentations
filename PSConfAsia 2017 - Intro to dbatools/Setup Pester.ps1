@@ -2,9 +2,9 @@
  #Requires -RunAsAdministrator
 cd presentations:\
 #Import-Module GIT:\dbatools\dbatools.psd1 -Verbose
-(Get-DbaTable -SqlInstance Rob-XPS\SQL2016 -Database DBA-Admin -Table ManchesterDemo).Drop() 
+(Get-DbaTable -SqlInstance Rob-XPS\SQL2016 -Database DBA-Admin -Table SingaporeDemo).Drop() 
 $script = @"
-CREATE TABLE [dbo].[ManchesterDemo](
+CREATE TABLE [dbo].[SingaporeDemo](
 	[id] [int] NOT NULL,
 	[Bolton] [nchar](10) NULL
 ) ON [PRIMARY]
@@ -19,7 +19,7 @@ Describe "Network Settings" {
         (Get-NetIPAddress -InterfaceAlias 'vEthernet (Beard Internal)'  -ErrorAction SilentlyContinue).Ipaddress | Should be '10.0.0.1'
     }
     It "Should have the correct DNS Server" {
-        (Get-DnsClientServerAddress -InterfaceAlias 'vEthernet (Beard Internal)' -AddressFamily IPv4).ServerAddresses | Should Be '10.0.0.1' 
+        (Get-DnsClientServerAddress -InterfaceAlias 'vEthernet (Beard Internal)' -AddressFamily IPv4).ServerAddresses | Should Be '0.0.0.0' 
     }
 }
 
@@ -69,7 +69,7 @@ Describe "SQL State" {
 }
 
 Describe "Testing for Presentation" {
-    Context "Rob-XPS" {
+    <#Context "Rob-XPS" {
         It "Shoudl have Code Insiders Open" {
             (Get-Process 'Code - Insiders'  -ErrorAction SilentlyContinue) | Should Not BeNullOrEmpty
         }
@@ -107,26 +107,26 @@ Describe "Testing for Presentation" {
         It "Should have the path for saving the diagnostics reports"{
             Test-Path C:\Temp\Diagnostics | Should Be $true
         }
-    }
+    }#>
 }
 
 Describe "Testing for Demo - SQL2016 Instance"{
     $SQL = 'Rob-XPS\SQL2016'
     It "Should have the correct Demo Logins"{
-        (Get-DbaLogin -SqlInstance $SQL).Where{$_.Name -like '*ManchesterDemo*'}.Count | Should Be 15
+        (Get-DbaLogin -SqlInstance $SQL).Where{$_.Name -like '*SingaporeDemo*'}.Count | Should Be 9
     }
     It "Should have the correct credential" {
-        (Get-DbaCredential -SqlInstance $sql).Where{$_.Name -like '*Manchester*'}.Count | Should Be 1
+        (Get-DbaCredential -SqlInstance $sql).Where{$_.Name -like '*Singapore*'}.Count | Should Be 1
     }
     It "Should have an audit" {
-        (Get-DbaServerAudit -SqlInstance $sql).Where{$_.Name -like '*Manchester*'}.Count | Should Be 1
+        (Get-DbaServerAudit -SqlInstance $sql).Where{$_.Name -like '*Singapore*'}.Count | Should Be 1
     }
     It "Should have an audit specification" {
-        (Get-DbaServerAuditSpecification -SqlInstance $sql).Where{$_.Name -like '*Manchester*'}.Count | Should Be 1
+        (Get-DbaServerAuditSpecification -SqlInstance $sql).Where{$_.Name -like '*Singapore*'}.Count | Should Be 1
     }
     It "Should have a linked Server"{
         $SQL2016 = Connect-DbaSqlServer -SqlInstance 'Rob-XPS\SQL2016'
-        $SQL2016.LinkedServers.Where{$_.Name -like '*Manchester*'}.Count | Should Be 1
+        $SQL2016.LinkedServers.Where{$_.Name -like '*Singapore*'}.Count | Should Be 1
     }
     It "Should have Agent Jobs"{
         (Get-DbaAgentJob -SqlInstance $SQL).Count | Should BeGreaterThan 14
@@ -160,7 +160,7 @@ Describe "Testing for Demo - Bolton Instance" {
         (Get-DbaServerAuditSpecification -SqlInstance $SQL).Count | Should Be 0
     }
     It "Should Not have a linked Server" {
-        $BOLTON.LinkedServers.Where{$_.Name -like '*Manchester*'}.Count | Should Be 0
+        $BOLTON.LinkedServers.Where{$_.Name -like '*Singapore*'}.Count | Should Be 0
     }
     It "Should have only one Agent Job" {
         (Get-DbaAgentJob -SqlInstance $SQL ).Count | Should Be 1

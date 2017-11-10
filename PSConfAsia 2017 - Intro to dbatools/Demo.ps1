@@ -6,6 +6,7 @@ Return 'Oi Beardy, You may be an MVP but this is a demo, don''t run the whole th
 # Import-Module GIT:\dbatools\dbatools.psd1 -Verbose
 $cred = Import-Clixml C:\MSSQL\sa.cred
 
+#region Finding Commands
 ## Lets look at the commands
 Get-Command -Module dbatools 
 
@@ -29,7 +30,9 @@ Get-Help Test-DbaLinkedServerConnection -Full
 ## Here a neat trick
 
 Find-DbaCommand -Pattern Index | Out-GridView -PassThru | Get-Help -Full 
+#endregion
 
+#region Migrations
 ## OK Migrations are a brilliant way to start
 ## Lets look at the two instances in SSMS
 
@@ -37,6 +40,9 @@ Find-DbaCommand -Pattern Index | Out-GridView -PassThru | Get-Help -Full
 
 Start-DbaMigration -Source ROB-XPS\SQL2016 -Destination ROB-XPS\Bolton -BackupRestore -NetworkShare \\ROB-XPS\MIGRATION
 
+#endregion
+
+#region Backups and testing restores
 ## Everyone tests their restores correct?
 ## Lets back up those new databases to a Network Share
 Backup-DbaDatabase -SqlInstance Rob-XPS\SQL2016 -BackupDirectory \\ROB-XPS\Migration 
@@ -57,6 +63,9 @@ Test-DbaLastBackup -SqlInstance Rob-XPS\SQL2016 -Destination Rob-XPS\SQL2016 -Ve
 
 Start-Process 'https://github.com/sqlcollaborative/community-presentations'
 
+#endregion
+
+#region Getting and testing
 ## Lets look at how easy it is to get information about one or many sql server instances from the command line with one line of code
 
 ## What are my default paths ?
@@ -173,6 +182,9 @@ Get-DbaDatabasePartitionScheme -SqlInstance bolton -SqlCredential $cred -Databas
 # more detail
 Get-DbaDatabasePartitionScheme -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters | Select *
 
+#endregion
+
+#region export scripts
 # Export the create tables TSQL for my database please
 
 $Db = 'OctopusDeploy'
@@ -195,6 +207,9 @@ cd presentations:\
 
 ## You could do the same with Views, triggers, stored procedures etc
 
+#endregion
+
+#region Getting and Finding more things
 # Maybe you want to look at execution plans
 # C:\Users\mrrob\OneDrive\Documents\GitHub\Presentations\DBAReports Demo\DBA Reports Demo\DBA Reports Demo\01 - DBA Reports Demo.sql
 
@@ -272,6 +287,11 @@ Find-DbaTrigger -SqlInstance bolton -SqlCredential $cred -Pattern TotalPurchaseY
 
 Find-DbaCommand Find*
 
+#endregion
+
+#region Delete a database
+
+#region More and advanced
 ## What depends on this table? Which table? I'll know it when I see it (bottom one)
 
 Get-DbaTable -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters | Out-GridView -PassThru | Get-DbaDependency
@@ -283,9 +303,19 @@ $Depends
 # but the object returns more than that lets look at the first 1
 $Depends| Select -First 1 | Select *
 
+Get-DbaUserLevelPermission -SqlInstance rob-xps\sql2016 | Out-GridView
+
 ## everyone uses sp_whoisactive
 
+$query = "SELECT * FROM Production.TransactionHistory th
+INNER JOIN Production.TransactionHistoryArchive tha ON th.Quantity = tha.Quantity"
+$query | clip ## then run in SSMS
+
 Invoke-DbaWhoisActive -SqlInstance bolton -SqlCredential $cred -ShowOwnSpid|Out-GridView
+
+
+Get-DbaTopResourceUsage -SqlInstance bolton -SqlCredential $cred -Type CPU | Out-GridView
+Get-DbaTopResourceUsage -SqlInstance bolton  -SqlCredential $cred   -Type IO | Out-GridView
 
 ## How about something cool with Glenn Berrys Diagnostic Queries ?
 
@@ -296,6 +326,17 @@ Invoke-DbaDiagnosticQuery -SqlInstance Rob-XPS\SQL2016 | Out-GridView
 ## OK - Andre thought of that too
 
 ## Oh and it works against a Linux Instance too :-) ## Takes about 4 minutes
-$Suffix = 'Manchester_' + (Get-Date -Format yyyy-MM-dd_HH-mm-ss)
+$Suffix = 'Singapore_' + (Get-Date -Format yyyy-MM-dd_HH-mm-ss)
 Invoke-DbaDiagnosticQuery -SqlInstance Bolton -SqlCredential $cred | Export-DbaDiagnosticQuery -Path C:\temp\Diagnostics -Suffix $Suffix
 explorer c:\temp\diagnostics
+
+#endregion
+
+#region uber nerdy transaction log from Stuart Moore :-) 
+#wanna read a transaction log - Live ??
+
+Read-DbaTransactionLog -SqlInstance $Instance3 -Database DEMOdbareports 
+Read-DbaTransactionLog -SqlInstance $Instance3 -Database DEMOdbareports |ogv
+
+Read-DbaBackupHeader -SqlInstance $Instance3 -Path C:\MSSQL\BACKUP\ROB-XPS\DEMOdbareports\DIFF\ROB-XPS_DEMOdbareports_DIFF_20170921_072547.bak
+#endregion

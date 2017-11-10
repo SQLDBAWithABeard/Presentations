@@ -32,61 +32,9 @@
 ## 
 ##    Not a quick task and as you can imagine prone to human mistakes
 
-cls 
 ."GIT:\Functions\Test-OLAInstance.ps1"
 ## Now I can run against any number of Servers
 $results = Test-OLAInstance -Instance rob-xps,'rob-xps\dave', 'ROB-XPS\SQL2016' -Share C:\MSSQL\BACKUP -NoDatabaseRestoreCheck -CheckForBackups 
-
-## I can also create a HTML page for the results
-## Unfortunately New Pester broke the old reportunit and it looked rubbish
-## But we can do this
-
-$SQLServers = 'rob-xps','rob-xps\dave', 'ROB-XPS\SQL2016'
-
-
-#region - This no longer works - it used to be cool
-$Path = 'Git:\Functions\Test-OLA.ps1'
-
-foreach($Server in $SQLServers)
-{
-    ## Create Parameter block for running Pester
-    $Script = @{
-    Path = $Path;
-    Parameters = @{ Instance = $Server;
-    CheckForBackups =  $true;
-    CheckForDBFolders =  $true;
-    NoDatabaseRestoreCheck= $true;
-    Share = 'C:\MSSQL\Backup';
-    }
-    }
-
-## Set some variables
-$Date = Get-Date -Format ddMMyyyHHmmss
-$tempFolder = 'c:\temp\ReportsIndividual\'
-$InstanceName = $Server.Replace('\','-')
-$File = $tempFolder + $InstanceName 
-$XML = $File + '.xml'
-
-## Run Pester only showing failures and outputting ALL results to a file
-Invoke-Pester -Script $Script -OutputFile $xml -OutputFormat NUnitXml -show fails
-}
-Push-Location $tempFolder
-
-## Once Tests have run
-#download and extract ReportUnit.exe
-$url = 'http://relevantcodes.com/Tools/ReportUnit/reportunit-1.2.zip'
-$fullPath = Join-Path $tempFolder $url.Split("/")[-1]
-$reportunit = $tempFolder + '\reportunit.exe'
-if((Test-Path $reportunit) -eq $false)
-{
-(New-Object Net.WebClient).DownloadFile($url,$fullPath)
-Expand-Archive -Path $fullPath -DestinationPath $tempFolder
-}
-#run reportunit against report.xml and display result in browser
-$HTML = $tempFolder  + 'index.html'
-& .\reportunit.exe $tempFolder
-ii $HTML
-#endregion
 
 ## embed into CI CD processes - get this cosumed by your build deploy release servers systems with
 $filepath = 'C:\temp\dummyfile.xml'
@@ -104,3 +52,26 @@ $results.TestResult | ConvertTo-Json -Depth 10 | Out-File C:\temp\OlaTestResults
 
 ## But Powerbi is best
 Invoke-Item 'Git:\Presentations\PSConfAsia 2017 - Green is Good Red is Bad\Test Ola Report.pbix'
+
+## and let me show you how easy it is to do this for your self
+
+Start-Process 'https://sqldbawithabeard.com/2017/10/29/a-pretty-powerbi-pester-results-template-file/'
+
+## From that page you can download the template PowerBi Pbix file
+
+## and then run which ever Pester that you want to
+
+$Config = (Get-Content GIT:\dbatools-scripts\TestConfig.json) -join "`n" | ConvertFrom-Json
+$PesterResults = Invoke-Pester .\dbatools-scripts\ -PassThru
+$PesterResults.TestResult | Convertto-Json |Out-File C:\temp\dbatools-scripts-pester.json
+
+## now we can put this into the template file
+
+Start-Process .\PesterTestPowerBi.pbix 
+
+## or use the tags and set up a process
+
+$PesterResults = Invoke-Pester -Tag Instance -PassThru
+$PesterResults.TestResult | Convertto-Json |Out-File C:\temp\innstance-pester.json
+
+Start-Process .\PesterTestPowerBi.pbix 

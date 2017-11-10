@@ -32,19 +32,19 @@ Describe "Testing for Presentation" {
         }
 
         It "Should have the correct PowerPoint Presentation Open" {
-            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'Green Is Good - Red is Bad - PowerPoint'
+            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'summit-precon - PowerPoint'
         }
         It "Mail Should be closed" {
-            (Get-Process HxMail -ErrorAction SilentlyContinue).COunt | Should Be 0
+            (Get-Process HxMail -ErrorAction SilentlyContinue).Count | Should Be 0
         }
         It "Tweetium should be closed" {
             (Get-Process WWAHost -ErrorAction SilentlyContinue).Count | Should Be 0
         }
         It "Slack should be closed" {
-            (Get-Process slack* -ErrorAction SilentlyContinue).Count | Should BE 0
+           # (Get-Process slack* -ErrorAction SilentlyContinue).Count | Should BE 0
         }
         It "Prompt should be Presentations" {
-            (Get-Location).Path | Should Be 'Presentations:\PSConfAsia 2017 - Green is Good Red is Bad'
+            (Get-Location).Path | Should Be 'Presentations:\PassSummit2017'
         }
         It "Should be running as rob-xps\mrrob" {
             whoami | Should Be 'rob-xps\mrrob'
@@ -58,15 +58,15 @@ Describe "Testing for Presentation" {
         It "Should have Pester version 4.0.8 imported" {
             (Get-Module Pester).Version | Should Be '4.0.8'
         }
-        It "Should have dbatools version 0.9.72 imported" {
-            (Get-Module dbatools).Version | Should Be '0.9.72'
+        It "Should have correct dbatools version imported" {
+            (Get-Module dbatools).Version | Should Be '0.9.83'
         }
     }
 }
 
 Describe "Testing for Demo"{
     It "Should have DNS Servers for correct interface - not if v6" {
-        (Get-DnsClientServerAddress -InterfaceAlias 'vEthernet (Beard Internal)').Serveraddresses | Should Be @('0.0.0.0')
+        (Get-DnsClientServerAddress -InterfaceAlias 'vEthernet (Beard Internal)').Serveraddresses | Should Be @('10.0.0.1')
     }
     It "Should have correct gateway for alias - not if v6 "{
         (Get-NetIPConfiguration -InterfaceAlias 'vEthernet (Beard Internal)').Ipv4DefaultGateway.NextHop | Should Be '0.0.0.0'

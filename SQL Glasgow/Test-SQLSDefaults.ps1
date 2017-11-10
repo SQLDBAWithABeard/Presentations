@@ -321,7 +321,7 @@ foreach($Server in $Servers)
        {Write-Error "PSRemoting is not enabled on $ServerName Please enable and retry"
        continue}
     Describe "$Server" {
-        $kip = $true
+        $skip = $true
         BeforeAll {
             $Scriptblock = {
             [pscustomobject]$Return = @{}

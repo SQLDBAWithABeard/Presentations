@@ -1,6 +1,6 @@
 ## Test Cases and Tags
 
-cd 'Presentations:\PSConfAsia 2017 - Green is Good Red is Bad'
+cd 'Presentations:\PassSummit2017'
 
 Invoke-Pester -Tag Backup
  

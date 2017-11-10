@@ -1,4 +1,5 @@
-    cd 'Presentations:\PSConfAsia 2017 - Green is Good Red is Bad'
+    cd 'Presentations:\PassSummit2017'
+    
     . .\Test-SQLSDefaults.ps1
 
 ## This is how it works - but I have no VMs here
