@@ -103,7 +103,7 @@ NOTE: Start-Demo replaces the typing but runs the actual commands.
  
     } # else
 
-    if(($_lines[$_i] -match '\)' -and $_lines[$_i+1] -match '\{') -or ($_lines[$_i] -match '\){'))
+    if(($_lines[$_i] -match '\)' -and $_lines[$_i+1] -match '\{') -or ($_lines[$_i] -match '\)\s?{'))
     {
         $justKeepSwinging++
     }
