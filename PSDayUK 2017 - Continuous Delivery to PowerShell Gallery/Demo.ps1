@@ -29,7 +29,7 @@ $plaster = @{
     FullName = "Rob Sewell"
     ModuleName = $ModuleName
     ModuleDesc = $Description
-    Version = '0.9.22'
+    Version = '0.9.25'
     GitHubUserName = "SQLDBAWithABeard"
     GitHubRepo = $ModuleName
     }
@@ -265,16 +265,32 @@ Get-SpeakerBeard -Speaker LonnyNiederstadt -Detailed -ShowImage
 
 $url = 'https://newsqldbawiththebeard.files.wordpress.com/2017/04/wp_20170406_07_31_20_pro.jpg'
 
+function JustForFun { Param($url)
 $jsonBody = @{url = $url} | ConvertTo-Json
-    $apiUrl = "https://westus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false&returnFaceAttributes=age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur"
+    $apiUrl = "https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false&returnFaceAttributes=age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur"
     $apiKey = $Env:MS_Faces_Key
     $headers = @{ "Ocp-Apim-Subscription-Key" = $apiKey }
     $analyticsResults = Invoke-RestMethod -Method Post -Uri $apiUrl -Headers $headers -Body $jsonBody -ContentType "application/json"  -ErrorAction Stop
     $analyticsResults 
     $analyticsResults[0] | fl
     $analyticsResults[0].faceAttributes | select * |fl
-    $analyticsResults[0].faceAttributes.facialhair.beard
+    
+    $Beard = $analyticsResults[0].faceAttributes.facialhair.beard
 
     Start-Process $url
 
+    Write-Output "And the Beard Score is...........      $Beard"
+}
+
+
+$RobBeard = JustForFun $url
+
 ## I DO Have the Top Beard ;-)
+
+## Lets have a look at Bill
+
+$Bill = 'https://pbs.twimg.com/media/DNuGikFVAAIRWPO.jpg'
+
+$BillBeard = JustForFun -url $Bill
+
+

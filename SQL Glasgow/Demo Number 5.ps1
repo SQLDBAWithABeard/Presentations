@@ -31,7 +31,7 @@
 ##             Each LOG folder should have files less than 30 minutes old
 ## 
 ##    Not a quick task and as you can imagine prone to human mistakes
-
+cd 'Presentations:\SQL Glasgow'
 ."GIT:\Functions\Test-OLAInstance.ps1"
 ## Now I can run against any number of Servers
 $results = Test-OLAInstance -Instance rob-xps,'rob-xps\dave', 'ROB-XPS\SQL2016' -Share C:\MSSQL\BACKUP -NoDatabaseRestoreCheck -CheckForBackups 
@@ -62,7 +62,7 @@ Start-Process 'https://sqldbawithabeard.com/2017/10/29/a-pretty-powerbi-pester-r
 ## and then run which ever Pester that you want to
 
 $Config = (Get-Content GIT:\dbatools-scripts\TestConfig.json) -join "`n" | ConvertFrom-Json
-$PesterResults = Invoke-Pester .\dbatools-scripts\ -PassThru
+$PesterResults = Invoke-Pester GIT:\dbatools-scripts\dbatools-scripts\ -PassThru
 $PesterResults.TestResult | Convertto-Json |Out-File C:\temp\dbatools-scripts-pester.json
 
 ## now we can put this into the template file

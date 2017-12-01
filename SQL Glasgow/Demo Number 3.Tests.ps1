@@ -76,7 +76,7 @@ Describe 'Testing Virtual Log FIles' -Tag Database, VLF {
                     }
                 }
             }
-            else{
+            else {
                 $Results.Count | Should BeLessThan $MaxVLFs
             }
         }
@@ -186,14 +186,14 @@ Describe 'Testing Job Owners' -Tag JobOwner, Agent {
             # because 1 job does not have a foreach method!!
             if ($Results.Count -gt 1) {
                 $Results.ForEach{
-                    It "Job Owner for $($_.Job) Should be $TargetJobOwner" {
-                        $_.CurrentOwner | Should Be $TargetJobOwner
+                    It "Job Owner for $($_.Job) Should Not be $TargetJobOwner" {
+                        $_.CurrentOwner | Should Not Be $TargetJobOwner
                     }
                 }
             }
             else {
-                It "Job Owner for $($Results.Job) Should be $TargetJobOwner" {
-                    $Results.CurrentOwner | Should Be $TargetJobOwner
+                It "Job Owner for $($Results.Job) Should Not be $TargetJobOwner" {
+                    $Results.CurrentOwner | Should Not Be $TargetJobOwner
                 }
             }
         }
@@ -222,9 +222,16 @@ Describe 'Testing Database Owner' -Tag Owner, Database {
     $SQLServers.ForEach{
         Context "Testing Database Owners on  $_" {
             $Results = Test-DbaDatabaseOwner -SqlInstance $_ -TargetLogin $TargetDatabaseOwner
-            $Results.ForEach{
-                It "$($_.Database) Owner should be $TargetDatabaseOwner" {
-                    $_.CurrentOwner | Should Be $_.TargetOwner
+            if ($Results.COunt -gt 1) {
+                $Results.ForEach{
+                    It "$($_.Database) Owner should Not be $TargetDatabaseOwner" {
+                        $_.CurrentOwner | Should Not Be $_.TargetOwner
+                    }
+                }
+            }
+            else {
+                It "$($Results.Database) Owner should Not be $TargetDatabaseOwner" {
+                    $Results.CurrentOwner | Should Not Be $TargetDatabaseOwner
                 }
             }
         }
@@ -238,7 +245,15 @@ Describe 'Testing Database Compatability' -Tag Compatability {
     $SQLServers.ForEach{
         Context "Testing Database Compatability on  $_" {
             $Results = Test-DbaDatabaseCompatibility -SqlInstance $_ -Detailed
-            $Results.ForEach{
+            
+            if ($Results.COunt -gt 1) {
+                $Results.ForEach{
+                    It "$($_.Database) compatability should be the same as the server compatability" {
+                        $_.DatabaseCompatibility | Should Be $_.ServerLevel
+                    }
+                }
+            }
+            else {
                 It "$($_.Database) compatability should be the same as the server compatability" {
                     $_.DatabaseCompatibility | Should Be $_.ServerLevel
                 }

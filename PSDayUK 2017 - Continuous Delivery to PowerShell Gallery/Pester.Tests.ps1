@@ -4,10 +4,10 @@ Describe "Network Settings" {
         (Get-NetAdapter -ErrorAction SilentlyContinue ).Name -contains 'Wifi' | Should Be $true
     }
     It "Should have the correct address" {
-        (Get-NetIPAddress -InterfaceAlias 'WiFi'  -ErrorAction SilentlyContinue).Where{$_.AddressFamily -eq 'Ipv4'}.Ipaddress | Should be '172.16.1.105'
+        ((Get-NetIPAddress -InterfaceAlias 'WiFi'  -ErrorAction SilentlyContinue) | Where {$_.AddressFamily -eq 'Ipv4'}).Ipaddress | Should be '192.168.0.29'
     }
     It "Should have the correct DNS Server" {
-      (Get-DnsClientServerAddress -InterfaceAlias 'WiFi' -AddressFamily IPv4).ServerAddresses | Should Be @('8.8.8.8','172.16.1.1')
+      (Get-DnsClientServerAddress -InterfaceAlias 'WiFi' -AddressFamily IPv4).ServerAddresses | Should Be @('0.0.0.0')
     }
 }
 
@@ -40,6 +40,9 @@ Describe "Testing for Presentation" {
         }
         It "Should be running as rob-xps\mrrob" {
             whoami | Should Be 'rob-xps\mrrob'
+        }
+        It "Should have the VSTS Agent Service Running"{
+            (Get-Service vstsagent.sewells-consulting.ROB-XPS).Status | Should Be 'Running'
         }
     }
     $ModuleName = [regex]::matches((Get-Content .\Demo.ps1), "\`$ModuleName\s=\s'([\w-]*)'").groups[1].value

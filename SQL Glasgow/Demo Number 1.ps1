@@ -38,27 +38,27 @@ Describe "Do things Exist" {
             (Get-ChildItem "C:\Program Files (x86)\Microsoft SQL Server\140\Tools\Binn\SQLPS.exe").VersionInfo.FileVersion | Should Be '14.0.900.75 ((SQL_Main).170727-1527)'
         }
         It "File should have been created on this date"{
-            (Get-ChildItem 'C:\Program Files\WindowsPowerShell\Modules\dbatools\0.9.25\dbatools.psm1').CreationTime | Should Be '08/10/2017 18:24:10'
+            (Get-ChildItem 'C:\Program Files\WindowsPowerShell\Modules\dbatools\0.9.25\dbatools.psm1').CreationTime | Should Be '08/10/2017 11:24:10'
         }
         It "File should not have been modified since this date"{
             (Get-ChildItem 'C:\Program Files\WindowsPowerShell\Modules\dbatools\0.9.25\functions\Remove-DbaDatabaseSafely.ps1').LastWriteTime| Should BeLessThan '09/08/2017 04:37:17'
         }
     }
     Context "Networks" {
-        It "Should have 6 Network Adapters" {
-            (Get-NetAdapter).COunt | Should be 6
+        It "Should have 7 Network Adapters" {
+            (Get-NetAdapter).COunt | Should be 7
         }
         It "Should have correct DNS Servers" {
-            (Get-DnsClientServerAddress -InterfaceAlias 'vEthernet (Beard Internal)').Serveraddresses | Should Be @('0.0.0.0')
+            (Get-DnsClientServerAddress -InterfaceAlias 'vEthernet (Beard Internal)').Serveraddresses | Should Be @('10.0.0.1')
         }
         
         (Get-DnsClientServerAddress -InterfaceAlias 'vEthernet (Beard Internal)').Serveraddresses.ForEach{
             It "DNS Server $($_) should respond to ping" {
-                (Test-Connection $_ -Count 1 -Quiet -ErrorAction SilentlyContinue ) | Should Be $false
+                (Test-Connection $_ -Count 1 -Quiet -ErrorAction SilentlyContinue ) | Should Be $true
             }
         }
         It "Should have the Correct Gateway"{
-            (Get-NetIPConfiguration -InterfaceAlias 'Wifi').Ipv4DefaultGateway.NextHop | Should Be '10.104.64.1'
+            (Get-NetIPConfiguration -InterfaceAlias 'Wifi').Ipv4DefaultGateway.NextHop | Should Be '192.168.200.1'
         }
         It "Gateway should respond to ping" {
             (Test-Connection (Get-NetIPConfiguration -InterfaceAlias 'Wifi').Ipv4DefaultGateway.NextHop -Count 1 -Quiet -ErrorAction SilentlyContinue ) | Should Be $true
