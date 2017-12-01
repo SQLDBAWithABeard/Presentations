@@ -1,7 +1,7 @@
 Return "This is a demo beardy"
 
 ## You can find everything here https://github.com/SQLDBAWithABeard/Presentations/tree/master/PSDay%20-%20Intro%20To%20TDD%20with%20Pester
-$Presentation = 'Presentations:\PSDayUK 2017 - Continuous Delivery to PowerShell Gallery'
+$Presentation = 'Presentations:\PowerShell Saturday Munich - Continuous Delivery'
 
 cd $Presentation
 Invoke-Pester .\Pester.Tests.ps1
@@ -29,7 +29,7 @@ $plaster = @{
     FullName = "Rob Sewell"
     ModuleName = $ModuleName
     ModuleDesc = $Description
-    Version = '0.9.25'
+    Version = '0.9.26'
     GitHubUserName = "SQLDBAWithABeard"
     GitHubRepo = $ModuleName
     }
@@ -66,7 +66,7 @@ Start-Process http://tugait.pt/2017/speakers/
 ## The Get-SpeakerFace function uses the Microsoft Cognative Services Faces API and gets a number of properties for each image
 
 ## Run then talk
-. 'Presentations:\PSDayUK 2017 - Continuous Delivery to PowerShell Gallery\Get-SpeakerFace.ps1'
+. 'Presentations:\PowerShell Saturday Munich - Continuous Delivery\Get-SpeakerFace.ps1'
 Copy-Item -Path $Presentation\Get-SpeakerFace.ps1 -Destination Git:\$ModuleName\functions
 git add .\functions\Get-SpeakerFace.ps1
 git commit -m "Added Get-SpeakerFace"
@@ -95,6 +95,12 @@ git commit -m "Added Get-SpeakerBeard"
 ## Lets look in 01 Pester-test.ps1
 
 ## We can run it with 
+
+if(!(Get-Variable Presentation -ErrorAction SilentlyContinue))
+{
+    Write-Warning "Fool - You need the Presentations Variable set"
+    $Presentation = 'Presentations:\PowerShell Saturday Munich - Continuous Delivery'
+}
 
 Invoke-Pester "$Presentation\01 - Pester-Test.ps1"
 
