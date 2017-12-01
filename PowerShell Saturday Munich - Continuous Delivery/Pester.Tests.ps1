@@ -1,4 +1,4 @@
-cd 'Presentations:\PSDayUK 2017 - Continuous Delivery to PowerShell Gallery'
+cd 'Presentations:\PowerShell Saturday Munich - Continuous Delivery'
 Describe "Network Settings" {
     It "Should have correct adapter" {
         (Get-NetAdapter -ErrorAction SilentlyContinue ).Name -contains 'Wifi' | Should Be $true
@@ -36,7 +36,7 @@ Describe "Testing for Presentation" {
             (Get-Process slack* -ErrorAction SilentlyContinue).Count | Should BE 0
         }
         It "Prompt should be Presentations" {
-            (Get-Location).Path | Should Be 'Presentations:\PSDayUK 2017 - Continuous Delivery to PowerShell Gallery'
+            (Get-Location).Path | Should Be 'Presentations:\PowerShell Saturday Munich - Continuous Delivery'
         }
         It "Should be running as rob-xps\mrrob" {
             whoami | Should Be 'rob-xps\mrrob'
