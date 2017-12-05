@@ -4,10 +4,10 @@ Describe "Network Settings" {
         (Get-NetAdapter -ErrorAction SilentlyContinue ).Name -contains 'Wifi' | Should Be $true
     }
     It "Should have the correct address" {
-        ((Get-NetIPAddress -InterfaceAlias 'WiFi'  -ErrorAction SilentlyContinue) | Where {$_.AddressFamily -eq 'Ipv4'}).Ipaddress | Should be '192.168.0.29'
+        ((Get-NetIPAddress -InterfaceAlias 'WiFi'  -ErrorAction SilentlyContinue) | Where {$_.AddressFamily -eq 'Ipv4'}).Ipaddress | Should be '10.60.176.22'
     }
     It "Should have the correct DNS Server" {
-      (Get-DnsClientServerAddress -InterfaceAlias 'WiFi' -AddressFamily IPv4).ServerAddresses | Should Be @('0.0.0.0')
+      (Get-DnsClientServerAddress -InterfaceAlias 'WiFi' -AddressFamily IPv4).ServerAddresses | Should Not Be @('0.0.0.0')
     }
 }
 
