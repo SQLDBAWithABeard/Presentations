@@ -1,8 +1,8 @@
 ## Pester Demo
 ## Just a failsafe ;-)
-# Return "This is a demo Beardy!"
+Return "This is a demo Beardy!"
 
-# Install-Module Pester -Scope CurrentUser
+# Install-Module Pester -Scope CurrentUser -SkipPublisherCheck
 
 # Update-Module Pester -Force
 

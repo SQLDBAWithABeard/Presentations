@@ -37,70 +37,21 @@ cls
 ## Now I can run against any number of Servers
 $results = Test-OLAInstance -Instance rob-xps,'rob-xps\dave', 'ROB-XPS\SQL2016' -Share C:\MSSQL\BACKUP -NoDatabaseRestoreCheck -CheckForBackups 
 
-## I can also create a HTML page for the results
-## Unfortunately New Pester broke the old reportunit and it looked rubbish
-## But we can do this
-
-$SQLServers = 'rob-xps','rob-xps\dave', 'ROB-XPS\SQL2016'
-
-
-#region - This no longer works - it used to be cool
-$Path = 'Git:\Functions\Test-OLA.ps1'
-
-foreach($Server in $SQLServers)
-{
-    ## Create Parameter block for running Pester
-    $Script = @{
-    Path = $Path;
-    Parameters = @{ Instance = $Server;
-    CheckForBackups =  $true;
-    CheckForDBFolders =  $true;
-    NoDatabaseRestoreCheck= $true;
-    Share = 'C:\MSSQL\Backup';
-    }
-    }
-
-## Set some variables
-$Date = Get-Date -Format ddMMyyyHHmmss
-$tempFolder = 'c:\temp\ReportsIndividual\'
-$InstanceName = $Server.Replace('\','-')
-$File = $tempFolder + $InstanceName 
-$XML = $File + '.xml'
-
-## Run Pester only showing failures and outputting ALL results to a file
-Invoke-Pester -Script $Script -OutputFile $xml -OutputFormat NUnitXml -show fails
-}
-Push-Location $tempFolder
-
-## Once Tests have run
-#download and extract ReportUnit.exe
-$url = 'http://relevantcodes.com/Tools/ReportUnit/reportunit-1.2.zip'
-$fullPath = Join-Path $tempFolder $url.Split("/")[-1]
-$reportunit = $tempFolder + '\reportunit.exe'
-if((Test-Path $reportunit) -eq $false)
-{
-(New-Object Net.WebClient).DownloadFile($url,$fullPath)
-Expand-Archive -Path $fullPath -DestinationPath $tempFolder
-}
-#run reportunit against report.xml and display result in browser
-$HTML = $tempFolder  + 'index.html'
-& .\reportunit.exe $tempFolder
-ii $HTML
 #endregion
 
 ## embed into CI CD processes - get this cosumed by your build deploy release servers systems with
 $filepath = 'C:\temp\dummyfile.xml'
-$script = '.\Database Freespace.ps1'
+$script = & 'Git:\dbatools-scripts\Pester Test Last Known good DBCC CheckDB - Database Level.Tests.ps1'
 Invoke-Pester -Script $script -Show None -OutputFile $filepath -OutputFormat NUnitXml 
 
 code-insiders C:\temp\dummyfile.xml
 
-## but remember our Test results objet from before?
+## but remember our Test results object from before?
 
 $results
 
 ## I can take the results object and convert it JSON (This is for the Powerbi :-) )
-$results.TestResult | ConvertTo-Json -Depth 10 | Out-File C:\temp\OlaTestResults1.json 
+$results.TestResult | ConvertTo-Json -Depth 10 | Out-File C:\temp\PASSCampOlaTestResults.json 
 
 ## But Powerbi is best
-Invoke-Item 'Git:\Presentations\PSConfAsia 2017 - Green is Good Red is Bad\Test Ola Report.pbix'
+# Invoke-Item 'Git:\Presentations\PSConfAsia 2017 - Green is Good Red is Bad\Test Ola Report.pbix'

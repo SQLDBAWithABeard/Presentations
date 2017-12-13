@@ -58,17 +58,17 @@ Describe "Testing for Presentation" {
         It "Should have Pester version 4.0.8 imported" {
             (Get-Module Pester).Version | Should Be '4.0.8'
         }
-        It "Should have dbatools version 0.9.72 imported" {
-            (Get-Module dbatools).Version | Should Be '0.9.72'
+        It "Should have dbatools imported" {
+            (Get-Module dbatools).Version | Should Be '0.9.83'
         }
     }
 }
 
 Describe "Testing for Demo"{
     It "Should have DNS Servers for correct interface - not if v6" {
-        (Get-DnsClientServerAddress -InterfaceAlias 'vEthernet (Beard Internal)').Serveraddresses | Should Be @('0.0.0.0')
+        (Get-DnsClientServerAddress -InterfaceAlias 'WiFi').Serveraddresses | Should Be @('172.16.1.1')
     }
     It "Should have correct gateway for alias - not if v6 "{
-        (Get-NetIPConfiguration -InterfaceAlias 'vEthernet (Beard Internal)').Ipv4DefaultGateway.NextHop | Should Be '0.0.0.0'
+        (Get-NetIPConfiguration -InterfaceAlias 'WiFi').Ipv4DefaultGateway.NextHop | Should Be '172.16.1.1'
     }
 }
