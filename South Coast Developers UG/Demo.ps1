@@ -1,6 +1,6 @@
 Return "This is a demo beardy"
 
-cd 'Presentations:\SQL Saturday Holland - Intro To Pester'
+cd 'Presentations:\South Coast Developers UG'
 
 Invoke-Pester .\Pester-Test-Demo.ps1
 

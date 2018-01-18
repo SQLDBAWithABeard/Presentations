@@ -24,7 +24,7 @@ Describe "Testing for Presentation" {
         }
 
         It "Should have the correct PowerPoint Presentation Open" {
-            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'SQL Sat Holland - Introduction to Pester - PowerPoint'
+            (Get-Process POWERPNT  -ErrorAction SilentlyContinue).MainWindowTitle| Should Be 'Introduction to Pester - PowerPoint'
         }
         It "Mail Should be closed" {
             (Get-Process HxMail -ErrorAction SilentlyContinue).COunt | Should Be 0
@@ -36,7 +36,7 @@ Describe "Testing for Presentation" {
             (Get-Process slack* -ErrorAction SilentlyContinue).Count | Should BE 0
         }
         It "Prompt should be Presentations" {
-            (Get-Location).Path | Should Be 'Presentations:\SQL Saturday Holland - Intro To Pester'
+            (Get-Location).Path | Should Be 'Presentations:\South Coast Developers UG'
         }
         It "Should be running as rob-xps\mrrob" {
             whoami | Should Be 'rob-xps\mrrob'
