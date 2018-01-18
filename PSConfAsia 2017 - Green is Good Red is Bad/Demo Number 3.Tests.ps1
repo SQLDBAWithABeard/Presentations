@@ -147,19 +147,7 @@ Describe 'Testing Network Latency' -Tag Network, Latency, Instance {
         }
     }
 }
-Describe 'Testing Max Memory' -Tag Memory, Instance {
-    ## This is getting a list of server name from Hyper-V - You can chagne this to a list of SQL instances
-    ## $SQLServers = (Get-VM -ComputerName beardnuc| Where-Object {$_.Name -like "*SQL2016*" -and $_.State -eq 'Running'}).Name
-    if (!$SQLServers) {Write-Warning "No Servers to Look at - Check the config.json"}
-    $SQLServers.ForEach{
-        Context "Testing $_" {
-            It "Max Memry setting should be correct" {
-                $Results = Test-DbaMaxMemory -SqlInstance $_
-                $Results.SqlMaxMB | Should BeLessThan ($Results.RecommendedMB + 379)
-            }
-        }
-    }
-}
+
 Describe 'Testing Linked Servers' -Tag LinkedServer, Instance {
     ## This is getting a list of server name from Hyper-V - You can chagne this to a list of SQL instances
     ## $SQLServers = (Get-VM -ComputerName beardnuc| Where-Object {$_.Name -like "*SQL2016*" -and $_.State -eq 'Running'}).Name

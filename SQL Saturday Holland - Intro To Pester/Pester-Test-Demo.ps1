@@ -4,7 +4,7 @@ Describe "Network Settings" {
         (Get-NetAdapter -ErrorAction SilentlyContinue ).Name -contains 'Wifi' | Should Be $true
     }
     It "Should have the correct address" {
-        (Get-NetIPAddress -InterfaceAlias 'WiFi'  -ErrorAction SilentlyContinue).Where{$_.AddressFamily -eq 'Ipv4'}.Ipaddress | Should be '172.16.1.105'
+        @(Get-NetIPAddress -InterfaceAlias 'WiFi'  -ErrorAction SilentlyContinue).Where{$_.AddressFamily -eq 'Ipv4'}.Ipaddress | Should be '172.16.1.105'
     }
     It "Should have the correct DNS Server" {
       (Get-DnsClientServerAddress -InterfaceAlias 'WiFi' -AddressFamily IPv4).ServerAddresses | Should Be @('8.8.8.8','172.16.1.1')
