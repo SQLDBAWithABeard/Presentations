@@ -299,6 +299,58 @@ $PesterResults.TestResult | ConvertTo-Json -Depth 10 | Out-File C:\temp\PesterRe
 
 Start-Process -FilePath .\Pester_Results.pbix
 
+## Lets look at some New Pre-Release Features
+
+## Switch to PowerShell Core 
+
+## Lets try the latest Pre-Release
+
+## this requires the latest version of PowerShellGet installed on PowerShell v6 but on earlier versions
+
+## In An Admin session
+
+##  Install-Module  PowerShellGet 
+
+## Install-Module -Name Pester -AllowPrerelease
+
+Import-Module Pester
+
+## Check it is the latest version
+
+Get-Module Pester
+
+Import-Module C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules\SmbShare\SmbShare.psd1
+
+Get-Module Pester
+
+Get-Command -Module Pester
+
+$Speaker = 'Rob'
+
+# $Speaker = 'James'
+
+Describe "The Speaker" {
+    Context "Facial Appearance" {
+        It "The Speaker Should have a Beard" {
+            $Speaker | Should -Be 'Rob' -Because "Beards Are Awesome"
+        }
+    }
+}
+
+Describe "My System" {
+    Context "Server" {
+        It "Should be using XP SP3" {
+            (Get-CimInstance -ClassName win32_operatingsystem).Version | Should -Be '5.1.2600' -Because "We have failed to bother to update the App and it only works on XP"
+        }
+        It "Should be running as rob-xps\mrrob" {
+            whoami | Should -Be 'rob-xps\mrrob' -Because "This is the user with the permissions"
+        }
+        It "Should have SMB1 enabled" {
+            (Get-SmbServerConfiguration).EnableSMB1Protocol | Should -BeTrue -Because "We don't care about the risk"
+        }
+    }
+}
+
 ## Now lets look at the function results for fun
 
 Get-SpeakerBeard -Faces $SpeakerFaces -Speaker JaapBrasser 
@@ -328,6 +380,7 @@ Get-SpeakerBeard -Faces $SpeakerFaces -Speaker RobSewell -ShowImage
 
 $url = 'https://newsqldbawiththebeard.files.wordpress.com/2017/04/wp_20170406_07_31_20_pro.jpg'
 $jsonBody = @{url = $url} | ConvertTo-Json
+#$apiUrl = "https://westus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false&returnFaceAttributes=age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur"
 $apiUrl = "https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false&returnFaceAttributes=age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur"
 $apiKey = $Env:MS_Faces_Key
     $headers = @{ "Ocp-Apim-Subscription-Key" = $apiKey }
