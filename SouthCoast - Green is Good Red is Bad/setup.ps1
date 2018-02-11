@@ -1,7 +1,7 @@
 #Requires -Version 5
 #Requires -module dbatools
 $VerbosePreference = 'Continue'
-Import-Module dbatools
+# Import-Module dbatools
 
 $SQLInstances = 'ROB-XPS','ROB-XPS\BOLTON','ROB-XPS\SQL2016'
 
@@ -34,7 +34,9 @@ foreach ($ServerInstance in $SQLInstances) {
 
 }
 
-
+if((Get-VM Bolton).State -ne 'Running'){
+    Start-VM Bolton
+}
 $VerbosePreference = 'SilentlyContinue'
 
 cd Presentations:\

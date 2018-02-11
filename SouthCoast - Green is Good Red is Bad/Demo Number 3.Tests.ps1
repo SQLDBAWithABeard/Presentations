@@ -17,7 +17,7 @@ Describe 'Testing Access to Backup Share' -Tag Instance, Backup {
     $SQLServers.ForEach{$testCases += @{Name = $_}}
     It "<Name> has access to Backup Share $BackupShare" -TestCases $testCases {
         Param($Name)
-        Test-DbaSqlPath -SqlServer $Name -Path $BackupShare | Should Be $True
+        Test-DbaSqlPath -SqlServer $Name -Path $BackupShare | Should -Be $True
     }
 }
 
@@ -30,7 +30,7 @@ Describe "Testing Database Collation" -Tag Instance, Collation {
     It "<Name> databases have the right collation" -TestCases $testCases {
         Param($Name)
         $Collation = Test-DbaDatabaseCollation -SqlServer $Name
-        $Collation.IsEqual -contains $false | Should Be $false
+        $Collation.IsEqual -contains $false | Should -Be $false
     }
 
 }
@@ -46,14 +46,14 @@ Describe "Testing Last Known Good DBCC" -Tag Database, DBCC {
             $DBCCTests = Get-DbaLastGoodCheckDb -SqlServer $Server -ErrorAction SilentlyContinue -WarningAction SilentlyContinue
             foreach ($DBCCTest in $DBCCTests.Where{$_.Database -ne 'tempdb'}) {
                 It "$($DBCCTest.Server) database $($DBCCTest.Database) had a successful CheckDB" {
-                    $DBCCTest.Status | Should Be 'Ok'
+                    $DBCCTest.Status | Should -Be 'Ok'
                 }
                 It "$($DBCCTest.Server) database $($DBCCTest.Database) had a CheckDB run in the last 14 days" {
                     $DBCCTest.DaysSinceLastGoodCheckdb | Should BeLessThan 14
                     $DBCCTest.DaysSinceLastGoodCheckdb | Should Not BeNullOrEmpty
                 }   
                 It "$($DBCCTest.Server) database $($DBCCTest.Database) has Data Purity Enabled" {
-                    $DBCCTest.DataPurityEnabled| Should Be $true
+                    $DBCCTest.DataPurityEnabled| Should -Be $true
                 }    
             }
         }
@@ -91,7 +91,7 @@ Describe 'Testing TempDB Configuration' -Tag TempDB, Instance {
     $SQLServers.ForEach{
         Context "Testing $_" {
             It " Should pass the default TempDB Configuration" {
-                (Test-DbaTempDbConfiguration -SqlInstance $_).IsBestPractice | Should Be $true
+                (Test-DbaTempDbConfiguration -SqlInstance $_).IsBestPractice | Should -Be $true
             }
         }
     }
@@ -104,7 +104,7 @@ Describe 'Testing SQL ServerName - HostName Configuration' -Tag ServerName, Inst
     $SQLServers.ForEach{
         Context "Testing $_" {
             It "SQL ServerName and Host name should match" {
-                (Test-DbaServerName -SqlInstance $_).IsEqual | Should be $true
+                (Test-DbaServerName -SqlInstance $_).IsEqual | Should -Be $true
             }
         }
     }
@@ -117,7 +117,7 @@ Describe 'Testing Server PowerPlan Configuration' -Tag PowerPlan, Server {
         Context "Testing $_" {
             $ServerName = $_.Split('\')[0]
             It "Server PowerPlan should be High Performance" {
-                (Test-DbaPowerPlan -SqlServer $ServerName).IsBestPractice | Should be $true
+                (Test-DbaPowerPlan -SqlServer $ServerName).IsBestPractice | Should -Be $true
             }
         }
     }
@@ -130,7 +130,7 @@ Describe 'Testing Optimise for AdHoc Workloads setting' -Tag AdHoc, Instance {
         Context "Testing $_" {
             It "Should be Optimised for AdHocworkloads" {
                 $Results = Test-DbaOptimizeForAdHoc -SqlInstance $_
-                $Results.CurrentOptimizeAdHoc | Should be $Results.RecommendedOptimizeAdHoc
+                $Results.CurrentOptimizeAdHoc | Should -Be $Results.RecommendedOptimizeAdHoc
             }
         }
     }
@@ -142,7 +142,7 @@ Describe 'Testing Network Latency' -Tag Network, Latency, Instance {
     $SQLServers.ForEach{
         Context "Testing $_" {
             It "Should Have a Latency less than $MaxLatency" {
-                [timespan](Test-DbaNetworkLatency -SqlInstance $_).Average | Should BeLessThan $MaxLatency
+                [timespan](Test-DbaNetworkLatency -SqlInstance $_).Average | Should -BeLessThan $MaxLatency
             }
         }
     }
@@ -157,7 +157,7 @@ Describe 'Testing Linked Servers' -Tag LinkedServer, Instance {
             $Results = Test-DbaLinkedServerConnection -SqlInstance $_ 
             $Results.ForEach{
                 It "Linked Server $($_.LinkedServerName) Should Be Connectable" {
-                    $_.Connectivity | SHould be $True
+                    $_.Connectivity | Should -Be $True
                 }
             }
         }
@@ -175,13 +175,13 @@ Describe 'Testing Job Owners' -Tag JobOwner, Agent {
             if ($Results.Count -gt 1) {
                 $Results.ForEach{
                     It "Job Owner for $($_.Job) Should be $TargetJobOwner" {
-                        $_.CurrentOwner | Should Be $TargetJobOwner
+                        $_.CurrentOwner | Should -Be $TargetJobOwner
                     }
                 }
             }
             else {
                 It "Job Owner for $($Results.Job) Should be $TargetJobOwner" {
-                    $Results.CurrentOwner | Should Be $TargetJobOwner
+                    $Results.CurrentOwner | Should -Be $TargetJobOwner
                 }
             }
         }
@@ -196,7 +196,7 @@ Describe 'Testing FullRecovery Model' -Tag Backup, Database {
             $Results = Test-DbaFullRecoveryModel -SqlInstance $_ -Detailed
             $Results.ForEach{
                 It "$($_.Database) Should have had a Full backup if in Full Recovery Model" {
-                    $_.ConfiguredRecoveryModel | Should Be $_.ActualRecoveryModel
+                    $_.ConfiguredRecoveryModel | Should -Be $_.ActualRecoveryModel
                 }
             }
         }
@@ -212,7 +212,7 @@ Describe 'Testing Database Owner' -Tag Owner, Database {
             $Results = Test-DbaDatabaseOwner -SqlInstance $_ -TargetLogin $TargetDatabaseOwner
             $Results.ForEach{
                 It "$($_.Database) Owner should be $TargetDatabaseOwner" {
-                    $_.CurrentOwner | Should Be $_.TargetOwner
+                    $_.CurrentOwner | Should -Be $_.TargetOwner
                 }
             }
         }
@@ -228,7 +228,7 @@ Describe 'Testing Database Compatability' -Tag Compatability {
             $Results = Test-DbaDatabaseCompatibility -SqlInstance $_ -Detailed
             $Results.ForEach{
                 It "$($_.Database) compatability should be the same as the server compatability" {
-                    $_.DatabaseCompatibility | Should Be $_.ServerLevel
+                    $_.DatabaseCompatibility | Should -Be $_.ServerLevel
                 }
             }
         }
@@ -244,13 +244,13 @@ Describe 'Testing DiskSpace' -Tag DiskSpace, Server {
             if ($Results.COunt -gt 1) {
                 $Results.ForEach{
                     It "Drive $($_.Name) - Label $($_.Label) Should have more than $MinDiskPercent % free" {
-                        $_.PercentFree | SHould BeGreaterThan $MinDiskPercent
+                        $_.PercentFree | SHould -BeGreaterThan $MinDiskPercent
                     }
                 }
             }
             else {
                 It "Drive $($Results.Name) - Label $($Results.Label) Should have more than $MinDiskPercent % free" {
-                    $Results.PercentFree | SHould BeGreaterThan $MinDiskPercent
+                    $Results.PercentFree | SHould -BeGreaterThan $MinDiskPercent
                 }
             }
         }
@@ -267,16 +267,16 @@ Describe "Testing Instance Connectionn" -Tag Instance, Connection {
                 $Connection = Test-DbaConnection -SqlInstance $_ 
             }
             It "$_ Connects successfully" {
-                $Connection.connectsuccess | Should BE $true
+                $Connection.connectsuccess | Should -Be $true
             }
             It "$_ AUth Scheme should be NTLM" {
-                $connection.AuthScheme | SHould Be "NTLM"
+                $connection.AuthScheme | Should -Be "NTLM"
             }
             It "$_ Is pingable" {
-                $Connection.IsPingable | Should be $True
+                $Connection.IsPingable | Should -Be $True
             }
             It "$_ Is PSRemotebale" {
-                $Connection.PSRemotingAccessible | Should Be $True
+                $Connection.PSRemotingAccessible | Should -Be $True
             }
         }
     }
@@ -293,31 +293,31 @@ Describe "Testing Extended Event Sessions" -Tag  XEvents {
                 $Xevents = Get-DbaXESession -SqlInstance $_ 
             }
             It "$_  Should have a Extended Event Session called system_health" {
-                $Xevents.Name -contains 'system_health' | Should Be True
+                $Xevents.Name -contains 'system_health' | Should -Be True
             }
             It "$_  System Health XEvent should be Running" {
-                $Xevents.Where{$_.Name -eq 'system_health'}.Status | Should be 'Running'
+                $Xevents.Where{$_.Name -eq 'system_health'}.Status | Should -Be 'Running'
             }
             It "$_  System Health XEvent Auto Start Should Be True" {
-                $Xevents.Where{$_.Name -eq 'system_health'}.AutoStart | Should be $true
+                $Xevents.Where{$_.Name -eq 'system_health'}.AutoStart | Should -Be $true
             }
             It "$_  Should have a Extended Event Session called AlwaysOn_health" {
-                $Xevents.Name -contains 'AlwaysOn_health' | Should Be True
+                $Xevents.Name -contains 'AlwaysOn_health' | Should -Be True
             }
             It "$_  Always On Health XEvent should Not be Running" {
-                $Xevents.Where{$_.Name -eq 'AlwaysOn_health'}.Status | Should Not be 'Running'
+                $Xevents.Where{$_.Name -eq 'AlwaysOn_health'}.Status | Should Not -Be 'Running'
             }
             It "$_  Always On Health XEvent Auto Start Should Be False" {
-                $Xevents.Where{$_.Name -eq 'AlwaysOn_health'}.AutoStart | Should be $false
+                $Xevents.Where{$_.Name -eq 'AlwaysOn_health'}.AutoStart | Should -Be $false
             }
             It "$_  Should have a Extended Event Session called telemetry_xevents" {
-                $Xevents.Name -contains 'telemetry_xevents' | Should Be True
+                $Xevents.Name -contains 'telemetry_xevents' | Should -Be True
             }
             It "$_  Telemetry Events XEvent should be Running" {
-                $Xevents.Where{$_.Name -eq 'telemetry_xevents'}.Status | Should be 'Running'
+                $Xevents.Where{$_.Name -eq 'telemetry_xevents'}.Status | Should -Be 'Running'
             }
             It "$_  Telemetry Events XEvent Auto Start Should Be True" {
-                $Xevents.Where{$_.Name -eq 'telemetry_xevents'}.AutoStart | Should be $true
+                $Xevents.Where{$_.Name -eq 'telemetry_xevents'}.AutoStart | Should -Be $true
             }
         }
     }

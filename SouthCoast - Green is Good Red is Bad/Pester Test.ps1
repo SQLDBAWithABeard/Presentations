@@ -66,9 +66,9 @@ Describe "Testing for Presentation" {
 
 Describe "Testing for Demo"{
     It "Should have DNS Servers for correct interface - not if v6" {
-        (Get-DnsClientServerAddress -InterfaceAlias 'WiFi').Serveraddresses | Should Be @('192.168.43.1')
+        (Get-DnsClientServerAddress -InterfaceAlias 'WiFi').Serveraddresses | Should Be @('192.168.1.1')
     }
     It "Should have correct gateway for alias - not if v6 "{
-        (Get-NetIPConfiguration -InterfaceAlias 'WiFi').Ipv4DefaultGateway.NextHop | Should Be '192.168.43.1'
+        (Get-NetIPConfiguration -InterfaceAlias 'WiFi').Ipv4DefaultGateway.NextHop | Should Be '192.168.1.1'
     }
 }
