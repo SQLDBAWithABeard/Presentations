@@ -59,6 +59,8 @@ if (-not (Get-SmbShare -Name $ShareName -ErrorAction SilentlyContinue)) {
     New-SMBShare @newSMBShareSplat -Verbose
 }
 Exit
+
+Get-ChildItem $NetworkShare | Remove-Item -Recurse -Force
 #endregion
 
 #region copy backups
