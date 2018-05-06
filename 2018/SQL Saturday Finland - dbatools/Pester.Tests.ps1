@@ -1,5 +1,5 @@
-$SQLInstances = 'sql0','sql1'
-$containers = 'bearddockerhost,15789','bearddockerhost,15788','bearddockerhost,15787','bearddockerhost,15786','beardlinuxsql'
+$SQLInstances = 'sql0', 'sql1'
+$containers = 'bearddockerhost,15789', 'bearddockerhost,15788', 'bearddockerhost,15787', 'bearddockerhost,15786', 'beardlinuxsql'
 $cred = Import-Clixml $HOME\Documents\sa.cred
 Describe "testing for Demo" {
     Context "SQL" {
@@ -14,7 +14,7 @@ Describe "testing for Demo" {
             }
         }
     }
-    Context "Folders" {
+    Context "Files and Folders" {
         $Share = '\\jumpbox\SQLBackups'
         It "Should have a SQLBackups folder" {
             Test-Path C:\SQLBackups | Should -BeTrue
@@ -30,6 +30,19 @@ Describe "testing for Demo" {
         }
         It "should have all the backup files in the share keep folder" {
             (Get-ChildItem $Share\Keep).Count | Should -Be 8
+        }
+        It "shoudl not have a SQL Export file"{
+            Get-ChildItem *sql0-LinkedServer-Export* | Should -BeNullOrEmpty
+        }
+    }
+    Context "Linked servers" {
+        $containers.ForEach{
+            It "SQL0 should have a linked server for $Psitem" {
+                Get-DbaLinkedServer -SqlInstance sql0 -LinkedServer $psitem | Should -Not -BeNullOrEmpty
+            }
+            It "SQL1 should not have a linked server for $PSitem" {
+                Get-DbaLinkedServer -SqlInstance sql1 -LinkedServer $psitem | Should -BeNullOrEmpty
+            }
         }
     }
 }
