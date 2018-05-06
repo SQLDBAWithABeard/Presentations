@@ -1,7 +1,7 @@
 . .\vars.ps1
 
 #region Create New PSDrive and prompt
-if(-not (Get-PSDrive -Name Finland -ErrorAction SilentlyContinue)){
+if (-not (Get-PSDrive -Name Finland -ErrorAction SilentlyContinue)) {
     New-PSDrive -Name Finland -Root 'C:\Git\Presentations\2018\SQL Saturday Finland - dbatools' -PSProvider FileSystem
 }
 
@@ -30,36 +30,39 @@ if (-not (Get-SmbShare -Name $ShareName -ErrorAction SilentlyContinue)) {
     }
 
     $newSMBShareSplat = @{
-        Name                  = $ShareName
-        FullAccess            = $Full
-        ChangeAccess          = $Change
-        Path                  = $ShareFolder
-        Description           = "Location for the SQL Backups"
-        ReadAccess            = $Read
+        Name         = $ShareName
+        FullAccess   = $Full
+        ChangeAccess = $Change
+        Path         = $ShareFolder
+        Description  = "Location for the SQL Backups"
+        ReadAccess   = $Read
     }
     New-SMBShare @newSMBShareSplat -Verbose
 }
 
 ## Create share on dockerhost
-Enter-PSSession bearddockerhost
-$NetworkShare = '\\bearddockerhost.TheBeard.Local\NetworkSQLBackups'
-$ShareName = 'NetworkSQLBackups'
-$ShareFolder = 'E:\NetworkSQLBackups'
-$Full = 'EveryOne'
-if (-not (Get-SmbShare -Name $ShareName -ErrorAction SilentlyContinue)) {
-    if (-not (Test-Path $ShareFolder)) {
-        New-Item $ShareFolder -ItemType Directory
-    }
+$session = New-PSSession bearddockerhost
+$scriptBlock = {
+    $NetworkShare = '\\bearddockerhost.TheBeard.Local\NetworkSQLBackups'
+    $ShareName = 'NetworkSQLBackups'
+    $ShareFolder = 'E:\NetworkSQLBackups'
+    $Full = 'EveryOne'
+    if (-not (Get-SmbShare -Name $ShareName -ErrorAction SilentlyContinue)) {
+        if (-not (Test-Path $ShareFolder)) {
+            New-Item $ShareFolder -ItemType Directory
+        }
 
-    $newSMBShareSplat = @{
-        Name                  = $ShareName
-        FullAccess            = $Full
-        Path                  = $ShareFolder
-        Description           = "Location for the Network SQL Backups"
+        $newSMBShareSplat = @{
+            Name        = $ShareName
+            FullAccess  = $Full
+            Path        = $ShareFolder
+            Description = "Location for the Network SQL Backups"
+        }
+        New-SMBShare @newSMBShareSplat -Verbose
     }
-    New-SMBShare @newSMBShareSplat -Verbose
 }
-Exit
+Invoke-Command -Session $session -ScriptBlock $scriptBlock
+Remove-PSSession $session
 
 Get-ChildItem $NetworkShare | Remove-Item -Recurse -Force
 #endregion
@@ -69,7 +72,7 @@ Get-ChildItem $NetworkShare | Remove-Item -Recurse -Force
 
 $backupfiles = Get-ChildItem $HOME\Downloads\Adventure*bak
 
-if(-not (Test-Path $ShareFolder\Keep)){
+if (-not (Test-Path $ShareFolder\Keep)) {
     New-Item $ShareFolder\Keep -ItemType Directory
 }
 
@@ -119,7 +122,7 @@ $containers.ForEach{
 Restore-DbaDatabase -SqlInstance sql0 -Path $share -useDestinationDefaultDirectories -WithReplace 
 
 # create folder for backups and empty it if need be
-If(-Not (Test-Path C:\SQLBackups\SQLBackupsForTesting -ErrorAction SilentlyContinue)){
+If (-Not (Test-Path C:\SQLBackups\SQLBackupsForTesting -ErrorAction SilentlyContinue)) {
     New-Item C:\SQLBackups\SQLBackupsForTesting -ItemType Directory
 }
 Get-ChildItem C:\SQLBackups\SQLBackupsForTesting | Remove-item -Force
@@ -155,8 +158,8 @@ Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb 
 
 Invoke-DbaSqlQuery -SqlInstance $LinuxSQL -SqlCredential $cred -Database master -Query "CREATE DATABASE [DBA-Admin]"
 
-(0..20)| ForEach-Object{
-Invoke-DbaSqlQuery -SqlInstance $LinuxSQL -SqlCredential $cred -Database master -Query "CREATE DATABASE [LinuxDb$Psitem]"
+(0..20)| ForEach-Object {
+    Invoke-DbaSqlQuery -SqlInstance $LinuxSQL -SqlCredential $cred -Database master -Query "CREATE DATABASE [LinuxDb$Psitem]"
 }
 #endregion
 
