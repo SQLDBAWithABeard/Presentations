@@ -66,6 +66,9 @@ Describe "Testing for Demo" {
         It "sql1 should have the right number of databases" {
             (Get-DbaDatabase -SqlInstance sql1 -ExcludeAllSystemDb).Count | Should -Be 1
         }
+        It "Linux SQL should have the databases" {
+            (Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb).Count | Should -Be 22
+        }
     }
     Context "Agent Jobs"{
         It "SQL2017 Container should have no ola jobs" {
