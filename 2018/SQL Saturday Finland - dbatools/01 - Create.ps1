@@ -17,6 +17,7 @@ cd finland:
 #endregion
 
 #region Create a share
+$Share = '\\jumpbox.TheBeard.Local\SQLBackups'
 $ShareName = 'SQLBackups'
 $ShareFolder = 'C:\SQLBackups'
 $Full = 'THEBEARD\Domain Admins'
@@ -91,6 +92,16 @@ $containers.ForEach{
         Default {}
     }
 }
+
+# restore databases onto sql0
+
+Restore-DbaDatabase -SqlInstance sql0 -Path $share -useDestinationDefaultDirectories -WithReplace 
+
+# create folder for backups and empty it if need be
+If(-Not (Test-Path C:\SQLBackups\SQLBackupsForTesting -ErrorAction SilentlyContinue)){
+    New-Item C:\SQLBackups\SQLBackupsForTesting -ItemType Directory
+}
+Get-ChildItem C:\SQLBackups\SQLBackupsForTesting | Remove-item -Force
 #endregion
 
 #region Create linked server
