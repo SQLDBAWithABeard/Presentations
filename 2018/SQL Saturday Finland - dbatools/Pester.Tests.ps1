@@ -1,9 +1,5 @@
-$SQLInstances = 'sql0', 'sql1'
-$containers = 'bearddockerhost,15789', 'bearddockerhost,15788', 'bearddockerhost,15787', 'bearddockerhost,15786', 'beardlinuxsql'
-$SQL2017Container = 'bearddockerhost,15789'
-
-$cred = Import-Clixml $HOME\Documents\sa.cred
-Describe "testing for Demo" {
+. .\vars.ps1
+Describe "Testing for Demo" {
     Context "SQL" {
         $SQLInstances.ForEach{
             It "$Psitem should be accepting SQL Connections" {
@@ -17,8 +13,7 @@ Describe "testing for Demo" {
         }
     }
     Context "Files and Folders" {
-        $Share = '\\jumpbox\SQLBackups'
-        $NetworkShare = '\\bearddockerhost.TheBeard.Local\NetworkSQLBackups'
+
         It "Should have a SQLBackups folder" {
             Test-Path C:\SQLBackups | Should -BeTrue
         }
@@ -26,7 +21,6 @@ Describe "testing for Demo" {
             Get-SmbShare -Name SQLBackups -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
         }
         $SQLInstances.ForEach{
-            $Share = '\\jumpbox.TheBeard.Local\SQLBackups'
             It "$Psitem Should be able to access the share" {
                 Test-DbaSqlPath -SqlInstance $psitem -Path $Share | SHould -BeTrue
             }
