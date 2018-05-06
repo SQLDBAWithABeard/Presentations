@@ -1,5 +1,5 @@
 
-# Create a share
+#region Create a share
 $ShareName = 'SQLBackups'
 $ShareFolder = 'C:\SQLBackups'
 $Full = 'THEBEARD\Domain Admins'
@@ -20,7 +20,9 @@ if (-not (Get-SmbShare -Name $ShareName -ErrorAction SilentlyContinue)) {
     }
     New-SMBShare @newSMBShareSplat -Verbose
 }
+#endregion
 
+#region copy backups
 # Copy backups to the folder
 
 $backupfiles = Get-ChildItem $HOME\Downloads\Adventure*bak
@@ -31,7 +33,9 @@ if(-not (Test-Path $ShareFolder\Keep)){
 
 $backupfiles.ForEach{Copy-Item $Psitem -Destination $ShareFolder\Keep}
 
-# Create containers and volume
+#endregion
+
+#region Create containers and volume
 
 # docker volume create SQLBackups
 
@@ -40,7 +44,9 @@ $backupfiles.ForEach{Copy-Item $Psitem -Destination $ShareFolder\Keep}
 # docker run -d -p 15787:1433 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y dbafromthecold/sqlserver2014dev:sp2 
 # docker run -d -p 15786:1433 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y dbafromthecold/sqlserver2012dev:sp4 
 
+#endregion
 
+#region restore databases
 $containers = 'bearddockerhost,15789', 'bearddockerhost,15788', 'bearddockerhost,15787', 'bearddockerhost,15786'
 $filenames = (Get-ChildItem C:\SQLBackups\Keep).Name
 $cred = Import-Clixml $HOME\Documents\sa.cred
@@ -68,3 +74,4 @@ $containers.ForEach{
         Default {}
     }
 }
+#endregion
