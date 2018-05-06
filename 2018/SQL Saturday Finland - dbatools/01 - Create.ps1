@@ -1,3 +1,5 @@
+. .\vars.ps1
+
 #region Create New PSDrive and prompt
 if(-not (Get-PSDrive -Name Finland -ErrorAction SilentlyContinue)){
     New-PSDrive -Name Finland -Root 'C:\Git\Presentations\2018\SQL Saturday Finland - dbatools' -PSProvider FileSystem
@@ -17,7 +19,6 @@ cd finland:
 #endregion
 
 #region Create a share
-$Share = '\\jumpbox.TheBeard.Local\SQLBackups'
 $ShareName = 'SQLBackups'
 $ShareFolder = 'C:\SQLBackups'
 $Full = 'THEBEARD\Domain Admins'
@@ -88,9 +89,6 @@ $backupfiles.ForEach{Copy-Item $Psitem -Destination $ShareFolder\Keep}
 #endregion
 
 #region restore databases
-$containers = 'bearddockerhost,15789', 'bearddockerhost,15788', 'bearddockerhost,15787', 'bearddockerhost,15786'
-$filenames = (Get-ChildItem C:\SQLBackups\Keep).Name
-$cred = Import-Clixml $HOME\Documents\sa.cred
 
 $containers.ForEach{
     $Container = $Psitem
