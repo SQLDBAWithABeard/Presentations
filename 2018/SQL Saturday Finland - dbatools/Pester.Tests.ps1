@@ -45,6 +45,14 @@ Describe "testing for Demo" {
             }
         }
     }
+    Context "Databases" {
+        It "sql0 should have the right number of databases" {
+            (Get-DbaDatabase -SqlInstance sql0 -ExcludeAllSystemDb).Count | Should -Be 9
+        }
+        It "sql1 should have the right number of databases" {
+            (Get-DbaDatabase -SqlInstance sql1 -ExcludeAllSystemDb).Count | Should -Be 1
+        }
+    }
 }
 
 Set-DbcConfig -Name app.cluster -Value sql0
