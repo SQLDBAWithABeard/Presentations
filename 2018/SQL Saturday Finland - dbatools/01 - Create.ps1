@@ -10,6 +10,10 @@ function prompt {
 
 cd finland:
 
+# remove sql file for export if exists
+
+(Get-ChildItem *sql0-LinkedServer-Export*).ForEach{Remove-Item $Psitem -Force}
+
 #endregion
 
 #region Create a share
