@@ -41,7 +41,7 @@ if (-not (Get-SmbShare -Name $ShareName -ErrorAction SilentlyContinue)) {
 
 ## Create share on dockerhost
 Enter-PSSession bearddockerhost
-$NetworkShare = '\\bearddockerhost.TheBeard.Local\SQLBackups'
+$NetworkShare = '\\bearddockerhost.TheBeard.Local\NetworkSQLBackups'
 $ShareName = 'NetworkSQLBackups'
 $ShareFolder = 'E:\NetworkSQLBackups'
 $Full = 'EveryOne'
