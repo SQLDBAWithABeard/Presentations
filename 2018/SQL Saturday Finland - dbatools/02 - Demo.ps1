@@ -89,6 +89,7 @@ Get-DbaSqlBuildReference -Build 10.0.6000,10.50.6000 |Format-Table
 
 #region Backups, restores and Agent Jobs
 
+#region Backup
 ## Backup the entire instance - Imagine this is our KeepSafe backup store or our regular backup store
 ## Or you are a consultant who comes in and sees that the databases have never been properly backed up
 
@@ -96,6 +97,9 @@ $NetworkShare = '\\bearddockerhost.TheBeard.Local\NetworkSQLBackups'
 Explorer $NetworkShare
 Get-DbaDatabase -SqlInstance sql0 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters | Backup-DbaDatabase -BackupDirectory $NetworkShare
 
+#endregion
+
+#region DISASTER
 ## OH NO A DISASTER HAS BEFALLEN US!
 ## SQL0 has broken
 ## Folks in Suits are rushing around and shouting
@@ -115,7 +119,9 @@ Get-DbaDatabase -SqlInstance sql1
 
 ## Happy suits :-)
 ## Now go and fix the broken server!!!
+#endregion
 
+#region test backups
 ## Thats all very well and good but that requires valid backup files
 ## How often do you test your backups?
 ##
@@ -129,6 +135,33 @@ Get-DbaDatabase -SqlInstance sql1
 
 explorer '\\sql0.TheBeard.Local\F$\Data'
 Test-DbaLastBackup -SqlInstance sql0 -ExcludeDatabase WideWorldImporters | Out-GridView
+#endregion
+
+#region agent jobs
+
+## Look at the agent jobs
+
+Get-DbaAgentJob -SqlInstance sql0
+Get-DbaAgentJobCategory -SqlInstance sql0
+Get-DbaAgentJobStep -SqlInstance sql0 -Job 'DatabaseBackup - USER_DATABASES - FULL'
+
+## It even has intellisense
+Get-DbaAgentJobStep -SqlInstance sql0 -Jo
+
+Get-DbaAgentJobStep -SqlInstance sql0 -Job 'DatabaseBackup - USER_DATABASES - FULL' | Select *
+
+Get-DbaAgentJobOutputFile -SqlInstance sql0 -Job 'DatabaseBackup - USER_DATABASES - FULL'
+Open-EditorFile (Get-DbaAgentJobOutputFile -SqlInstance sql0 -Job 'DatabaseBackup - USER_DATABASES - FULL' ).RemoteOutputFileName
+
+## DAH Ola uses tokens in his path names :-)
+Get-ChildItem \\SQL0\F$\Backups\DatabaseBackup* | Sort-Object LastWriteTime -Descending | Select-Object -First 1 | Open-EditorFile
+
+Get-DbaAgentLog -SqlInstance sql0
+
+Get-DbaAgentJobHistory -SqlInstance sql0
+
+Get-DbaAgentJobHistory -SqlInstance sql0 -Job 'DatabaseBackup - USER_DATABASES - FULL' | Out-GridView
+#endregion
 
 
 #endregion
