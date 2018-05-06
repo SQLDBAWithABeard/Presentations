@@ -193,7 +193,7 @@ Get-DbaLastBackup -SqlInstance $LinuxSQL -SqlCredential $cred | Format-Table
 
 ## Yes - That is working on SQL on Linux beause it is just teh same as SQL on Windows from a SQL point of view
 
-## What about chekcing the last time a database was restored?
+## What about checking the last time a database was restored?
 
 Get-DbaRestoreHistory -SqlInstance sql1 
 
@@ -211,6 +211,23 @@ Get-DbaFile -SqlInstance $LinuxSQL -SqlCredential $cred
 
 ## but you can explore other paths too
 Get-DbaFile -SqlInstance $LinuxSQL -SqlCredential $cred -Path '/var/opt/mssql/data/BeardLinuxSQL/LinuxDb9/FULL/'
+
+## Oh and dbatools can restore from a Ola Hallengren directory too
+
+## show the databases
+Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb -ExcludeDatabase 'DBA-Admin'
+
+## Remove them
+Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb -ExcludeDatabase 'DBA-Admin' | Remove-DbaDatabase -Confirm:$false
+
+## show the databases - There are none
+Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb -ExcludeDatabase 'DBA-Admin'
+
+## Restore from Ola directory
+Restore-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -Path '/var/opt/mssql/data/BeardLinuxSQL' -AllowContinue
+
+## show the databases - There are none
+Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb 
 
 #endregion
 #endregion
