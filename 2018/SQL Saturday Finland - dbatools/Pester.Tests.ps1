@@ -71,8 +71,8 @@ Describe "Testing for Demo" {
         }
     }
     Context "Agent Jobs"{
-        It "SQL2017 Container should have no ola jobs" {
-            (Get-DbaAgentJob -SqlInstance $SQL2017Container -SqlCredential $cred).Count| Should -Be 1
+        It "Linux SQL should have no ola jobs" {
+            (Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred).Count| Should -Be 0
         }
     }
 }
