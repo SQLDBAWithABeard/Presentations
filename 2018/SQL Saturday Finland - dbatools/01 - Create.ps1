@@ -38,6 +38,27 @@ if (-not (Get-SmbShare -Name $ShareName -ErrorAction SilentlyContinue)) {
     }
     New-SMBShare @newSMBShareSplat -Verbose
 }
+
+## Create share on dockerhost
+Enter-PSSession bearddockerhost
+$NetworkShare = '\\bearddockerhost.TheBeard.Local\SQLBackups'
+$ShareName = 'NetworkSQLBackups'
+$ShareFolder = 'E:\NetworkSQLBackups'
+$Full = 'EveryOne'
+if (-not (Get-SmbShare -Name $ShareName -ErrorAction SilentlyContinue)) {
+    if (-not (Test-Path $ShareFolder)) {
+        New-Item $ShareFolder -ItemType Directory
+    }
+
+    $newSMBShareSplat = @{
+        Name                  = $ShareName
+        FullAccess            = $Full
+        Path                  = $ShareFolder
+        Description           = "Location for the Network SQL Backups"
+    }
+    New-SMBShare @newSMBShareSplat -Verbose
+}
+Exit
 #endregion
 
 #region copy backups
