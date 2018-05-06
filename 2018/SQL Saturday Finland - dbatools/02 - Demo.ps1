@@ -7,7 +7,6 @@ $cred = Import-Clixml $HOME\Documents\sa.cred
 
 #region Searching and using commands
 
-cd presentations:\
 Return 'Oi Beardy, You may be an MVP but this is a demo, don''t run the whole thing, fool!!'
 
 ## Lets look at the commands
@@ -32,7 +31,7 @@ Get-Help Test-DbaLinkedServerConnection -Full
 
 ## Here a neat trick
 
-Find-DbaCommand -Pattern Index | Out-GridView -PassThru | Get-Help -Full 
+Find-DbaCommand -Pattern linked | Out-GridView -PassThru | Get-Help -Full 
 
 ## Lets look at the linked servers on sql0
 
