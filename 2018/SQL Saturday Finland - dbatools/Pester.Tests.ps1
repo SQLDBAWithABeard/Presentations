@@ -16,6 +16,7 @@ Describe "testing for Demo" {
     }
     Context "Files and Folders" {
         $Share = '\\jumpbox\SQLBackups'
+        $NetworkShare = '\\bearddockerhost.TheBeard.Local\NetworkSQLBackups'
         It "Should have a SQLBackups folder" {
             Test-Path C:\SQLBackups | Should -BeTrue
         }
@@ -39,6 +40,17 @@ Describe "testing for Demo" {
         }
         it "C:\SQLBackups\SQLBackupsForTesting should be empty" {
             Get-ChildItem C:\SQLBackups\SQLBackupsForTesting | Should -BeNullOrEmpty
+        }
+        It "There should be a network share $NetworkShare" {
+            Test-Path $NetworkShare | Should -BeTrue
+        }
+        It "Network Share $NetworkShare should be empty"{
+            Get-ChildItem $NetworkShare | Should -BeNullOrEmpty
+        }
+        $SQLInstances.ForEach{
+            It "$Psitem Should be able to access the share $NetworkShare" {
+                Test-DbaSqlPath -SqlInstance $psitem -Path $NetworkShare| SHould -BeTrue
+            }
         }
     }
     Context "Linked servers" {
