@@ -1,3 +1,16 @@
+#region Create New PSDrive and prompt
+if(-not (Get-PSDrive -Name Finland -ErrorAction SilentlyContinue)){
+    New-PSDrive -Name Finland -Root 'C:\Git\Presentations\2018\SQL Saturday Finland - dbatools' -PSProvider FileSystem
+}
+
+function prompt {
+    Write-Host ("Hymyile ja nauti >") -NoNewLine -ForegroundColor Magenta
+    return " "
+}
+
+cd finland:
+
+#endregion
 
 #region Create a share
 $ShareName = 'SQLBackups'
