@@ -125,6 +125,9 @@ If(-Not (Test-Path C:\SQLBackups\SQLBackupsForTesting -ErrorAction SilentlyConti
     New-Item C:\SQLBackups\SQLBackupsForTesting -ItemType Directory
 }
 Get-ChildItem C:\SQLBackups\SQLBackupsForTesting | Remove-item -Force
+
+# remove databases from sql1 
+Get-DbaDatabase -SqlInstance sql1 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters | Remove-DbaDatabase -Confirm:$False
 #endregion
 
 #region Create linked server
