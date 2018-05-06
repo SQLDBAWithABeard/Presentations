@@ -160,5 +160,40 @@ Get-DbaAgentJobHistory -SqlInstance sql0
 Get-DbaAgentJobHistory -SqlInstance sql0 -Job 'DatabaseBackup - USER_DATABASES - FULL' | Out-GridView
 #endregion
 
+#region Ola Hallengren
+
+## Who uses Ola's scripts?
+## The best scripts for Backups and Index maintenance https://ola.hallengren.com 
+## Always recommended - easy for novices - One script - install - schedule
+## Easy for experts who require granular access and control as well :-)
+
+## How easy it is to install them with dbatools ?
+
+Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred
+
+## Install
+
+Install-DbaMaintenanceSolution -SqlInstance $LinuxSQL -SqlCredential $cred -Database 'DBA-Admin' -CleanupTime 74 -LogToTable -InstallJobs -Verbose -Solution All
+
+Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred
+
+## Run the job
+(Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred -Job 'DatabaseBackup - USER_DATABASES - FULL').start()
+Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred
+
+## Check the history
+Get-DbaAgentJobHistory -SqlInstance $LinuxSQL -SqlCredential $cred -Job 'DatabaseBackup - USER_DATABASES - FULL'
+
+## Check the backup history
+## Answer the question - When was this database backed up
+
+Get-DbaBackupHistory -SqlInstance $LinuxSQL -SqlCredential $cred  # other params -Since -Last -LastFull -LastDiff -LastLog -LastLsn 
+
+## Answer the question - When was this database LAST backed up
+Get-DbaLastBackup -SqlInstance $LinuxSQL -SqlCredential $cred | Format-Table
+
+## Yes - That is working on SQL on Linux beause it is just teh same as SQL on Windows from a SQL point of view
+
+## What about checking the last time a database was restored?
 
 #endregion
