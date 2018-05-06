@@ -82,4 +82,7 @@ $containers.ForEach{
 }
 
 $Builds | Format-Table
+
+Get-DbaSqlBuildReference -Build 10.0.6000,10.50.6000 |Format-Table
+
 #endregion
