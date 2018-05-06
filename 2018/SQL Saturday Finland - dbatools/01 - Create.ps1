@@ -88,3 +88,40 @@ $containers.ForEach{
     }
 }
 #endregion
+
+#region Create linked server
+# add to sql0
+$Containers.ForEach{ 
+    $Query = "IF NOT EXISTS
+    (SELECT * FROM sys.servers WHERE name = '" + $PSitem + "')
+    BEGIN
+    EXEC master.dbo.sp_addlinkedserver @server = N'" + $PSitem + "', @srvproduct=N'SQL Server'
+    EXEC master.dbo.sp_addlinkedsrvlogin @rmtsrvname = N'" + $PSitem + "', @locallogin = NULL , @useself = N'False', @rmtuser = N'sa', @rmtpassword = N'Password0!'
+    END"
+    Invoke-DbaSqlQuery -SqlInstance sql0 -Database master -Query $query
+}
+#remove from sql1
+$Containers.ForEach{ 
+    $Query = "IF EXISTS
+    (SELECT * FROM sys.servers WHERE name = '" + $PSitem + "')
+    BEGIN
+    EXEC master.sys.sp_dropserver '" + $PSitem + "','droplogins'   END"
+    Invoke-DbaSqlQuery -SqlInstance sql1 -Database master -Query $query
+}
+#endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
