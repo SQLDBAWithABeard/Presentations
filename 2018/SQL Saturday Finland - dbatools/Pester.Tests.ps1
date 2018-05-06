@@ -34,6 +34,12 @@ Describe "testing for Demo" {
         It "shoudl not have a SQL Export file"{
             Get-ChildItem *sql0-LinkedServer-Export* | Should -BeNullOrEmpty
         }
+        It "Should have the C:\SQLBackups\SQLBackupsForTesting folder" {
+            Test-Path C:\SQLBackups\SQLBackupsForTesting | Should -BeTrue
+        }
+        it "C:\SQLBackups\SQLBackupsForTesting should be empty" {
+            Get-ChildItem C:\SQLBackups\SQLBackupsForTesting | Should -BeNullOrEmpty
+        }
     }
     Context "Linked servers" {
         $containers.ForEach{
