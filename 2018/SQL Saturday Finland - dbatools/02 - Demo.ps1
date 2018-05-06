@@ -86,3 +86,49 @@ $Builds | Format-Table
 Get-DbaSqlBuildReference -Build 10.0.6000,10.50.6000 |Format-Table
 
 #endregion
+
+#region Backups, restores and Agent Jobs
+
+## Backup the entire instance - Imagine this is our KeepSafe backup store or our regular backup store
+## Or you are a consultant who comes in and sees that the databases have never been properly backed up
+
+$NetworkShare = '\\bearddockerhost.TheBeard.Local\NetworkSQLBackups'
+Explorer $NetworkShare
+Get-DbaDatabase -SqlInstance sql0 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters | Backup-DbaDatabase -BackupDirectory $NetworkShare
+
+## OH NO A DISASTER HAS BEFALLEN US!
+## SQL0 has broken
+## Folks in Suits are rushing around and shouting
+## We MUST get the databases back quickly to keep the business running
+## Where is our Disaster recovery plan?
+## I just need one script - I can even just type it out in one line :-)
+## NOTE - I am only showing the backups but you have seen we can do linked servers and we can do prety much anything on the instance :-)
+
+## Check databases on sql1
+Get-DbaDatabase -SqlInstance sql1
+
+## restore databases from backup folder
+Restore-DbaDatabase -SqlInstance sql1 -Path $NetworkShare -WithReplace
+
+## Check databases on sql1
+Get-DbaDatabase -SqlInstance sql1
+
+## Happy suits :-)
+## Now go and fix the broken server!!!
+
+## Thats all very well and good but that requires valid backup files
+## How often do you test your backups?
+##
+##
+##
+## remember that a backup is just a file until you know that you can restore it and that it has a valid DBCC CHECKDB
+##
+##
+## Now it is so easy to do this
+## Watch
+
+explorer '\\sql0.TheBeard.Local\F$\Data'
+Test-DbaLastBackup -SqlInstance sql0 -ExcludeDatabase WideWorldImporters | Out-GridView
+
+
+#endregion
