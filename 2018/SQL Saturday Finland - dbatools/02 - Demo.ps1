@@ -90,7 +90,6 @@ Get-DbaSqlBuildReference -Build 10.0.6000,10.50.6000 |Format-Table
 ## Backup the entire instance - Imagine this is our KeepSafe backup store or our regular backup store
 ## Or you are a consultant who comes in and sees that the databases have never been properly backed up
 
-$NetworkShare = '\\bearddockerhost.TheBeard.Local\NetworkSQLBackups'
 Explorer $NetworkShare
 Get-DbaDatabase -SqlInstance sql0 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters | Backup-DbaDatabase -BackupDirectory $NetworkShare
 
@@ -194,6 +193,24 @@ Get-DbaLastBackup -SqlInstance $LinuxSQL -SqlCredential $cred | Format-Table
 
 ## Yes - That is working on SQL on Linux beause it is just teh same as SQL on Windows from a SQL point of view
 
-## What about checking the last time a database was restored?
+## What about chekcing the last time a database was restored?
 
+Get-DbaRestoreHistory -SqlInstance sql1 
+
+## Test access to a path from SQL Service account
+## These days user accounts are often denied access to the backup shares as a security measure
+## But we still need to know if the SQL account can get to the folder otherwise we have no backups
+## Also useful for testing access for other requirements for SQL Server
+
+Test-DbaSqlPath -SqlInstance sql0 -Path $NetworkShare
+
+## or explore a filepath from the SQL Service account
+## By default it is the data path
+
+Get-DbaFile -SqlInstance $LinuxSQL -SqlCredential $cred 
+
+## but you can explore other paths too
+Get-DbaFile -SqlInstance $LinuxSQL -SqlCredential $cred -Path '/var/opt/mssql/data/BeardLinuxSQL/LinuxDb9/FULL/'
+
+#endregion
 #endregion
