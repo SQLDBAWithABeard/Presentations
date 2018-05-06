@@ -1,5 +1,7 @@
 $SQLInstances = 'sql0', 'sql1'
 $containers = 'bearddockerhost,15789', 'bearddockerhost,15788', 'bearddockerhost,15787', 'bearddockerhost,15786', 'beardlinuxsql'
+$SQL2017Container = 'bearddockerhost,15789'
+
 $cred = Import-Clixml $HOME\Documents\sa.cred
 Describe "testing for Demo" {
     Context "SQL" {
@@ -69,6 +71,11 @@ Describe "testing for Demo" {
         }
         It "sql1 should have the right number of databases" {
             (Get-DbaDatabase -SqlInstance sql1 -ExcludeAllSystemDb).Count | Should -Be 1
+        }
+    }
+    Context "Agent Jobs"{
+        It "SQL2017 Container should have no ola jobs" {
+            (Get-DbaAgentJob -SqlInstance $SQL2017Container -SqlCredential $cred).Count| Should -Be 1
         }
     }
 }
