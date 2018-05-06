@@ -161,6 +161,10 @@ Invoke-DbaSqlQuery -SqlInstance $LinuxSQL -SqlCredential $cred -Database master 
 (0..20)| ForEach-Object {
     Invoke-DbaSqlQuery -SqlInstance $LinuxSQL -SqlCredential $cred -Database master -Query "CREATE DATABASE [LinuxDb$Psitem]"
 }
+
+Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred |ForEach-Object {
+    Remove-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred -Job $PSItem -Confirm:$false
+}
 #endregion
 
 
