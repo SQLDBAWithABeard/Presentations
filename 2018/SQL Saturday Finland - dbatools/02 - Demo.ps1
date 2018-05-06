@@ -1,8 +1,5 @@
 #region Setup Variables
-$containers = 'bearddockerhost,15789', 'bearddockerhost,15788', 'bearddockerhost,15787', 'bearddockerhost,15786'
-$SQLInstances = 'sql0','sql1'
-$filenames = (Get-ChildItem C:\SQLBackups\Keep).Name
-$cred = Import-Clixml $HOME\Documents\sa.cred
+. .\vars.ps1
 #endregion
 
 #region Searching and using commands
