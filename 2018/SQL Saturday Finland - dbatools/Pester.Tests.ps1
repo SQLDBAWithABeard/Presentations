@@ -88,6 +88,9 @@ Describe "Testing for Demo" {
             Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard | Should -BeNullOrEmpty
         }
     }
+    Context "Extended Event Sessions"{
+        (Get-DbaXESession -SqlInstance $sql0).Count |Should -Be 3
+    }
 }
 
 Set-DbcConfig -Name app.cluster -Value $SQL0
