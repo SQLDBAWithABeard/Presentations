@@ -1,8 +1,10 @@
 . .\vars.ps1
 
+$verbosePreference = 'Continue'
 #region Create New PSDrive and prompt
 if (-not (Get-PSDrive -Name Finland -ErrorAction SilentlyContinue)) {
-    New-PSDrive -Name Finland -Root 'C:\Git\Presentations\2018\SQL Saturday Finland - dbatools' -PSProvider FileSystem
+    New-PSDrive -Name Finland -Root 'C:\Git\Presentations\2018\SQL Saturday Finland - dbatools' -PSProvider FileSystem | Out-Null
+    Write-Verbose -Message "Created PSDrive"
 }
 
 function prompt {
@@ -10,11 +12,14 @@ function prompt {
     return " "
 }
 
-cd finland:
+Write-Verbose -Message "Created prompt"
+
+Set-Location finland:
 
 # remove sql file for export if exists
 
 (Get-ChildItem *sql0-LinkedServer-Export*).ForEach{Remove-Item $Psitem -Force}
+Write-Verbose -Message "Removed Export SQL Files"
 
 #endregion
 
@@ -42,6 +47,7 @@ if (-not (Get-SmbShare -Name $ShareName -ErrorAction SilentlyContinue)) {
 
 ## Create share on dockerhost
 $session = New-PSSession bearddockerhost
+Write-Verbose -Message "Created session on dockerhost"
 $scriptBlock = {
     $NetworkShare = '\\bearddockerhost.TheBeard.Local\NetworkSQLBackups'
     $ShareName = 'NetworkSQLBackups'
@@ -62,6 +68,7 @@ $scriptBlock = {
     }
 }
 Invoke-Command -Session $session -ScriptBlock $scriptBlock
+Write-Verbose -Message "Created Share on dockerhost"
 Remove-PSSession $session
 
 Get-ChildItem $NetworkShare | Remove-Item -Recurse -Force
@@ -74,10 +81,11 @@ $backupfiles = Get-ChildItem $HOME\Downloads\Adventure*bak
 
 if (-not (Test-Path $ShareFolder\Keep)) {
     New-Item $ShareFolder\Keep -ItemType Directory
+    Write-Verbose -Message "Created $Sharefolder\Keep"    
 }
 
 $backupfiles.ForEach{Copy-Item $Psitem -Destination $ShareFolder\Keep}
-
+Write-Verbose -Message "Copied Files to backup share"
 #endregion
 
 #region Create containers and volume
@@ -85,6 +93,7 @@ $backupfiles.ForEach{Copy-Item $Psitem -Destination $ShareFolder\Keep}
 # docker volume create SQLBackups
 
 $session = New-PSSession bearddockerhost
+Write-Verbose -Message "Created session on dockerhost"
 $Scriptblock = {docker run -d -p 15789:1433 --name 2017 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y microsoft/mssql-server-windows-developer 
 docker run -d -p 15788:1433 --name 2016 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y dbafromthecold/sqlserver2016dev:sp1 
 docker run -d -p 15787:1433 --name 2014 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y dbafromthecold/sqlserver2014dev:sp2 
@@ -98,8 +107,9 @@ $Dockerstart = {
 }
 
 # Invoke-Command -Session $session -ScriptBlock $scriptBlock 
+# Write-Verbose -Message "Created containers"
 Invoke-Command -Session $session -ScriptBlock $Dockerstart
-
+Write-Verbose -Message "Started containers"
 Remove-PSSession $session
 
 #endregion
@@ -109,22 +119,26 @@ Remove-PSSession $session
 $containers.ForEach{
     $Container = $Psitem
     $NameLevel = (Get-DbaSqlBuildReference -SqlInstance $Container -SqlCredential $cred).NameLevel
-    $NameLevel
+    Write-Verbose -Message "$NameLevel"
     switch ($NameLevel) {
         2017 { 
-            Restore-DbaDatabase -SqlInstance $Container -SqlCredential $cred -Path C:\sqlbackups\ -useDestinationDefaultDirectories -WithReplace            
+            Restore-DbaDatabase -SqlInstance $Container -SqlCredential $cred -Path C:\sqlbackups\ -useDestinationDefaultDirectories -WithReplace   |Out-Null         
+            Write-Verbose -Message "Restored Databases on 2017"
         }
         2016 {
             $Files = $Filenames.Where{$PSitem -notlike '*2017*'}.ForEach{'C:\sqlbackups\' + $Psitem}
             Restore-DbaDatabase -SqlInstance $Container -SqlCredential $cred -Path $Files -useDestinationDefaultDirectories -WithReplace            
+            Write-Verbose -Message "Restored Databases on 2016"
         }
         2014 {
             $Files = $Filenames.Where{$PSitem -notlike '*2017*' -and $Psitem -notlike '*2016*'}.ForEach{'C:\sqlbackups\' + $Psitem}
             Restore-DbaDatabase -SqlInstance $Container -SqlCredential $cred -Path $Files -useDestinationDefaultDirectories -WithReplace            
+            Write-Verbose -Message "Restored Databases on 2014"
         }
         2012 {
             $Files = $Filenames.Where{$PSitem -like '*2012*'}.ForEach{'C:\sqlbackups\' + $Psitem}
             Restore-DbaDatabase -SqlInstance $Container -SqlCredential $cred -Path $Files -useDestinationDefaultDirectories -WithReplace            
+            Write-Verbose -Message "Restored Databases on 2012"
         }
         Default {}
     }
@@ -132,16 +146,19 @@ $containers.ForEach{
 
 # restore databases onto sql0
 
-Restore-DbaDatabase -SqlInstance sql0 -Path $share -useDestinationDefaultDirectories -WithReplace 
+Restore-DbaDatabase -SqlInstance $sql0 -Path $share -useDestinationDefaultDirectories -WithReplace 
+Write-Verbose -Message "Restored Databases on sql0"
 
 # create folder for backups and empty it if need be
 If (-Not (Test-Path C:\SQLBackups\SQLBackupsForTesting -ErrorAction SilentlyContinue)) {
     New-Item C:\SQLBackups\SQLBackupsForTesting -ItemType Directory
+    Write-Verbose -Message "Created Backup directory"
 }
 Get-ChildItem C:\SQLBackups\SQLBackupsForTesting | Remove-item -Force
-
+Write-Verbose -Message "Emptied backup directory"
 # remove databases from sql1 
-Get-DbaDatabase -SqlInstance sql1 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters | Remove-DbaDatabase -Confirm:$False
+Get-DbaDatabase -SqlInstance $sql1 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters | Remove-DbaDatabase -Confirm:$False
+Write-Verbose -Message "Removed databases from $SQL1"
 #endregion
 
 #region Create linked server
@@ -153,7 +170,8 @@ $Containers.ForEach{
     EXEC master.dbo.sp_addlinkedserver @server = N'" + $PSitem + "', @srvproduct=N'SQL Server'
     EXEC master.dbo.sp_addlinkedsrvlogin @rmtsrvname = N'" + $PSitem + "', @locallogin = NULL , @useself = N'False', @rmtuser = N'sa', @rmtpassword = N'Password0!'
     END"
-    Invoke-DbaSqlQuery -SqlInstance sql0 -Database master -Query $query
+    Invoke-DbaSqlQuery -SqlInstance $sql0 -Database master -Query $query
+    Write-Verbose -Message "Added linked Servers to $SQL0"
 }
 #remove from sql1
 $Containers.ForEach{ 
@@ -161,29 +179,34 @@ $Containers.ForEach{
     (SELECT * FROM sys.servers WHERE name = '" + $PSitem + "')
     BEGIN
     EXEC master.sys.sp_dropserver '" + $PSitem + "','droplogins'   END"
-    Invoke-DbaSqlQuery -SqlInstance sql1 -Database master -Query $query
+    Invoke-DbaSqlQuery -SqlInstance $sql1 -Database master -Query $query
+    Write-Verbose -Message "Removed linked servers from $SQL1"
 }
 #endregion
 
 #region linux server
 
 Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb | Remove-DbaDatabase -Confirm:$false
+Write-Verbose -Message "removed databases from Linux instance"
 
 Invoke-DbaSqlQuery -SqlInstance $LinuxSQL -SqlCredential $cred -Database master -Query "CREATE DATABASE [DBA-Admin]"
+Write-Verbose -Message "Created DBA-Admin database"
 
 (0..20)| ForEach-Object {
     Invoke-DbaSqlQuery -SqlInstance $LinuxSQL -SqlCredential $cred -Database master -Query "CREATE DATABASE [LinuxDb$Psitem]"
 }
-
+Write-Verbose -Message "Created 20 dumb databases"
 Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred |ForEach-Object {
     Remove-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred -Job $PSItem -Confirm:$false
+    Write-Verbose -Message "Removed all the agent jobs from linux instance"
 }
 #endregion
 
 #region SQL login
 
 if(Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard){
-    Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard | Remove-DbaLogin -Confirm:$false    
+    Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard | Remove-DbaLogin -Confirm:$false  
+    Write-Verbose -Message "removed theBeard from $SQL1"  
 }
 
 #endregion
