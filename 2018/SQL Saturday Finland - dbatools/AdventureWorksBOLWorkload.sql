@@ -122,7 +122,6 @@ FROM HumanResources.Employee
 WHERE OrganizationNode.GetAncestor(1) = @CurrentEmployee ;
 
 
-DECLARE @CurrentEmployee hierarchyid
 SELECT @CurrentEmployee = OrganizationNode 
 FROM HumanResources.Employee
 WHERE LoginID = 'adventure-works\ken0'
@@ -132,7 +131,6 @@ FROM HumanResources.Employee
 WHERE OrganizationNode.GetAncestor(2) = @CurrentEmployee ;
 
 
-DECLARE @CurrentEmployee hierarchyid
 SELECT @CurrentEmployee = OrganizationNode 
 FROM HumanResources.Employee
 WHERE LoginID = 'adventure-works\david0'
@@ -141,7 +139,6 @@ SELECT OrganizationNode.ToString() AS Text_OrganizationNode, *
 FROM HumanResources.Employee
 WHERE OrganizationNode.GetAncestor(0) = @CurrentEmployee ;
 
-DECLARE @CurrentEmployee hierarchyid ;
 DECLARE @TargetEmployee hierarchyid ;
 SELECT @CurrentEmployee = '/2/3/1.2/5/3/' ;
 SELECT @TargetEmployee = @CurrentEmployee.GetAncestor(2) ;
@@ -271,26 +268,6 @@ INTO #Bicycles
 FROM AdventureWorks2014.Production.Product
 WHERE ProductNumber LIKE 'BK%';
 
-
-/*
-This second example creates the permanent table NewProducts.
-*/
-
-
-
-IF OBJECT_ID ('dbo.NewProducts', 'U') IS NOT NULL
-    DROP TABLE dbo.NewProducts;
-
---ALTER DATABASE AdventureWorks2014 SET RECOVERY BULK_LOGGED;
---
-
-SELECT * INTO dbo.NewProducts
-FROM Production.Product
-WHERE ListPrice > $25 
-AND ListPrice < $100;
-
---ALTER DATABASE AdventureWorks2014 SET RECOVERY FULL;
---
 
 ------
 
@@ -844,162 +821,3 @@ ORDER BY Name;
 
 
 ------
-
-/* http://msdn.microsoft.com/en-us/library/ms187731.aspx
-X. Using SELECT INTO with UNION 
-In the following example, the INTO clause in the second SELECT
-statement specifies that the table named ProductResults holds
-the final result set of the union of the designated columns 
-of the ProductModel and Gloves tables. Note that the Gloves 
-table is created in the first SELECT statement.
-*/
-
-
-
-IF OBJECT_ID ('dbo.ProductResults', 'U') IS NOT NULL
-DROP TABLE dbo.ProductResults;
-
-IF OBJECT_ID ('dbo.Gloves', 'U') IS NOT NULL
-DROP TABLE dbo.Gloves;
-
--- Create Gloves table.
-SELECT ProductModelID, Name
-INTO dbo.Gloves
-FROM Production.ProductModel
-WHERE ProductModelID IN (3, 4);
-
-
-
-
-SELECT ProductModelID, Name
-INTO dbo.ProductResults
-FROM Production.ProductModel
-WHERE ProductModelID NOT IN (3, 4)
-UNION
-SELECT ProductModelID, Name
-FROM dbo.Gloves;
-
-
-SELECT * 
-FROM dbo.ProductResults;
-
-------
-
-/* http://msdn.microsoft.com/en-us/library/ms187731.aspx
-  Y. Using UNION of two SELECT statements with ORDER BY 
-The order of certain parameters used with the UNION clause 
-is important. The following example shows the incorrect and 
-correct use of UNION in two SELECT statements in which a 
-column is to be renamed in the output.
-*/
-
-
-
-IF OBJECT_ID ('dbo.Gloves', 'U') IS NOT NULL
-DROP TABLE dbo.Gloves;
-
--- Create Gloves table.
-SELECT ProductModelID, Name
-INTO dbo.Gloves
-FROM Production.ProductModel
-WHERE ProductModelID IN (3, 4);
-
-
-/* CORRECT */
-
-
-SELECT ProductModelID, Name
-FROM Production.ProductModel
-WHERE ProductModelID NOT IN (3, 4)
-UNION
-SELECT ProductModelID, Name
-FROM dbo.Gloves
-ORDER BY Name;
-
-
-
-------
-
-
-/* http://msdn.microsoft.com/en-us/library/ms187731.aspx
-Z. Using UNION of three SELECT statements to show the 
-	effects of ALL and parentheses 
-The following examples use UNION to combine the results 
-of three tables that all have the same 5 rows of data. 
-The first example uses UNION ALL to show the duplicated 
-records, and returns all 15 rows. The second example uses 
-UNION without ALL to eliminate the duplicate rows from the 
-combined results of the three SELECT statements, and 
-returns 5 rows. The third example uses ALL with the first 
-UNION and parentheses enclose the second UNION that is not 
-using ALL. The second UNION is processed first because it 
-is in parentheses, and returns 5 rows because the ALL option 
-is not used and the duplicates are removed. These 5 rows are 
-combined with the results of the first SELECT by using the 
-UNION ALL keywords. This does not remove the duplicates 
-between the two sets of 5 rows. The final result has 10 rows.
-*/
-
-
-
-IF OBJECT_ID ('dbo.EmployeeOne', 'U') IS NOT NULL
-DROP TABLE dbo.EmployeeOne;
-
-IF OBJECT_ID ('dbo.EmployeeTwo', 'U') IS NOT NULL
-DROP TABLE dbo.EmployeeTwo;
-
-IF OBJECT_ID ('dbo.EmployeeThree', 'U') IS NOT NULL
-DROP TABLE dbo.EmployeeThree;
-
-
-SELECT pp.LastName, pp.FirstName, e.JobTitle 
-INTO dbo.EmployeeOne
-FROM Person.Person AS pp JOIN HumanResources.Employee AS e
-ON e.BusinessEntityID = pp.BusinessEntityID
-WHERE LastName = 'Johnson';
-
-SELECT pp.LastName, pp.FirstName, e.JobTitle 
-INTO dbo.EmployeeTwo
-FROM Person.Person AS pp JOIN HumanResources.Employee AS e
-ON e.BusinessEntityID = pp.BusinessEntityID
-WHERE LastName = 'Johnson';
-
-SELECT pp.LastName, pp.FirstName, e.JobTitle 
-INTO dbo.EmployeeThree
-FROM Person.Person AS pp JOIN HumanResources.Employee AS e
-ON e.BusinessEntityID = pp.BusinessEntityID
-WHERE LastName = 'Johnson';
-
-
--- Union ALL
-SELECT LastName, FirstName, JobTitle
-FROM dbo.EmployeeOne
-UNION ALL
-SELECT LastName, FirstName ,JobTitle
-FROM dbo.EmployeeTwo
-UNION ALL
-SELECT LastName, FirstName,JobTitle 
-FROM dbo.EmployeeThree;
-
-
-SELECT LastName, FirstName,JobTitle
-FROM dbo.EmployeeOne
-UNION 
-SELECT LastName, FirstName, JobTitle 
-FROM dbo.EmployeeTwo
-UNION 
-SELECT LastName, FirstName, JobTitle 
-FROM dbo.EmployeeThree;
-
-
-SELECT LastName, FirstName,JobTitle 
-FROM dbo.EmployeeOne
-UNION ALL
-(
-SELECT LastName, FirstName, JobTitle 
-FROM dbo.EmployeeTwo
-UNION
-SELECT LastName, FirstName, JobTitle 
-FROM dbo.EmployeeThree
-);
-
