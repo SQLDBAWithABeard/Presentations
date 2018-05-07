@@ -93,7 +93,7 @@ Get-DbaLogin -SqlInstance $sql1 -Login TheBeard | Remove-DbaLogin -Confirm:$fals
 
 #endregion
 
-#region Clones
+#region Clones and snapshots
 
 ## Maybe we want to test query performance without requiring all the space needed for the data in the database
 
@@ -121,6 +121,19 @@ Invoke-DbaDatabaseClone -SqlInstance $sql0 -Database AdventureWorks2014 -CloneDa
     ORDER BY [SalesOrderDetailID];
     GO
 #>
+
+# create a snapshot
+New-DbaDatabaseSnapshot -SqlInstance $sql0 -Database AdventureWorks2014 -Name AD2014_snap
+
+Get-DbaDatabaseSnapshot -SqlInstance $sql0
+
+Get-DbaProcess -SqlInstance $sql0 -Database AdventureWorks2014 | Stop-DbaProcess
+Get-DbaProcess -SqlInstance $sql0 -Database AD2014_snap| Stop-DbaProcess
+
+# restore from snapshot
+Restore-DbaFromDatabaseSnapshot -SqlInstance $sql0 -Database AdventureWorks2014 -Snapshot AD2014_snap
+
+Remove-DbaDatabaseSnapshot -SqlInstance $sql0 -Snapshot AD2014_snap # or -Database AdventureWorks2014
 
 #endregion
 
