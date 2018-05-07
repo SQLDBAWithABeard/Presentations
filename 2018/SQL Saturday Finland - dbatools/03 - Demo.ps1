@@ -123,3 +123,19 @@ Invoke-DbaDatabaseClone -SqlInstance $sql0 -Database AdventureWorks2014 -CloneDa
 #>
 
 #endregion
+
+#region SPNs
+
+Get-DbaSpn -ComputerName $sql0
+
+setspn.exe -D "MSSQLSvc/SQL0.TheBeard.Local:1433" "TheBeard\EnterpriseAdmin"
+
+Test-DbaSpn -ComputerName $sql0
+
+Get-DbaSpn -ComputerName $sql0
+
+(Test-DbaSpn -ComputerName $sql0).Where{$_.IsSet -eq $false} | Set-DbaSpn -WhatIf
+(Test-DbaSpn -ComputerName $sql0).Where{$_.IsSet -eq $false} | Set-DbaSpn
+
+Get-DbaSpn -ComputerName $sql0
+#endregion
