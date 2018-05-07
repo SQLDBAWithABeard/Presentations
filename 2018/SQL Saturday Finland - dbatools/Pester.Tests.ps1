@@ -1,5 +1,13 @@
 . .\vars.ps1
 Describe "Testing for Demo" {
+    Context "PowerShell"{
+        $modules = 'dbachecks','dbatools','Pester','BurntToast'
+        $modules.ForEach{
+            It "Module $Psitem should be available" {
+                Get-Module $Psitem -ListAvailable | Should -Not -BeNullOrEmpty
+            }
+        }
+    }
     Context "SQL" {
         $SQLInstances.ForEach{
             It "$Psitem should be accepting SQL Connections" {
@@ -71,8 +79,13 @@ Describe "Testing for Demo" {
         }
     }
     Context "Agent Jobs"{
-        It "SQL2017 Container should have no ola jobs" {
-            (Get-DbaAgentJob -SqlInstance $SQL2017Container -SqlCredential $cred).Count| Should -Be 1
+        It "Linux SQL should have no ola jobs" {
+            (Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred).Count| Should -Be 0
+        }
+    }
+    Context "Users" {
+        It "SQL1 should not have TheBeard Login"{
+            Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard | Should -BeNullOrEmpty
         }
     }
 }
