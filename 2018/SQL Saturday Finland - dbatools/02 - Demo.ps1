@@ -32,39 +32,39 @@ Find-DbaCommand -Pattern linked | Out-GridView -PassThru | Get-Help -Full
 
 ## Lets look at the linked servers on sql0
 
-Get-DbaLinkedServer -SqlInstance sql0
+Get-DbaLinkedServer -SqlInstance $sql0
 
 ## I wonder if they are all workign correctly
 
-Test-DbaLinkedServerConnection -SqlInstance sql0 
+Test-DbaLinkedServerConnection -SqlInstance $sql0 
 
 ## Lets have a look at the linked servers on sql1
 
-Get-DbaLinkedServer -SqlInstance sql1
+Get-DbaLinkedServer -SqlInstance $sql1
 
 ## Ah - There is an Availability Group here
 ## I probably want to make sure that each instance has the same linked servers
 ## but they have sql auth and passwords - where are the passwords kept ?
 
-(Get-DbaLinkedServer -sqlinstance sql0)[0] | Select-Object SQLInstance, Name, RemoteServer, RemoteUser
+(Get-DbaLinkedServer -sqlinstance $sql0)[0] | Select-Object SQLInstance, Name, RemoteServer, RemoteUser
 
 ## I can script out the T-SQL for the linked server
-(Get-DbaLinkedServer -sqlinstance sql0)[0] | Export-DbaScript 
+(Get-DbaLinkedServer -sqlinstance $sql0)[0] | Export-DbaScript 
 
 ## But I cant use the password :-(
 Get-ChildItem *sql0-LinkedServer-Export* | Open-EditorFile
 
 ## Its ok, with dbatools I can just copy them over anyway :-) Dont need to know the password
 
-Copy-DbaLinkedServer -Source sql0 -Destination sql1
+Copy-DbaLinkedServer -Source $sql0 -Destination $sql1
 
 ## Now lets look at sql1 linked servers again
 
-Get-DbaLinkedServer -SqlInstance sql1
+Get-DbaLinkedServer -SqlInstance $sql1
 
 ## Lets test them to show we have the Password passed over as well
 
-Test-DbaLinkedServerConnection -SqlInstance sql1
+Test-DbaLinkedServerConnection -SqlInstance $sql1
 
 #endregion
 
@@ -91,7 +91,7 @@ Get-DbaSqlBuildReference -Build 10.0.6000,10.50.6000 |Format-Table
 ## Or you are a consultant who comes in and sees that the databases have never been properly backed up
 
 Explorer $NetworkShare
-Get-DbaDatabase -SqlInstance sql0 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters | Backup-DbaDatabase -BackupDirectory $NetworkShare
+Get-DbaDatabase -SqlInstance $sql0 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters | Backup-DbaDatabase -BackupDirectory $NetworkShare
 
 #endregion
 
@@ -105,13 +105,13 @@ Get-DbaDatabase -SqlInstance sql0 -ExcludeAllSystemDb -ExcludeDatabase WideWorld
 ## NOTE - I am only showing the backups but you have seen we can do linked servers and we can do prety much anything on the instance :-)
 
 ## Check databases on sql1
-Get-DbaDatabase -SqlInstance sql1
+Get-DbaDatabase -SqlInstance $sql1
 
 ## restore databases from backup folder
-Restore-DbaDatabase -SqlInstance sql1 -Path $NetworkShare -WithReplace
+Restore-DbaDatabase -SqlInstance $sql1 -Path $NetworkShare -WithReplace
 
 ## Check databases on sql1
-Get-DbaDatabase -SqlInstance sql1
+Get-DbaDatabase -SqlInstance $sql1
 
 ## Happy suits :-)
 ## Now go and fix the broken server!!!
@@ -130,33 +130,33 @@ Get-DbaDatabase -SqlInstance sql1
 ## Watch
 
 explorer '\\sql0.TheBeard.Local\F$\Data'
-Test-DbaLastBackup -SqlInstance sql0 -ExcludeDatabase WideWorldImporters | Out-GridView
+Test-DbaLastBackup -SqlInstance $sql0 -ExcludeDatabase WideWorldImporters | Out-GridView
 #endregion
 
 #region agent jobs
 
 ## Look at the agent jobs
 
-Get-DbaAgentJob -SqlInstance sql0
-Get-DbaAgentJobCategory -SqlInstance sql0
-Get-DbaAgentJobStep -SqlInstance sql0 -Job 'DatabaseBackup - USER_DATABASES - FULL'
+Get-DbaAgentJob -SqlInstance $SQL0
+Get-DbaAgentJobCategory -SqlInstance $SQL0
+Get-DbaAgentJobStep -SqlInstance $SQL0 -Job 'DatabaseBackup - USER_DATABASES - FULL'
 
 ## It even has intellisense
-Get-DbaAgentJobStep -SqlInstance sql0 -Jo
+Get-DbaAgentJobStep -SqlInstance $SQL0 -Jo
 
-Get-DbaAgentJobStep -SqlInstance sql0 -Job 'DatabaseBackup - USER_DATABASES - FULL' | Select *
+Get-DbaAgentJobStep -SqlInstance $SQL0 -Job 'DatabaseBackup - USER_DATABASES - FULL' | Select *
 
-Get-DbaAgentJobOutputFile -SqlInstance sql0 -Job 'DatabaseBackup - USER_DATABASES - FULL'
-Open-EditorFile (Get-DbaAgentJobOutputFile -SqlInstance sql0 -Job 'DatabaseBackup - USER_DATABASES - FULL' ).RemoteOutputFileName
+Get-DbaAgentJobOutputFile -SqlInstance $SQL0 -Job 'DatabaseBackup - USER_DATABASES - FULL'
+Open-EditorFile (Get-DbaAgentJobOutputFile -SqlInstance $SQL0 -Job 'DatabaseBackup - USER_DATABASES - FULL' ).RemoteOutputFileName
 
 ## DAH Ola uses tokens in his path names :-)
 Get-ChildItem \\SQL0\F$\Backups\DatabaseBackup* | Sort-Object LastWriteTime -Descending | Select-Object -First 1 | Open-EditorFile
 
-Get-DbaAgentLog -SqlInstance sql0
+Get-DbaAgentLog -SqlInstance $SQL0
 
-Get-DbaAgentJobHistory -SqlInstance sql0
+Get-DbaAgentJobHistory -SqlInstance $SQL0
 
-Get-DbaAgentJobHistory -SqlInstance sql0 -Job 'DatabaseBackup - USER_DATABASES - FULL' | Out-GridView
+Get-DbaAgentJobHistory -SqlInstance $SQL0 -Job 'DatabaseBackup - USER_DATABASES - FULL' | Out-GridView
 #endregion
 
 #region Ola Hallengren
@@ -195,14 +195,14 @@ Get-DbaLastBackup -SqlInstance $LinuxSQL -SqlCredential $cred | Format-Table
 
 ## What about checking the last time a database was restored?
 
-Get-DbaRestoreHistory -SqlInstance sql1 
+Get-DbaRestoreHistory -SqlInstance $sql1 
 
 ## Test access to a path from SQL Service account
 ## These days user accounts are often denied access to the backup shares as a security measure
 ## But we still need to know if the SQL account can get to the folder otherwise we have no backups
 ## Also useful for testing access for other requirements for SQL Server
 
-Test-DbaSqlPath -SqlInstance sql0 -Path $NetworkShare
+Test-DbaSqlPath -SqlInstance $SQL0 -Path $NetworkShare
 
 ## or explore a filepath from the SQL Service account
 ## By default it is the data path
