@@ -36,7 +36,7 @@ Describe "Testing for Demo" {
         It "should have all the backup files in the share keep folder" {
             (Get-ChildItem $Share\Keep).Count | Should -Be 8
         }
-        It "shoudl not have a SQL Export file"{
+        It "should not have a SQL Export file"{
             Get-ChildItem *sql0-LinkedServer-Export* | Should -BeNullOrEmpty
         }
         It "Should have the C:\SQLBackups\SQLBackupsForTesting folder" {
@@ -59,20 +59,20 @@ Describe "Testing for Demo" {
     }
     Context "Linked servers" {
         $containers.ForEach{
-            It "SQL0 should have a linked server for $Psitem" {
-                Get-DbaLinkedServer -SqlInstance sql0 -LinkedServer $psitem | Should -Not -BeNullOrEmpty
+            It "$SQL0 should have a linked server for $Psitem" {
+                Get-DbaLinkedServer -SqlInstance $SQL0 -LinkedServer $psitem | Should -Not -BeNullOrEmpty
             }
-            It "SQL1 should not have a linked server for $PSitem" {
-                Get-DbaLinkedServer -SqlInstance sql1 -LinkedServer $psitem | Should -BeNullOrEmpty
+            It "$SQL1 should not have a linked server for $PSitem" {
+                Get-DbaLinkedServer -SqlInstance $SQL1 -LinkedServer $psitem | Should -BeNullOrEmpty
             }
         }
     }
     Context "Databases" {
-        It "sql0 should have the right number of databases" {
-            (Get-DbaDatabase -SqlInstance sql0 -ExcludeAllSystemDb).Count | Should -Be 9
+        It "$SQL0 should have the right number of databases" {
+            (Get-DbaDatabase -SqlInstance $SQL0 -ExcludeAllSystemDb).Count | Should -Be 9
         }
-        It "sql1 should have the right number of databases" {
-            (Get-DbaDatabase -SqlInstance sql1 -ExcludeAllSystemDb).Count | Should -Be 1
+        It "$SQL1 should have the right number of databases" {
+            (Get-DbaDatabase -SqlInstance $SQL1 -ExcludeAllSystemDb).Count | Should -Be 1
         }
         It "Linux SQL should have the databases" {
             (Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb).Count | Should -Be 22
@@ -84,13 +84,13 @@ Describe "Testing for Demo" {
         }
     }
     Context "Users" {
-        It "SQL1 should not have TheBeard Login"{
+        It "$SQL1 should not have TheBeard Login"{
             Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard | Should -BeNullOrEmpty
         }
     }
 }
 
-Set-DbcConfig -Name app.cluster -Value sql0
+Set-DbcConfig -Name app.cluster -Value $SQL0
 Set-DbcConfig -Name skip.hadr.listener.pingcheck -Value $true
 Set-DbcConfig -Name agent.dbaoperatorname -Value 'The DBA Team'
 

@@ -139,3 +139,11 @@ Get-DbaSpn -ComputerName $sql0
 
 Get-DbaSpn -ComputerName $sql0
 #endregion
+
+#region Find the thing
+
+Find-DbaStoredProcedure -SqlInstance $SQL2017Container -Pattern employee  -SqlCredential $cred
+$new | Find-DbaStoredProcedure -Pattern dbatools | Select * | Out-GridView
+$new | Find-DbaStoredProcedure -Pattern '\w+@\w+\.\w+'
+
+#endregion
