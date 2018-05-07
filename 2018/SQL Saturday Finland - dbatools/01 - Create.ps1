@@ -250,10 +250,13 @@ if(Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard){
 
 #endregion
 
+#region Extended Events
+
+$Sessions = (Get-DbaXEventSession -SqlInstance $sql0).Where{$_.Name -notin ('AlwaysOn_Health','system_health','telemetry_xevents')}
+Remove-DbaXESession -SqlInstance $sql0 -Session $Sessions.Name
 
 
-
-
+$verbosePreference = 'SilentlyContinue'
 
 
 
