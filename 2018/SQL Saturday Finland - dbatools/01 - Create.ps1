@@ -264,6 +264,31 @@ $verbosePreference = 'SilentlyContinue'
 
 
 
+<#
 
+
+$Colours = [enum]::GetValues([System.ConsoleColor])
+    $db = Get-DbaDatabase -SqlInstance sql0 -Database tempdb
+    $x = 0
+    While ($x -lt 50) {
+        $xcolour =Get-Random -InputObject $Colours
+        Write-Host "$x" -ForegroundColor $xcolour
+        $Query = "CREATE TABLE SomeRandomBeard_" + $x + "
+        (
+        SomeRandomBeardID int NOT NULL, 
+        UserName nvarchar(30) NULL, 
+        Email nvarchar(50) NULL,
+        IsAdmin bit NULL,
+        UserPassword nvarchar(150) NULL, 
+        ADGroupMembership nvarchar(MAX) NULL
+        CONSTRAINT SomeRandomBeardID" + $x + " PRIMARY KEY (SomeRandomBeardID)
+        ) "
+        $db.Query($query)
+        Start-Sleep -Seconds 1
+        $x ++
+    }
+
+
+#>
 
 
