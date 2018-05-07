@@ -93,7 +93,7 @@ Get-DbaLogin -SqlInstance $sql1 -Login TheBeard | Remove-DbaLogin -Confirm:$fals
 
 #endregion
 
-#region Clones
+#region Clones and snapshots
 
 ## Maybe we want to test query performance without requiring all the space needed for the data in the database
 
@@ -122,6 +122,19 @@ Invoke-DbaDatabaseClone -SqlInstance $sql0 -Database AdventureWorks2014 -CloneDa
     GO
 #>
 
+# create a snapshot
+New-DbaDatabaseSnapshot -SqlInstance $sql0 -Database AdventureWorks2014 -Name AD2014_snap
+
+Get-DbaDatabaseSnapshot -SqlInstance $sql0
+
+Get-DbaProcess -SqlInstance $sql0 -Database AdventureWorks2014 | Stop-DbaProcess
+Get-DbaProcess -SqlInstance $sql0 -Database AD2014_snap| Stop-DbaProcess
+
+# restore from snapshot
+Restore-DbaFromDatabaseSnapshot -SqlInstance $sql0 -Database AdventureWorks2014 -Snapshot AD2014_snap
+
+Remove-DbaDatabaseSnapshot -SqlInstance $sql0 -Snapshot AD2014_snap # or -Database AdventureWorks2014
+
 #endregion
 
 #region SPNs
@@ -142,8 +155,41 @@ Get-DbaSpn -ComputerName $sql0
 
 #region Find the thing
 
-Find-DbaStoredProcedure -SqlInstance $SQL2017Container -Pattern employee  -SqlCredential $cred
-$new | Find-DbaStoredProcedure -Pattern dbatools | Select * | Out-GridView
-$new | Find-DbaStoredProcedure -Pattern '\w+@\w+\.\w+'
+$containers | Find-DbaStoredProcedure -Pattern employee  -SqlCredential $cred | Out-GridView
+
+# Maybe you want to find all the hardcoded email addresses :-) in 21664 stored procedures
+
+$sql0 | Find-DbaStoredProcedure -Pattern '\w+@\w+\.\w+' 
+
+## Hmm
+
+($sql0 | Find-DbaStoredProcedure -Pattern '\w+@\w+\.\w+').StoredProcedure.TextHeader
+
+# We can find triggers
+
+$containers | Find-DbaTrigger -Pattern ddl -SqlCredential $cred
+
+# We can find views
+
+$containers | Find-DbaView -Pattern email -SqlCredential $cred
+
+# We can find indexes
+
+Find-DbaUnusedIndex -SqlInstance $sql0 -Database AdventureWorks2014 
+
+Find-DbaDisabledIndex -SqlInstance $sql0
+
+Find-DbaDuplicateIndex -SqlInstance $sql0 | Out-GridView
+
+# find user owned objects
+
+Find-DbaUserObject -SqlInstance $SQL0 
+
 
 #endregion
+
+#region Extended Events
+
+#endregion
+
+
