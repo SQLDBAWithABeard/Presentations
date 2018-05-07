@@ -232,3 +232,12 @@ Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb
 #endregion
 #endregion
 
+#region Some Gets
+
+# See protocols
+Get-DbaServerProtocol -ComputerName $sql0
+
+# Get the registry root
+Get-DbaSqlRegistryRoot -ComputerName $sql0
+
+#endregion
