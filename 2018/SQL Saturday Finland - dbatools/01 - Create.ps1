@@ -84,10 +84,23 @@ $backupfiles.ForEach{Copy-Item $Psitem -Destination $ShareFolder\Keep}
 
 # docker volume create SQLBackups
 
-# docker run -d -p 15789:1433 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y microsoft/mssql-server-windows-developer 
-# docker run -d -p 15788:1433 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y dbafromthecold/sqlserver2016dev:sp1
-# docker run -d -p 15787:1433 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y dbafromthecold/sqlserver2014dev:sp2 
-# docker run -d -p 15786:1433 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y dbafromthecold/sqlserver2012dev:sp4 
+$session = New-PSSession bearddockerhost
+$Scriptblock = {docker run -d -p 15789:1433 --name 2017 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y microsoft/mssql-server-windows-developer 
+docker run -d -p 15788:1433 --name 2016 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y dbafromthecold/sqlserver2016dev:sp1 
+docker run -d -p 15787:1433 --name 2014 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y dbafromthecold/sqlserver2014dev:sp2 
+docker run -d -p 15786:1433 --name 2012 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y dbafromthecold/sqlserver2012dev:sp4}
+
+$Dockerstart = {
+    docker start 2017
+    docker start 2014
+    docker start 2016
+    docker start 2012
+}
+
+# Invoke-Command -Session $session -ScriptBlock $scriptBlock 
+Invoke-Command -Session $session -ScriptBlock $Dockerstart
+
+Remove-PSSession $session
 
 #endregion
 
@@ -167,6 +180,13 @@ Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred |ForEach-Object {
 }
 #endregion
 
+#region SQL login
+
+if(Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard){
+    Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard | Remove-DbaLogin -Confirm:$false    
+}
+
+#endregion
 
 
 
