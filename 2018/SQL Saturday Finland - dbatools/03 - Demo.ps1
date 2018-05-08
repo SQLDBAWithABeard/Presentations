@@ -181,6 +181,12 @@ Find-DbaDisabledIndex -SqlInstance $sql0
 
 Find-DbaDuplicateIndex -SqlInstance $sql0 | Out-GridView
 
+## Whilst we are here lets look at our indexes
+
+Get-DbaHelpIndex -SqlInstance $sql0 -Database AdventureWorks2014 | Out-GridView
+
+Get-DbaHelpIndex -SqlInstance $sql0 -Database AdventureWorks2014 -ObjectName [Sales].[SalesOrderDetail] -IncludeStats -IncludeDataTypes | Out-GridView
+
 # find user owned objects
 
 Find-DbaUserObject -SqlInstance $SQL0 
