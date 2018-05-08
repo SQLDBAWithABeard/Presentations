@@ -281,5 +281,16 @@ Get-ChildItem creating_tables.xel | Read-DbaXEFile | Invoke-DbaXeReplay -SqlInst
 (Get-DbaTable -SqlInstance $sql0 -Database tempdb).Name
 #endregion
 
+#region Query Store
+
+# You can get your Query Store options 
+Get-DbaDbQueryStoreOptions -SqlInstance $sql0 -Database AdventureWorks2014
+
+# You can also set them 
+
+Set-DbaDbQueryStoreOptions -SqlInstance $sql0 -Database AdventureWorks2014 -MaxSize 200
+#endregion
+
+
 
 
