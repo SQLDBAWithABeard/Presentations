@@ -86,6 +86,9 @@ Describe "Testing for Demo" {
     Context "Stored Procedures" {
         (Get-DbaDbStoredProcedure -SqlInstance $sql0 -Database AdventureWorks2014 -ExcludeSystemSp).Where{$_.Name -eq 'Steal_All_The_Emails'} | Should -Not -BeNullOrEmpty
     }
+    Context "Indexes"{
+        Find-DbaDisabledIndex -SqlInstance $sql0 | Should -Not -BeNullOrEmpty
+    }
     Context "Users" {
         It "$SQL1 should not have TheBeard Login"{
             Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard | Should -BeNullOrEmpty
