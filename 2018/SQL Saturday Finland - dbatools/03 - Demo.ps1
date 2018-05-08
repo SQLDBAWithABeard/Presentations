@@ -43,7 +43,7 @@ Get-DbaLogin -SqlInstance $sql1 |Format-Table
 ## So why not source control your logins like Claudio Silva does http://redglue.eu/have-you-backed-up-your-sql-logins-today/?
 Export-DbaLogin -SqlInstance $sql1
 
-## You can do it to a file adn then source control it
+## You can do it to a file and then source control it
 
 Export-DbaLogin -SqlInstance $sql1 -FilePath c:\temp\sql1_users.sql
 
