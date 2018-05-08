@@ -216,7 +216,7 @@ Get-DbaFile -SqlInstance $LinuxSQL -SqlCredential $cred -Path '/var/opt/mssql/da
 ## Oh and dbatools can restore from a Ola Hallengren directory too
 
 ## show the databases
-Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb -ExcludeDatabase 'DBA-Admin'
+Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb -ExcludeDatabase 'DBA-Admin' |Format-Table
 
 ## Remove them
 Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb -ExcludeDatabase 'DBA-Admin' | Remove-DbaDatabase -Confirm:$false
@@ -227,8 +227,8 @@ Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb 
 ## Restore from Ola directory
 Restore-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -Path '/var/opt/mssql/data/BeardLinuxSQL' -AllowContinue
 
-## show the databases - There are none
-Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb 
+## show the databases
+Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb | Format-Table
 
 #endregion
 #endregion
