@@ -257,6 +257,11 @@ if(Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard){
 $Sessions = (Get-DbaXEventSession -SqlInstance $sql0).Where{$_.Name -notin ('AlwaysOn_Health','system_health','telemetry_xevents')}
 Remove-DbaXESession -SqlInstance $sql0 -Session $Sessions.Name
 
+Get-DbaXESession -SqlInstance $SQL0 -Session AlwaysOn_health | Stop-DbaXESession
+Get-DbaXESession -SqlInstance $SQL0 -Session AlwaysOn_health | Start-DbaXESession
+
+Get-ChildItem '\\sql0\c$\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\Log\*.xel' | Remove-Item -Force -ErrorAction SilentlyContinue
+
 #endregion
 
 #region Workload
