@@ -241,4 +241,7 @@ Get-DbaServerProtocol -ComputerName $sql0
 # Get the registry root
 Get-DbaSqlRegistryRoot -ComputerName $sql0
 
+# Get the SQL ErrorLog
+Get-DbaSqlLog -SqlInstance $SQL1 | Out-GridView
+
 #endregion
