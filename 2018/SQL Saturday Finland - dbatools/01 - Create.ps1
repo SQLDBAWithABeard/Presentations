@@ -221,6 +221,8 @@ $Containers.ForEach{
     Invoke-DbaSqlQuery -SqlInstance $sql1 -Database master -Query $query
     Write-Verbose -Message "Removed linked servers from $SQL1"
 }
+
+Get-DbaDatabase -SqlInstance $sql0 -Database AdventureWorks2014_CLONE |Remove-DbaDatabase -Confirm:$False
 #endregion
 
 #region linux server
