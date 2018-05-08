@@ -53,10 +53,6 @@ Get-DbaProcess -SqlInstance $sql1
 
 Get-DbaProcess -SqlInstance $sql1 |Out-GridView
 
-## Hmm what is that TheBeard doing?
-
-Get-DbaProcess -SqlInstance $sql1 -Login TheBeard|Out-GridView
-
 ## Oh
 
 ## Email from manager
