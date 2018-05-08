@@ -179,7 +179,7 @@ Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred
 
 ## Run the job
 (Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred -Job 'DatabaseBackup - USER_DATABASES - FULL').start()
-Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred
+Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred | Format-Table
 
 ## Check the history
 Get-DbaAgentJobHistory -SqlInstance $LinuxSQL -SqlCredential $cred -Job 'DatabaseBackup - USER_DATABASES - FULL'
@@ -192,7 +192,7 @@ Get-DbaBackupHistory -SqlInstance $LinuxSQL -SqlCredential $cred  # other params
 ## Answer the question - When was this database LAST backed up
 Get-DbaLastBackup -SqlInstance $LinuxSQL -SqlCredential $cred | Format-Table
 
-## Yes - That is working on SQL on Linux beause it is just teh same as SQL on Windows from a SQL point of view
+## Yes - That is working on SQL on Linux beause it is just the same as SQL on Windows from a SQL point of view
 
 ## What about checking the last time a database was restored?
 
