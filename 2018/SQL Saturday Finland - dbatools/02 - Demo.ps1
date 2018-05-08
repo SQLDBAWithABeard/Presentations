@@ -9,7 +9,7 @@ Return 'Oi Beardy, You may be an MVP but this is a demo, don''t run the whole th
 ## Lets look at the commands
 Get-Command -Module dbatools 
 
-## How many Commands?
+## How many commands?
 (Get-Command -Module dbatools).Count
 
 ## How do we find commands?
@@ -32,7 +32,7 @@ Find-DbaCommand -Pattern linked | Out-GridView -PassThru | Get-Help -Full
 
 ## Lets look at the linked servers on sql0
 
-Get-DbaLinkedServer -SqlInstance $sql0
+Get-DbaLinkedServer -SqlInstance $sql0 | Format-Table
 
 ## I wonder if they are all workign correctly
 
@@ -60,7 +60,7 @@ Copy-DbaLinkedServer -Source $sql0 -Destination $sql1
 
 ## Now lets look at sql1 linked servers again
 
-Get-DbaLinkedServer -SqlInstance $sql1
+Get-DbaLinkedServer -SqlInstance $sql1 | Format-Table
 
 ## Lets test them to show we have the Password passed over as well
 
@@ -102,10 +102,11 @@ Get-DbaDatabase -SqlInstance $sql0 -ExcludeAllSystemDb -ExcludeDatabase WideWorl
 ## We MUST get the databases back quickly to keep the business running
 ## Where is our Disaster recovery plan?
 ## I just need one script - I can even just type it out in one line :-)
-## NOTE - I am only showing the backups but you have seen we can do linked servers and we can do prety much anything on the instance :-)
+## NOTE - I am only showing the backups 
+## but you have seen we can do linked servers and we can do prety much anything on the instance with the Copy-Dba* commands :-)
 
 ## Check databases on sql1
-Get-DbaDatabase -SqlInstance $sql1
+Get-DbaDatabase -SqlInstance $sql1 | Format-Table
 
 ## restore databases from backup folder
 Restore-DbaDatabase -SqlInstance $sql1 -Path $NetworkShare -WithReplace
