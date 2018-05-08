@@ -291,6 +291,12 @@ Get-DbaDbQueryStoreOptions -SqlInstance $sql0 -Database AdventureWorks2014
 Set-DbaDbQueryStoreOptions -SqlInstance $sql0 -Database AdventureWorks2014 -MaxSize 200
 #endregion
 
+#region Query
 
+# Quickly find slow query executions within a database
+
+Get-DbaQueryExecutionTime -SqlInstance $sql0 -Database AdventureWorks2014  -MinExecMs 0 -MinExecs 1 | Out-GridView
+
+#endregion
 
 
