@@ -244,4 +244,7 @@ Get-DbaSqlRegistryRoot -ComputerName $sql0
 # Get the SQL ErrorLog
 Get-DbaSqlLog -SqlInstance $SQL1 | Out-GridView
 
+# Get the Operating System
+Get-DbaOperatingSystem -ComputerName $sql0 
+
 #endregion
