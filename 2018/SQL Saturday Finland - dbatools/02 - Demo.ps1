@@ -93,6 +93,9 @@ Get-DbaSqlBuildReference -Build 10.0.6000,10.50.6000 |Format-Table
 Explorer $NetworkShare
 Get-DbaDatabase -SqlInstance $sql0 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters | Backup-DbaDatabase -BackupDirectory $NetworkShare
 
+## Whats our Backup ThroughPut ?
+Measure-DbaBackupThroughput -SqlInstance $sql0
+
 #endregion
 
 #region DISASTER
