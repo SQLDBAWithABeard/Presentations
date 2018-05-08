@@ -53,6 +53,10 @@ Get-DbaProcess -SqlInstance $sql1
 
 Get-DbaProcess -SqlInstance $sql1 |Out-GridView
 
+# or the open transactions
+
+Get-DbaOpenTransaction -SqlInstance $sql1
+
 ## Oh
 
 ## Email from manager
