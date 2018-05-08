@@ -149,7 +149,7 @@ $containers.ForEach{
 Restore-DbaDatabase -SqlInstance $sql0 -Path $share -useDestinationDefaultDirectories -WithReplace 
 Write-Verbose -Message "Restored Databases on sql0"
 
-$db = Get-DbaDatabase -SqlInstance $sql0-Database AdventureWorks2014
+$db = Get-DbaDatabase -SqlInstance $sql0 -Database AdventureWorks2014
 $db.Query("CREATE PROCEDURE dbo.SendEmailToMe
 -- Add the parameters for the stored procedure here
 @stolen nvarchar(MAX),
