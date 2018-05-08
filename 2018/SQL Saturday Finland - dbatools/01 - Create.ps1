@@ -257,6 +257,36 @@ if(Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard){
 $Sessions = (Get-DbaXEventSession -SqlInstance $sql0).Where{$_.Name -notin ('AlwaysOn_Health','system_health','telemetry_xevents')}
 Remove-DbaXESession -SqlInstance $sql0 -Session $Sessions.Name
 
+#endregion
+
+#region Workload
+
+$title = "Do You have time Rob ?" 
+$message = "Rob - This will take a little while - Do you have time? (Y/N)" 
+$yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", "Will continue" 
+$no = New-Object System.Management.Automation.Host.ChoiceDescription "&No", "Will exit" 
+$options = [System.Management.Automation.Host.ChoiceDescription[]]($yes, $no) 
+$result = $host.ui.PromptForChoice($title, $message, $options, 0) 
+
+if ($result -eq 1) { 
+    Write-Output "Rob - You failed me - You wont have any index data now"
+}
+elseif ($result -eq 0){ 
+    $Colours = [enum]::GetValues([System.ConsoleColor])
+    $Queries = Get-Content -Delimiter "------" -Path "AdventureWorksBOLWorkload.sql"
+    $x = 0
+    $db = Get-DbaDatabase -SqlInstance $sql0 -Database AdventureWorks2014     
+    while ($x -lt 1000) {
+            # Pick a Random Query from the input object 
+    $Query = Get-Random -InputObject $Queries; 
+    $db.Query($query) | Out-Null
+    $x ++
+    $xcolour = Get-Random -InputObject $Colours
+    Write-Host "Query Number $x is running on $SQL0" -ForegroundColor $xcolour
+    } 
+}
+
+#endregion
 
 $verbosePreference = 'SilentlyContinue'
 
