@@ -149,6 +149,11 @@ $containers.ForEach{
 Restore-DbaDatabase -SqlInstance $sql0 -Path $share -useDestinationDefaultDirectories -WithReplace 
 Write-Verbose -Message "Restored Databases on sql0"
 
+$query = "ALTER DATABASE [AdventureWorks2014] SET QUERY_STORE = ON
+ALTER DATABASE [AdventureWorks2014] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, INTERVAL_LENGTH_MINUTES = 15)"
+
+(Get-DbaDatabase -SqlInstance $sql0 -Database master).Query($Query)
+
 $db = Get-DbaDatabase -SqlInstance $sql0 -Database AdventureWorks2014
 $db.Query("CREATE PROCEDURE dbo.SendEmailToMe
 -- Add the parameters for the stored procedure here
