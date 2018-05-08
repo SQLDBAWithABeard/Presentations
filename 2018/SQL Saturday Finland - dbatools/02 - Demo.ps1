@@ -123,6 +123,11 @@ $measurement.DifferenceSize | Measure-Object -Property GigaByte -Sum
 
 Get-DbaDiskSpace -ComputerName $sql1
 
+$Path = (Get-ChildItem \\bearddockerhost\NetworkSQLBackups\AdventureWorks2012*).FullName
+(Read-DbaBackupHeader -Path $path -SqlInstance $sql1).BackupSizeMb
+
+Measure-DbaDiskSpaceRequirement -Source $SQL0 -Destination $sql1 -Database AdventureWorks2012
+
 ## restore databases from backup folder
 Restore-DbaDatabase -SqlInstance $sql1 -Path $NetworkShare -WithReplace
 
