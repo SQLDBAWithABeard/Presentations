@@ -112,7 +112,7 @@ Get-DbaDatabase -SqlInstance $sql1 | Format-Table
 Restore-DbaDatabase -SqlInstance $sql1 -Path $NetworkShare -WithReplace
 
 ## Check databases on sql1
-Get-DbaDatabase -SqlInstance $sql1
+Get-DbaDatabase -SqlInstance $sql1 | Format-Table
 
 ## Happy suits :-)
 ## Now go and fix the broken server!!!
@@ -131,7 +131,7 @@ Get-DbaDatabase -SqlInstance $sql1
 ## Watch
 
 explorer '\\sql0.TheBeard.Local\F$\Data'
-Test-DbaLastBackup -SqlInstance $sql0 -ExcludeDatabase WideWorldImporters | Out-GridView
+Test-DbaLastBackup -SqlInstance $sql0 -ExcludeDatabase WideWorldImporters  | Out-GridView
 #endregion
 
 #region agent jobs
