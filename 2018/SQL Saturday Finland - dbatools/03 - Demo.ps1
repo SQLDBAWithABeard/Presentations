@@ -191,6 +191,9 @@ Get-DbaHelpIndex -SqlInstance $sql0 -Database AdventureWorks2014 -ObjectName [Sa
 
 Find-DbaUserObject -SqlInstance $SQL0 
 
+## We can find when a database grew
+
+Find-DbaDatabaseGrowthEvent -SqlInstance $sql0 | Format-Table
 
 #endregion
 
@@ -277,5 +280,6 @@ Get-ChildItem creating_tables.xel | Read-DbaXEFile | Invoke-DbaXeReplay -SqlInst
 
 (Get-DbaTable -SqlInstance $sql0 -Database tempdb).Name
 #endregion
+
 
 
