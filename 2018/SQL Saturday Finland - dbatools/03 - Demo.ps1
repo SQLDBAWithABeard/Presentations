@@ -91,6 +91,12 @@ Get-DbaLogin -SqlInstance $sql1 -Login TheBeard | Remove-DbaLogin -Confirm:$fals
 
 ## Much better :-)
 
+## What about Glenn Berry's Diagnostic Queries ?
+
+# Diagnostic query!
+$sql0| Invoke-DbaDiagnosticQuery -UseSelectionHelper | Export-DbaDiagnosticQuery -Path $home
+Invoke-Item $home
+
 #endregion
 
 #region Clones and snapshots
