@@ -61,7 +61,11 @@ Get-DbaOpenTransaction -SqlInstance $sql1
 
 ## Email from manager
 
-New-BurntToastNotification -Text  'FROM THE BOSS - Keep this CONFIDENTIAL', 'I NEED to know immediately what the user account TheBeard did on SQL1 DROP EVERYTHING and DO IT NOW','Angry Manager' -AppLogo C:\Users\enterpriseadmin.THEBEARD\Desktop\angryboss.jpg
+$newBurntToastNotificationSplat = @{
+    Text = 'FROM THE BOSS - Keep this CONFIDENTIAL', 'I NEED to know immediately what the user account TheBeard did on SQL1 DROP EVERYTHING and DO IT NOW','Angry Manager'
+    AppLogo = 'C:\Users\enterpriseadmin.THEBEARD\Desktop\angryboss.jpg'
+}
+New-BurntToastNotification @newBurntToastNotificationSplat
 
 ## Hmm Better get onto this quick
 
@@ -103,7 +107,13 @@ Invoke-Item $home
 
 ## Maybe we want to test query performance without requiring all the space needed for the data in the database
 
-Invoke-DbaDatabaseClone -SqlInstance $sql0 -Database AdventureWorks2014 -CloneDatabase AdventureWorks2014_CLONE -UpdateStatistics
+$invokeDbaDatabaseCloneSplat = @{
+    SqlInstance = $sql0
+    CloneDatabase = 'AdventureWorks2014_CLONE'
+    UpdateStatistics = $true
+    Database = 'AdventureWorks2014'
+}
+Invoke-DbaDatabaseClone @invokeDbaDatabaseCloneSplat
 
 ## Now run in SSMS
 
@@ -191,11 +201,18 @@ Find-DbaDuplicateIndex -SqlInstance $sql0 | Out-GridView
 
 Get-DbaHelpIndex -SqlInstance $sql0 -Database AdventureWorks2014 | Out-GridView
 
-Get-DbaHelpIndex -SqlInstance $sql0 -Database AdventureWorks2014 -ObjectName [Sales].[SalesOrderDetail] -IncludeStats -IncludeDataTypes | Out-GridView
+$getDbaHelpIndexSplat = @{
+    Database = 'AdventureWorks2014'
+    ObjectName = '[Sales].[SalesOrderDetail]'
+    IncludeStats = $true
+    IncludeDataTypes = $true
+    SqlInstance = $sql0
+}
+Get-DbaHelpIndex @getDbaHelpIndexSplat | Out-GridView
 
-# find user owned objects
+# find user owned objects for when an employee is leaving
 
-Find-DbaUserObject -SqlInstance $SQL0 
+Find-DbaUserObject -SqlInstance $SQL0 -Pattern XXX
 
 ## We can find when a database grew
 
