@@ -276,5 +276,10 @@ Get-DbaDatabaseFile -SqlInstance $sql0 | Out-GridView
 Get-DbaDatabaseFile -SqlInstance $sql0 IncludeSystemDB | Write-DbaDataTable -SqlInstance $sql0 -Database tempdb -Table DiskSpaceExample -AutoCreateTable
 Invoke-DbaSqlcmd -ServerInstance $sql0 -Database tempdb -Query 'SELECT * FROM dbo.DiskSpaceExample' | Out-GridView
 
+# Get and change service account
+Get-DbaSqlService -ComputerName $sql0 | Out-GridView
+Get-DbaSqlService -ComputerName $sql0 | Select-Object * | Out-GridView
+Get-DbaSqlService -Instance $sql0 -Type Agent | Update-DbaSqlServiceAccount -Username 'Local system' -WhatIf
+
 
 #endregion
