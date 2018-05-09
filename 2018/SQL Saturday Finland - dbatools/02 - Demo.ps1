@@ -193,7 +193,17 @@ Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred
 
 ## Install
 
-Install-DbaMaintenanceSolution -SqlInstance $LinuxSQL -SqlCredential $cred -Database 'DBA-Admin' -CleanupTime 74 -LogToTable -InstallJobs -Verbose -Solution All
+$installDbaMaintenanceSolutionSplat = @{
+    CleanupTime = 74
+    InstallJobs = $true
+    Solution = 'All'
+    SqlInstance = $LinuxSQL
+    LogToTable = $true
+    Database = 'DBA-Admin'
+    SqlCredential = $cred
+    Verbose = $true
+}
+Install-DbaMaintenanceSolution @installDbaMaintenanceSolutionSplat
 
 Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred
 
