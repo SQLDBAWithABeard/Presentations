@@ -233,6 +233,10 @@ Get-DbaFile -SqlInstance $LinuxSQL -SqlCredential $cred
 ## but you can explore other paths too
 Get-DbaFile -SqlInstance $LinuxSQL -SqlCredential $cred -Path '/var/opt/mssql/data/BeardLinuxSQL/LinuxDb9/FULL/'
 
+## and create a directory
+
+New-DbaSqlDirectory -SqlInstance $instance -SqlCredential $cred -Path '/var/opt/mssql/data/Finland/'
+
 ## Oh and dbatools can restore from a Ola Hallengren directory too
 
 ## show the databases
@@ -266,5 +270,11 @@ Get-DbaSqlLog -SqlInstance $SQL1 | Out-GridView
 
 # Get the Operating System
 Get-DbaOperatingSystem -ComputerName $sql0 
+
+# Get db file information AND write it to table
+Get-DbaDatabaseFile -SqlInstance $sql0 | Out-GridView
+Get-DbaDatabaseFile -SqlInstance $sql0 IncludeSystemDB | Write-DbaDataTable -SqlInstance $sql0 -Database tempdb -Table DiskSpaceExample -AutoCreateTable
+Invoke-DbaSqlcmd -ServerInstance $sql0 -Database tempdb -Query 'SELECT * FROM dbo.DiskSpaceExample' | Out-GridView
+
 
 #endregion
