@@ -269,6 +269,10 @@ Get-ChildItem '\\sql0\c$\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\
 
 #endregion
 
+#region files
+
+Remove-Item -Path \\sql0.Thebeard.local\f$\Finland -Force
+
 #region Workload
 
 $title = "Do You have time Rob ?" 
