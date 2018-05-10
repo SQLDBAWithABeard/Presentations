@@ -353,11 +353,11 @@ Function Compare-SPConfigs {
         }
     } 
 
-    $propcompare | Out-GridView
+    $propcompare | Out-GridView -Title "Comparing Sp_configure Settings Source - $SourceInstance With Destination $DestinationInstance"
 }
 
 
-Compare-WinLinuxConfigs
+Compare-SPConfigs -SourceInstance $sql0 -DestinationInstance $linuxSQL -DestinationCred $cred
 
 $win.Configuration.Properties['DefaultBackupCompression'].ConfigValue = 1
 $win.Configuration.Alter()
