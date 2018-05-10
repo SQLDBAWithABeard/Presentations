@@ -59,6 +59,9 @@ Describe "Testing for Demo" {
         It "Should not have the Finland folder on $sql0" {
             Test-Path -Path \\sql0.Thebeard.local\f$\Finland | Should -BeFalse
         }
+        It "Have Glenn Berry Diagnostic Query Folder" {
+            Test-Path "$Home\Documents\Glenn Berry Diagnostic Queries" | Should -BeTrue
+        }
     }
     Context "Linked servers" {
         $containers.ForEach{
