@@ -248,7 +248,7 @@ Get-DbaFile -SqlInstance $LinuxSQL -SqlCredential $cred -Path '/var/opt/mssql/da
 
 ## and create a directory
 
-New-DbaSqlDirectory -SqlInstance $instance -SqlCredential $cred -Path '/var/opt/mssql/data/Finland/'
+New-DbaSqlDirectory -SqlInstance $sql0 -Path 'F:/Finland/'
 
 ## Oh and dbatools can restore from a Ola Hallengren directory too
 
@@ -286,13 +286,13 @@ Get-DbaOperatingSystem -ComputerName $sql0
 
 # Get db file information AND write it to table
 Get-DbaDatabaseFile -SqlInstance $sql0 | Out-GridView
-Get-DbaDatabaseFile -SqlInstance $sql0 IncludeSystemDB | Write-DbaDataTable -SqlInstance $sql0 -Database tempdb -Table DiskSpaceExample -AutoCreateTable
-Invoke-DbaSqlcmd -ServerInstance $sql0 -Database tempdb -Query 'SELECT * FROM dbo.DiskSpaceExample' | Out-GridView
+Get-DbaDatabaseFile -SqlInstance $sql0  | Write-DbaDataTable -SqlInstance $sql0 -Database tempdb -Table DiskSpaceExample -AutoCreateTable
+Invoke-DbaSqlQuery -ServerInstance $sql0 -Database tempdb -Query 'SELECT * FROM dbo.DiskSpaceExample' | Out-GridView
 
 # Get and change service account
 Get-DbaSqlService -ComputerName $sql0 | Out-GridView
 Get-DbaSqlService -ComputerName $sql0 | Select-Object * | Out-GridView
-Get-DbaSqlService -Instance $sql0 -Type Agent | Update-DbaSqlServiceAccount -Username 'Local system' -WhatIf
+## Get-DbaSqlService -Instance $sql0 -Type Agent | Update-DbaSqlServiceAccount  -Username 'Local system' -WhatIf
 
 
 #endregion
