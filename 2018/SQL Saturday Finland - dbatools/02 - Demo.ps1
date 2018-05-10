@@ -153,8 +153,8 @@ Get-DbaDatabase -SqlInstance $sql1 | Format-Table
 ## Now it is so easy to do this
 ## Watch
 
-explorer '\\sql0.TheBeard.Local\F$\Data'
-Test-DbaLastBackup -SqlInstance $sql0 -ExcludeDatabase WideWorldImporters  | Out-GridView
+explorer '\\sql1.TheBeard.Local\F$\Data'
+Test-DbaLastBackup -SqlInstance $sql1 -ExcludeDatabase WideWorldImporters | Out-GridView
 #endregion
 
 #region agent jobs
@@ -292,7 +292,7 @@ Invoke-DbaSqlcmd -ServerInstance $sql0 -Database tempdb -Query 'SELECT * FROM db
 # Get and change service account
 Get-DbaSqlService -ComputerName $sql0 | Out-GridView
 Get-DbaSqlService -ComputerName $sql0 | Select-Object * | Out-GridView
-## Get-DbaSqlService -Instance $sql0 -Type Agent | Update-DbaSqlServiceAccount  -Username 'Local system' -WhatIf
+Get-DbaSqlService -Instance $sql0 -Type Agent | Update-DbaSqlServiceAccount -Username 'Local system' -WhatIf
 
 
 #endregion
