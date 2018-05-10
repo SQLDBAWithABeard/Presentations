@@ -138,6 +138,9 @@ Invoke-DbaDatabaseClone @invokeDbaDatabaseCloneSplat
     GO
 #>
 
+## We can also get the execution plan
+Get-DbaExecutionPlan -SqlInstance $sql0 -Database AdventureWorks2014_CLONE
+
 # create a snapshot
 New-DbaDatabaseSnapshot -SqlInstance $sql0 -Database AdventureWorks2014 -Name AD2014_snap
 
@@ -218,7 +221,7 @@ Find-DbaUserObject -SqlInstance $SQL0 -Pattern XXX
 
 Find-DbaDatabaseGrowthEvent -SqlInstance $sql0 | Format-Table
 
-Find-DbaUserObject -SqlInstance $SQL0 -Pattern TheBeard\EnterpriseAdmin
+#endregion
 
 #region Extended Events
 
