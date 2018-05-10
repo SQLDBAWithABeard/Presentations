@@ -34,7 +34,7 @@ Find-DbaCommand -Pattern linked | Out-GridView -PassThru | Get-Help -Full
 
 Get-DbaLinkedServer -SqlInstance $sql0 | Format-Table
 
-## I wonder if they are all workign correctly
+## I wonder if they are all working correctly
 
 Test-DbaLinkedServerConnection -SqlInstance $sql0 
 
