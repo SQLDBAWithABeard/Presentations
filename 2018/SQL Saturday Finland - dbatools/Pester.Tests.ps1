@@ -56,6 +56,9 @@ Describe "Testing for Demo" {
                 Test-DbaSqlPath -SqlInstance $psitem -Path $NetworkShare| SHould -BeTrue
             }
         }
+        It "Should not have the Finland folder on $sql0" {
+            Test-Path -Path \\sql0.Thebeard.local\f$\Finland | Should -BeFalse
+        }
     }
     Context "Linked servers" {
         $containers.ForEach{
