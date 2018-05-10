@@ -117,7 +117,7 @@ Invoke-DbcCheck
 ## Now that I have set my configuration I can export it
 ## I could save it and source control it
 
-Export-DbcConfig -Path C:\Users\dbachecks\Desktop\production_config.json
+Export-DbcConfig -Path C:\temp\Production.Json
 
 ## I can add this configuration to an automated system and get that to run my checks
 
@@ -186,18 +186,31 @@ Set-DbcConfig -Name policy.network.latencymaxms -Value 100
 Set-DbcConfig -Name policy.recoverymodel.type -value Simple
 Set-DbcConfig -Name policy.whoisactive.database -Value DBAAdmin 
 Set-DbcConfig -Name domain.name -Value 'WORKGROUP'
-Set-DbcConfig -Name policy.recoverymodel.excludedb -Value 'master','model','msdb','tempdb',
+Set-DbcConfig -Name policy.recoverymodel.excludedb -Value 'master','model','msdb','tempdb'
 
 Set-DbcConfig -Name policy.build.warningwindow -Value 6
 
 Set-DbcConfig -Name command.invokedbccheck.excludecheck -Value LogShipping,ExtendedEvent, HADR, SaReNamed, PseudoSimple,spn, DiskSpace, DatabaseCollation,Agent,Backup,UnusedIndex,LogfileCount,FileGroupBalanced,LogfileSize,MaintenanceSolution,ServerNameMatch,ServiceAccount,ErrorLog, ModelDatabaseGrowth,WhoIsActiveInstalled,MaxMemory,TempDbConfiguration,Adhocworkload,Domain, CompatabilityLevel,FutureFileGrowth
 
+#endregion
+
 Invoke-DbcCheck -AllChecks -SqlCredential $cred -Show Fails -PassThru | Update-DbcPowerBiDataSource -Environment DevelopmentContainers
 
+Export-DbcConfig -Path C:\temp\development_config.json
+Open-EditorFile C:\temp\development_config.json
+
+Set-DbcConfig -Name app.sqlinstance -Value $SQLInstances
+Set-DbcConfig -Name command.invokedbccheck.excludecheck -Value Agent,HADR,Database,Instance,LogShipping,Server
+
+Export-DbcConfig c:\temp\AgentConfig.json
+
+Invoke-DbcCheck -AllChecks -SqlCredential $cred -Show Fails -PassThru | Update-DbcPowerBiDataSource -Environment OlaChecks
+
+Set-DbcConfig -Name app.sqlinstance -Value $SQLInstances
+Set-DbcConfig -Name app.computername -Value $SQLInstances
+Set-DbcConfig -Name command.invokedbccheck.excludecheck -Value Agent,HADR,Database,Instance,LogShipping,MaintenanceSolution,PowerPlan,SPN,InstanceConnection,PingComputer,Domain
 
 
-Export-DbcConfig -Path C:\Users\dbachecks\Desktop\development_config.json
-code C:\Users\dbachecks\Desktop\development_config.json
+Export-DbcConfig c:\temp\DiskSpace.json
 
-Get-Dbcconfig | ogv
-
+Invoke-DbcCheck -AllChecks -SqlCredential $cred -Show Fails -PassThru | Update-DbcPowerBiDataSource -Environment DiskSpace

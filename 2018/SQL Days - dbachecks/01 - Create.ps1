@@ -8,7 +8,7 @@ if (-not (Get-PSDrive -Name SQLDays -ErrorAction SilentlyContinue)) {
 }
 
 function prompt {
-    Write-Host ("Hymyile ja nauti >") -NoNewLine -ForegroundColor Magenta
+    Write-Host ("uśmiech >") -NoNewLine -ForegroundColor Magenta
     return " "
 }
 
