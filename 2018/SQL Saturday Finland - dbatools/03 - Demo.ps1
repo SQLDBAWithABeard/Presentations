@@ -101,12 +101,6 @@ Get-DbaLogin -SqlInstance $sql1 -Login TheBeard | Remove-DbaLogin -Confirm:$fals
 $sql0| Invoke-DbaDiagnosticQuery -UseSelectionHelper | Export-DbaDiagnosticQuery -Path $home
 Invoke-Item $home
 
-Start-Process https://www.sqlskills.com/blogs/glenn/category/dmv-queries/
-
-Explorer "$Home\Documents\Glenn Berry Diagnostic Queries"
-$sql0| Invoke-DbaDiagnosticQuery -UseSelectionHelper | Export-DbaDiagnosticQuery -Path "$Home\Documents\Glenn Berry Diagnostic Queries"
-
-
 #endregion
 
 #region Clones and snapshots
@@ -224,7 +218,7 @@ Find-DbaUserObject -SqlInstance $SQL0 -Pattern XXX
 
 Find-DbaDatabaseGrowthEvent -SqlInstance $sql0 | Format-Table
 
-#endregion
+Find-DbaUserObject -SqlInstance $SQL0 -Pattern TheBeard\EnterpriseAdmin
 
 #region Extended Events
 
