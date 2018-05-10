@@ -216,7 +216,7 @@ Find-DbaUserObject -SqlInstance $SQL0 -Pattern XXX
 
 ## We can find when a database grew
 
-Find-DbaDatabaseGrowthEvent -SqlInstance $sql0 | Format-Table
+Find-DbaDbGrowthEvent -SqlInstance $sql0 | Format-Table
 
 #endregion
 
