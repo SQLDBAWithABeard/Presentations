@@ -153,8 +153,8 @@ Get-DbaDatabase -SqlInstance $sql1 | Format-Table
 ## Now it is so easy to do this
 ## Watch
 
-explorer '\\sql0.TheBeard.Local\F$\Data'
-Test-DbaLastBackup -SqlInstance $sql0 -ExcludeDatabase WideWorldImporters  | Out-GridView
+explorer '\\sql1.TheBeard.Local\F$\Data'
+Test-DbaLastBackup -SqlInstance $sql1 -ExcludeDatabase WideWorldImporters | Out-GridView
 #endregion
 
 #region agent jobs
