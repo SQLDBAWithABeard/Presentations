@@ -359,12 +359,7 @@ Function Compare-SPConfigs {
 
 Compare-SPConfigs -SourceInstance $sql0 -DestinationInstance $linuxSQL -DestinationCred $cred
 
-$win.Configuration.Properties['DefaultBackupCompression'].ConfigValue = 1
-$win.Configuration.Alter()
-
-Compare-WinLinuxConfigs
-
-Copy-SqlSpConfigure -Source $WinSQl1 -Destination $linuxSQL -DestinationSqlCredential $cred -Configs DefaultBackupCompression
+Copy-DbaSpConfigure -Source $sql0 -Destination $linuxSQL -DestinationSqlCredential $cred -ConfigName DefaultBackupCompression
 
 Compare-WinLinuxConfigs
 
