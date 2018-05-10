@@ -56,6 +56,12 @@ Describe "Testing for Demo" {
                 Test-DbaSqlPath -SqlInstance $psitem -Path $NetworkShare| SHould -BeTrue
             }
         }
+        It "Should not have the Finland folder on $sql0" {
+            Test-Path -Path \\sql0.Thebeard.local\f$\Finland | Should -BeFalse
+        }
+        It "Have Glenn Berry Diagnostic Query Folder" {
+            Test-Path "$Home\Documents\Glenn Berry Diagnostic Queries" | Should -BeTrue
+        }
     }
     Context "Linked servers" {
         $containers.ForEach{
@@ -96,6 +102,14 @@ Describe "Testing for Demo" {
     }
     Context "Extended Event Sessions"{
         (Get-DbaXESession -SqlInstance $sql0).Count |Should -Be 3
+    }
+    Context "SP Configure" {
+        It "$SQL0 should have Default backup compression set to 1" {
+            (Get-DbaSpConfigure -SqlInstance $sql0 -Name DefaultBackupCompression).RunningValue | Should -Be 1
+        }
+        It "$LinuxSQL should have Default backup compression set to 0" {
+            (Get-DbaSpConfigure -SqlInstance $LinuxSQL -SqlCredential $cred -Name DefaultBackupCompression).RunningValue | Should -Be 1
+        }
     }
 }
 

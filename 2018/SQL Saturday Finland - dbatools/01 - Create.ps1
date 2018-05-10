@@ -269,6 +269,21 @@ Get-ChildItem '\\sql0\c$\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\
 
 #endregion
 
+#region files
+
+Remove-Item -Path \\sql0.Thebeard.local\f$\Finland -Force
+
+#endregion
+
+#region spconfigure
+
+$linux = Connect-DbaInstance -SqlServer $linuxSQL -Credential $cred
+
+$linux.Configuration.Properties['DefaultBackupCompression'].ConfigValue = 0
+$linux.Configuration.Alter()
+
+#endregion
+
 #region Workload
 
 $title = "Do You have time Rob ?" 

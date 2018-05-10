@@ -98,8 +98,12 @@ Get-DbaLogin -SqlInstance $sql1 -Login TheBeard | Remove-DbaLogin -Confirm:$fals
 ## What about Glenn Berry's Diagnostic Queries ?
 
 # Diagnostic query!
-$sql0| Invoke-DbaDiagnosticQuery -UseSelectionHelper | Export-DbaDiagnosticQuery -Path $home
-Invoke-Item $home
+
+Start-Process https://www.sqlskills.com/blogs/glenn/category/dmv-queries/
+
+Explorer "$Home\Documents\Glenn Berry Diagnostic Queries"
+$sql0| Invoke-DbaDiagnosticQuery -UseSelectionHelper | Export-DbaDiagnosticQuery -Path "$Home\Documents\Glenn Berry Diagnostic Queries"
+
 
 #endregion
 
@@ -138,18 +142,21 @@ Invoke-DbaDatabaseClone @invokeDbaDatabaseCloneSplat
     GO
 #>
 
+## We can also get the execution plan
+Get-DbaExecutionPlan -SqlInstance $sql0 -Database AdventureWorks2014_CLONE
+
 # create a snapshot
-New-DbaDatabaseSnapshot -SqlInstance $sql0 -Database AdventureWorks2014 -Name AD2014_snap
+New-DbaDatabaseSnapshot -SqlInstance $sql0 -Database AdventureWorks2012 -Name AD2012_snap
 
 Get-DbaDatabaseSnapshot -SqlInstance $sql0
 
-Get-DbaProcess -SqlInstance $sql0 -Database AdventureWorks2014 | Stop-DbaProcess
-Get-DbaProcess -SqlInstance $sql0 -Database AD2014_snap| Stop-DbaProcess
+Get-DbaProcess -SqlInstance $sql0 -Database AdventureWorks2012 | Stop-DbaProcess
+Get-DbaProcess -SqlInstance $sql0 -Database AD2012_snap| Stop-DbaProcess
 
 # restore from snapshot
-Restore-DbaFromDatabaseSnapshot -SqlInstance $sql0 -Database AdventureWorks2014 -Snapshot AD2014_snap
+Restore-DbaFromDatabaseSnapshot -SqlInstance $sql0 -Database AdventureWorks2012 -Snapshot AD2012_snap
 
-Remove-DbaDatabaseSnapshot -SqlInstance $sql0 -Snapshot AD2014_snap # or -Database AdventureWorks2014
+Remove-DbaDatabaseSnapshot -SqlInstance $sql0 -Snapshot AD2012_snap # or -Database AdventureWorks2014
 
 #endregion
 
@@ -212,11 +219,11 @@ Get-DbaHelpIndex @getDbaHelpIndexSplat | Out-GridView
 
 # find user owned objects for when an employee is leaving
 
-Find-DbaUserObject -SqlInstance $SQL0 -Pattern XXX
+Find-DbaUserObject -SqlInstance $SQL0 -Pattern TheBeard\EnterpriseAdmin
 
 ## We can find when a database grew
 
-Find-DbaDatabaseGrowthEvent -SqlInstance $sql0 | Format-Table
+Find-DbaDbGrowthEvent -SqlInstance $sql0 | Format-Table
 
 #endregion
 
@@ -324,8 +331,7 @@ Get-DbaQueryExecutionTime -SqlInstance $sql0 -Database AdventureWorks2014  -MinE
 
 #region sp_Configure
 
-$linux = Connect-DbaSqlServer -SqlServer $linuxSQL -Credential $cred
-$win = Connect-DbaSqlServer -SqlServer $sql0
+$linux = Connect-DbaInstance -SqlServer $linuxSQL -Credential $cred
 
 Function Compare-SPConfigs {
 
@@ -346,37 +352,30 @@ Function Compare-SPConfigs {
         }
     } 
 
-    $propcompare | Out-GridView
+    $propcompare | Out-GridView -Title "Comparing Sp_configure Settings Source - $SourceInstance With Destination $DestinationInstance"
 }
 
+Compare-SPConfigs -SourceInstance $sql0 -DestinationInstance $linuxSQL -DestinationCred $cred
 
-Compare-WinLinuxConfigs
+Copy-DbaSpConfigure -Source $sql0 -Destination $linuxSQL -DestinationSqlCredential $cred -ConfigName DefaultBackupCompression
 
-$win.Configuration.Properties['DefaultBackupCompression'].ConfigValue = 1
-$win.Configuration.Alter()
-
-Compare-WinLinuxConfigs
-
-Copy-SqlSpConfigure -Source $WinSQl1 -Destination $linuxSQL -DestinationSqlCredential $cred -Configs DefaultBackupCompression
-
-Compare-WinLinuxConfigs
+Compare-SPConfigs -SourceInstance $sql0 -DestinationInstance $linuxSQL -DestinationCred $cred
 
 $linux.Configuration.Properties['DefaultBackupCompression'].ConfigValue = 0
 $linux.Configuration.Alter()
 
-Compare-WinLinuxConfigs
+Compare-SPConfigs -SourceInstance $sql0 -DestinationInstance $linuxSQL -DestinationCred $cred
 
 $linuxConfigPath = 'C:\Temp\Linuxconfig.sql'
 Export-SqlSpConfigure -SqlServer $linuxSQL -SqlCredential $cred -Path $LinuxConfigPath
-notepad $linuxConfigPath
+Open-EditorFile $linuxConfigPath
 
 $WinConfigPath = 'C:\Temp\Winconfig.sql'
-Export-SqlSpConfigure -SqlServer $WinSQl1 -Path $winConfigPath
-notepad $winConfigPath
+Export-SqlSpConfigure -SqlServer $sql0 -Path $winConfigPath
+Open-EditorFile $winConfigPath
 
-Import-SqlSpConfigure -Path $WinConfigPath -SqlServer $linuxSQL -SqlCredential $cred
+Import-DbaSpConfigure -Path $WinConfigPath -SqlServer $linuxSQL -SqlCredential $cred
 
-
-Compare-WinLinuxConfigs
+Compare-SPConfigs -SourceInstance $sql0 -DestinationInstance $linuxSQL -DestinationCred $cred
 
 #endregion

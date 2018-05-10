@@ -34,7 +34,7 @@ Find-DbaCommand -Pattern linked | Out-GridView -PassThru | Get-Help -Full
 
 Get-DbaLinkedServer -SqlInstance $sql0 | Format-Table
 
-## I wonder if they are all workign correctly
+## I wonder if they are all working correctly
 
 Test-DbaLinkedServerConnection -SqlInstance $sql0 
 
@@ -111,6 +111,7 @@ Measure-DbaBackupThroughput -SqlInstance $sql0
 ## Check databases on sql1
 Get-DbaDatabase -SqlInstance $sql1 | Format-Table
 
+#region check space
 ## Check that we have enough space on the destination (obviously we couldnt do it this way if we SQL0 was broken)
 
 $Databases = (Get-DbaDatabase -SqlInstance $SQL0 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters).Name
@@ -127,7 +128,9 @@ $Path = (Get-ChildItem \\bearddockerhost\NetworkSQLBackups\AdventureWorks2012*).
 (Read-DbaBackupHeader -Path $path -SqlInstance $sql1).BackupSizeMb
 
 Measure-DbaDiskSpaceRequirement -Source $SQL0 -Destination $sql1 -Database AdventureWorks2012
+#endregion
 
+## But back to the disaster!
 ## restore databases from backup folder
 Restore-DbaDatabase -SqlInstance $sql1 -Path $NetworkShare -WithReplace
 
@@ -150,8 +153,8 @@ Get-DbaDatabase -SqlInstance $sql1 | Format-Table
 ## Now it is so easy to do this
 ## Watch
 
-explorer '\\sql0.TheBeard.Local\F$\Data'
-Test-DbaLastBackup -SqlInstance $sql0 -ExcludeDatabase WideWorldImporters  | Out-GridView
+explorer '\\sql1.TheBeard.Local\F$\Data'
+Test-DbaLastBackup -SqlInstance $sql1 -ExcludeDatabase WideWorldImporters | Out-GridView
 #endregion
 
 #region agent jobs
@@ -245,7 +248,7 @@ Get-DbaFile -SqlInstance $LinuxSQL -SqlCredential $cred -Path '/var/opt/mssql/da
 
 ## and create a directory
 
-New-DbaSqlDirectory -SqlInstance $instance -SqlCredential $cred -Path '/var/opt/mssql/data/Finland/'
+New-DbaSqlDirectory -SqlInstance $sql0 -Path 'F:/Finland/'
 
 ## Oh and dbatools can restore from a Ola Hallengren directory too
 
@@ -283,13 +286,13 @@ Get-DbaOperatingSystem -ComputerName $sql0
 
 # Get db file information AND write it to table
 Get-DbaDatabaseFile -SqlInstance $sql0 | Out-GridView
-Get-DbaDatabaseFile -SqlInstance $sql0 IncludeSystemDB | Write-DbaDataTable -SqlInstance $sql0 -Database tempdb -Table DiskSpaceExample -AutoCreateTable
-Invoke-DbaSqlcmd -ServerInstance $sql0 -Database tempdb -Query 'SELECT * FROM dbo.DiskSpaceExample' | Out-GridView
+Get-DbaDatabaseFile -SqlInstance $sql0  | Write-DbaDataTable -SqlInstance $sql0 -Database tempdb -Table DiskSpaceExample -AutoCreateTable
+Invoke-DbaSqlQuery -ServerInstance $sql0 -Database tempdb -Query 'SELECT * FROM dbo.DiskSpaceExample' | Out-GridView
 
 # Get and change service account
 Get-DbaSqlService -ComputerName $sql0 | Out-GridView
 Get-DbaSqlService -ComputerName $sql0 | Select-Object * | Out-GridView
-Get-DbaSqlService -Instance $sql0 -Type Agent | Update-DbaSqlServiceAccount -Username 'Local system' -WhatIf
+## Get-DbaSqlService -Instance $sql0 -Type Agent | Update-DbaSqlServiceAccount  -Username 'Local system' -WhatIf
 
 
 #endregion
