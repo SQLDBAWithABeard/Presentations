@@ -98,8 +98,12 @@ Get-DbaLogin -SqlInstance $sql1 -Login TheBeard | Remove-DbaLogin -Confirm:$fals
 ## What about Glenn Berry's Diagnostic Queries ?
 
 # Diagnostic query!
-$sql0| Invoke-DbaDiagnosticQuery -UseSelectionHelper | Export-DbaDiagnosticQuery -Path $home
-Invoke-Item $home
+
+Start-Process https://www.sqlskills.com/blogs/glenn/category/dmv-queries/
+
+Explorer "$Home\Documents\Glenn Berry Diagnostic Queries"
+$sql0| Invoke-DbaDiagnosticQuery -UseSelectionHelper | Export-DbaDiagnosticQuery -Path "$Home\Documents\Glenn Berry Diagnostic Queries"
+
 
 #endregion
 
@@ -142,17 +146,17 @@ Invoke-DbaDatabaseClone @invokeDbaDatabaseCloneSplat
 Get-DbaExecutionPlan -SqlInstance $sql0 -Database AdventureWorks2014_CLONE
 
 # create a snapshot
-New-DbaDatabaseSnapshot -SqlInstance $sql0 -Database AdventureWorks2014 -Name AD2014_snap
+New-DbaDatabaseSnapshot -SqlInstance $sql0 -Database AdventureWorks2012 -Name AD2012_snap
 
 Get-DbaDatabaseSnapshot -SqlInstance $sql0
 
-Get-DbaProcess -SqlInstance $sql0 -Database AdventureWorks2014 | Stop-DbaProcess
-Get-DbaProcess -SqlInstance $sql0 -Database AD2014_snap| Stop-DbaProcess
+Get-DbaProcess -SqlInstance $sql0 -Database AdventureWorks2012 | Stop-DbaProcess
+Get-DbaProcess -SqlInstance $sql0 -Database AD2012_snap| Stop-DbaProcess
 
 # restore from snapshot
-Restore-DbaFromDatabaseSnapshot -SqlInstance $sql0 -Database AdventureWorks2014 -Snapshot AD2014_snap
+Restore-DbaFromDatabaseSnapshot -SqlInstance $sql0 -Database AdventureWorks2012 -Snapshot AD2012_snap
 
-Remove-DbaDatabaseSnapshot -SqlInstance $sql0 -Snapshot AD2014_snap # or -Database AdventureWorks2014
+Remove-DbaDatabaseSnapshot -SqlInstance $sql0 -Snapshot AD2012_snap # or -Database AdventureWorks2014
 
 #endregion
 
@@ -215,11 +219,11 @@ Get-DbaHelpIndex @getDbaHelpIndexSplat | Out-GridView
 
 # find user owned objects for when an employee is leaving
 
-Find-DbaUserObject -SqlInstance $SQL0 -Pattern XXX
+Find-DbaUserObject -SqlInstance $SQL0 -Pattern TheBeard\EnterpriseAdmin
 
 ## We can find when a database grew
 
-Find-DbaDatabaseGrowthEvent -SqlInstance $sql0 | Format-Table
+Find-DbaDbGrowthEvent -SqlInstance $sql0 | Format-Table
 
 #endregion
 
