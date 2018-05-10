@@ -111,6 +111,7 @@ Measure-DbaBackupThroughput -SqlInstance $sql0
 ## Check databases on sql1
 Get-DbaDatabase -SqlInstance $sql1 | Format-Table
 
+#region check space
 ## Check that we have enough space on the destination (obviously we couldnt do it this way if we SQL0 was broken)
 
 $Databases = (Get-DbaDatabase -SqlInstance $SQL0 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters).Name
@@ -127,7 +128,9 @@ $Path = (Get-ChildItem \\bearddockerhost\NetworkSQLBackups\AdventureWorks2012*).
 (Read-DbaBackupHeader -Path $path -SqlInstance $sql1).BackupSizeMb
 
 Measure-DbaDiskSpaceRequirement -Source $SQL0 -Destination $sql1 -Database AdventureWorks2012
+#endregion
 
+## But back to the disaster!
 ## restore databases from backup folder
 Restore-DbaDatabase -SqlInstance $sql1 -Path $NetworkShare -WithReplace
 
