@@ -331,8 +331,8 @@ Get-DbaQueryExecutionTime -SqlInstance $sql0 -Database AdventureWorks2014  -MinE
 
 #region sp_Configure
 
-$linux = Connect-DbaSqlServer -SqlServer $linuxSQL -Credential $cred
-$win = Connect-DbaSqlServer -SqlServer $sql0
+$linux = Connect-DbaInstance -SqlServer $linuxSQL -Credential $cred
+$win = Connect-DbaInstance -SqlServer $sql0
 
 Function Compare-SPConfigs {
 
