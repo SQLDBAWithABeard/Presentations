@@ -332,7 +332,6 @@ Get-DbaQueryExecutionTime -SqlInstance $sql0 -Database AdventureWorks2014  -MinE
 #region sp_Configure
 
 $linux = Connect-DbaInstance -SqlServer $linuxSQL -Credential $cred
-$win = Connect-DbaInstance -SqlServer $sql0
 
 Function Compare-SPConfigs {
 
@@ -356,29 +355,27 @@ Function Compare-SPConfigs {
     $propcompare | Out-GridView -Title "Comparing Sp_configure Settings Source - $SourceInstance With Destination $DestinationInstance"
 }
 
-
 Compare-SPConfigs -SourceInstance $sql0 -DestinationInstance $linuxSQL -DestinationCred $cred
 
 Copy-DbaSpConfigure -Source $sql0 -Destination $linuxSQL -DestinationSqlCredential $cred -ConfigName DefaultBackupCompression
 
-Compare-WinLinuxConfigs
+Compare-SPConfigs -SourceInstance $sql0 -DestinationInstance $linuxSQL -DestinationCred $cred
 
 $linux.Configuration.Properties['DefaultBackupCompression'].ConfigValue = 0
 $linux.Configuration.Alter()
 
-Compare-WinLinuxConfigs
+Compare-SPConfigs -SourceInstance $sql0 -DestinationInstance $linuxSQL -DestinationCred $cred
 
 $linuxConfigPath = 'C:\Temp\Linuxconfig.sql'
 Export-SqlSpConfigure -SqlServer $linuxSQL -SqlCredential $cred -Path $LinuxConfigPath
-notepad $linuxConfigPath
+Open-EditorFile $linuxConfigPath
 
 $WinConfigPath = 'C:\Temp\Winconfig.sql'
-Export-SqlSpConfigure -SqlServer $WinSQl1 -Path $winConfigPath
-notepad $winConfigPath
+Export-SqlSpConfigure -SqlServer $sql0 -Path $winConfigPath
+Open-EditorFile $winConfigPath
 
-Import-SqlSpConfigure -Path $WinConfigPath -SqlServer $linuxSQL -SqlCredential $cred
+Import-DbaSpConfigure -Path $WinConfigPath -SqlServer $linuxSQL -SqlCredential $cred
 
-
-Compare-WinLinuxConfigs
+Compare-SPConfigs -SourceInstance $sql0 -DestinationInstance $linuxSQL -DestinationCred $cred
 
 #endregion
