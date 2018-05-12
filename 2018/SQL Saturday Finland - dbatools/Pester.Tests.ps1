@@ -108,7 +108,7 @@ Describe "Testing for Demo" {
             (Get-DbaSpConfigure -SqlInstance $sql0 -Name DefaultBackupCompression).RunningValue | Should -Be 1
         }
         It "$LinuxSQL should have Default backup compression set to 0" {
-            (Get-DbaSpConfigure -SqlInstance $LinuxSQL -SqlCredential $cred -Name DefaultBackupCompression).RunningValue | Should -Be 1
+            (Get-DbaSpConfigure -SqlInstance $LinuxSQL -SqlCredential $cred -Name DefaultBackupCompression).RunningValue | Should -Be 0
         }
     }
 }
