@@ -30,9 +30,9 @@ Invoke-DbcCheck -SqlInstance $sql0 -Check
 ## I am not limited to just one server/instance
 ## Maybe I want to check all my containers for Errors
 
-Invoke-DbcCheck -SqlInstance $containers -Check ErrorLog
+Invoke-DbcCheck -SqlInstance $containers -Check ErrorLog -SqlCredential $cred
 
-## Or that I have enough diskspace
+## Or that I have enough diskspace (we try to help where we can - This needs ComputerName :-) 
 
 Invoke-DbcCheck -SqlInstance $SQLInstances -Check DiskCapacity
 
@@ -46,8 +46,13 @@ Invoke-DbcCheck -SqlInstance $SQLInstances -Check LastGoodCheckDb
 ## Maybe I want to check that its all ok
 ## Or maybe I have finished patching and need to know all is well
 ## I need to set the app.cluster configuration to one of the nodes 
+## and I need to set the domain.name value
 
 Set-DbcConfig -Name app.cluster -Value $SQL0
+Set-DbcConfig -Name domain.name -Value 'TheBeard.Local'
+
+## I also skip the ping check for the listener as we are in Azure
+Set-DbcConfig -Name skip.hadr.listener.pingcheck -Value $true
 
 Invoke-DbcCheck -Check HADR
 
