@@ -151,7 +151,14 @@ $TestResults.TestResult.Where{$_.Passed -eq $false}
 
 ## To output to VSTS (or Jenkins or Octopus etc)
 
-Invoke-DbcCheck -SqlInstance $SQLInstances -Check Agent -Show Summary -OutputFile C:\temp\Agent_Check_Results.xml -OutputFormat NUnitXml
+$invokeDbcCheckSplat = @{
+    Check = 'Agent'
+    OutputFormat = 'NUnitXml'
+    Show = 'Summary'
+    SqlInstance = $SQLInstances
+    OutputFile = 'C:\temp\Agent_Check_Results.xml'
+}
+Invoke-DbcCheck @invokeDbcCheckSplat
 
 Open-EditorFile C:\temp\Agent_Check_Results.xml
 
