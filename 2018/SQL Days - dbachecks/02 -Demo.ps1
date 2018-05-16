@@ -15,7 +15,7 @@ Get-Command -Module dbachecks
 ## How many Configurations
 (Get-DbcConfig).Count
 
-## Lets ahve a look at the checks and the associated configurations
+## Lets have a look at the checks and the associated configurations
 
 Get-DbcCheck | Out-GridView
 
