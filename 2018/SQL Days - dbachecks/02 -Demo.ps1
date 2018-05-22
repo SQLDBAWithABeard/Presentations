@@ -220,7 +220,7 @@ Invoke-DbcCheck -AllChecks -SqlCredential $cred -Show Fails -PassThru | Update-D
 
 Set-DbcConfig -Name app.sqlinstance -Value $SQLInstances
 Set-DbcConfig -Name app.computername -Value $SQLInstances
-Set-DbcConfig -Name command.invokedbccheck.excludecheck -Value Agent,HADR,Database,Instance,LogShipping,MaintenanceSolution,PowerPlan,SPN,InstanceConnection,PingComputer,Domain
+Set-DbcConfig -Name command.invokedbccheck.excludecheck -Value Agent,HADR,Database,Instance,LogShipping,MaintenanceSolution,PowerPlan,SPN,InstanceConnection,PingComputer,Domain,FKCKTrusted
 
 
 Export-DbcConfig c:\temp\DiskSpace.json
