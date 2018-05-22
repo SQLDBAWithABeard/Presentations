@@ -199,6 +199,6 @@ Get-ChildItem '\\sql0\c$\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\
 #endregion
 
 
-
+Reset-DbcConfig
 
 $verbosePreference = 'SilentlyContinue'
