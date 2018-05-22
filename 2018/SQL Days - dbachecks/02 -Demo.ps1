@@ -25,7 +25,7 @@ Invoke-DbcCheck -SqlInstance $sql0 -Check AutoClose
 
 # its so easy, there is even intellisense
 
-Invoke-DbcCheck -SqlInstance $sql0 -Check 
+Invoke-DbcCheck -SqlInstance $sql0 -Check
 
 ## I am not limited to just one server/instance
 ## Maybe I want to check all my containers for Errors
