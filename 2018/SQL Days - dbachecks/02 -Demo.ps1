@@ -105,7 +105,7 @@ Set-DbcConfig -Name skip.tempdbfilesonc -Value $true
 # Should I skip the check for temp files count?
 Set-DbcConfig -Name skip.tempdbfilecount -Value $true
 # Which Checks should be excluded?
-Set-DbcConfig -Name command.invokedbccheck.excludecheck -Value LogShipping,ExtendedEvent, HADR, PseudoSimple,SPN, TestLastBackupVerifyOnly,IdentityUsage
+Set-DbcConfig -Name command.invokedbccheck.excludecheck -Value LogShipping,ExtendedEvent, HADR, PseudoSimple,SPN, TestLastBackupVerifyOnly,IdentityUsage, FKCKTrusted  
 # How many months before a build is unsupported do I want to fail the test?
 Set-DbcConfig -Name policy.build.warningwindow -Value 6
 
