@@ -56,8 +56,8 @@ Describe "Testing for Demo" {
                 Test-DbaSqlPath -SqlInstance $psitem -Path $NetworkShare| SHould -BeTrue
             }
         }
-        It "Should not have the Finland folder on $sql0" {
-            Test-Path -Path \\sql0.Thebeard.local\f$\Finland | Should -BeFalse
+        It "Should not have the Cork folder on $sql0" {
+            Test-Path -Path \\sql0.Thebeard.local\f$\Cork | Should -BeFalse
         }
         It "Have Glenn Berry Diagnostic Query Folder" {
             Test-Path "$Home\Documents\Glenn Berry Diagnostic Queries" | Should -BeTrue
@@ -75,10 +75,10 @@ Describe "Testing for Demo" {
     }
     Context "Databases" {
         It "$SQL0 should have the right number of databases" {
-            (Get-DbaDatabase -SqlInstance $SQL0 -ExcludeAllSystemDb).Count | Should -Be 9
+            (Get-DbaDatabase -SqlInstance $SQL0 -ExcludeAllSystemDb).Count | Should -Be 10
         }
         It "$SQL1 should have the right number of databases" {
-            (Get-DbaDatabase -SqlInstance $SQL1 -ExcludeAllSystemDb).Count | Should -Be 1
+            (Get-DbaDatabase -SqlInstance $SQL1 -ExcludeAllSystemDb).Count | Should -Be 2
         }
         It "Linux SQL should have the databases" {
             (Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb).Count | Should -Be 22
@@ -114,8 +114,13 @@ Describe "Testing for Demo" {
 }
 
 Set-DbcConfig -Name app.cluster -Value $SQL0
+Set-DbcConfig -Name app.sqlinstance -Value $SQLInstances
+Set-DbcConfig -Name app.computername $SQLInstances
 Set-DbcConfig -Name skip.hadr.listener.pingcheck -Value $true
 Set-DbcConfig -Name agent.dbaoperatorname -Value 'The DBA Team'
+Set-DbcConfig -Name domain.name -Value 'TheBeard.Local'
+Set-DbcConfig -Name agent.databasemailprofile -Value 'DBATeam'
+Set-DbcConfig -Name agent.failsafeoperator -Value 'The DBA Team'
 
 Invoke-DbcCheck -Check HADR
 Invoke-DbcCheck -Check Agent 
