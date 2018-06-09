@@ -3,7 +3,7 @@
 $verbosePreference = 'Continue'
 #region Create New PSDrive and prompt
 if (-not (Get-PSDrive -Name Cork -ErrorAction SilentlyContinue)) {
-    New-PSDrive -Name Cork -Root 'C:\Git\Presentations\2018\SQL Saturday Finland - dbatools' -PSProvider FileSystem | Out-Null
+    New-PSDrive -Name Cork -Root 'C:\Git\Presentations\2018\SQL Saturday Cork - dbatools' -PSProvider FileSystem | Out-Null
     Write-Verbose -Message "Created PSDrive"
 }
 
@@ -271,7 +271,7 @@ Get-ChildItem '\\sql0\c$\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\
 
 #region files
 
-Remove-Item -Path \\sql0.Thebeard.local\f$\Finland -Force
+Remove-Item -Path \\sql0.Thebeard.local\f$\Cork -Force
 
 #endregion
 

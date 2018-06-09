@@ -248,7 +248,7 @@ Get-DbaFile -SqlInstance $LinuxSQL -SqlCredential $cred -Path '/var/opt/mssql/da
 
 ## and create a directory
 
-New-DbaSqlDirectory -SqlInstance $sql0 -Path 'F:/Finland/'
+New-DbaSqlDirectory -SqlInstance $sql0 -Path 'F:/Cork/'
 
 ## Oh and dbatools can restore from a Ola Hallengren directory too
 
