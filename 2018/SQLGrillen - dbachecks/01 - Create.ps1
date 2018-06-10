@@ -14,7 +14,7 @@ function prompt {
 
 Write-Verbose -Message "Created prompt"
 
-Set-Location SQLDays:
+Set-Location SQLGrillen:
 
 
 #region Create containers and volume
