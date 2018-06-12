@@ -1,52 +1,109 @@
-Split view
-CTRL 
-CTRL SHIFT V
+# Look at the interface
 
-Zen mode
-CTRL K Z
+File Explorer CTRL SHIFT E
 
-Compare Files
-F1 Compare Active File With
+Search CTRL SHIFT F
+Replace CTRL SHIFT H
 
-Update keybindings
-CTRL K CTRL S { "key": "f8", "command": "workbench.action.terminal.runSelectedText", "when": "editorTextFocus" }
+Source Control CTRL SHIFT G
 
-Display processes
-Get-Process code 'We will all attend PSConfAsia this October!!!'
+Debug CTRL SHIFT D
 
-Multiline select
-Set Windows Intel graphics hotkeys
-CTRL ALT UP CTRL ALT DOWN
+Extensions CTRL SHIFT X
 
-Exit multiline with Escape
-ESCAPE
+Full Screen F11
 
-Comment selected lines
-CTRL K CTRL C
+Zen mode CTRL K Z
 
-Select all words in file
-CTRL SHIFT L
+Look at the Extensions
 
-Preview markdown
-CTRL SHIFT V
+F1 to launch command pallete
 
-Git Demo
-Save - Commit - Push
+Look how easy it is to clone a repository
 
-Enable minimap
-Settings: "editor.minimap.enabled": true
+Clone this repo
 
-Extensions
-Show top ten extensions
+https://github.com/SQLDBAWithABeard/JustARepo
 
-Customizations VSCode specific JSON
-'C:\Program Files (x86)\Microsoft VS Code' | % { ls -rec -path $_ -file -filter '*json' } | Measure-Object
+Open the files look at the languages and the icons
 
-Customizations User specific JSON
-'C:\Users\JaapBrasser\AppData\Roaming\Code\User' | % { ls -rec -path $_ -file -filter '*json' } | Measure-Object
+Open the powershell file
 
-Themes
-F1 Color Theme CTRL K CTRL T
+We will come back to Problems
 
-Jump to file
-CTRL P
+Output - look at the different types
+
+Terminal
+
+Integrated Console - Like ISE
+
+Add a new terminal and another, split terminal and again
+
+Show how to run powershell 6 in integrated and in normal
+
+Delete - Move to the right and back down
+
+Show the Settings - show how to set the default language
+
+Show key bindings
+
+Make a change showing intelliense, commit, push show logs
+
+#region foreach database property
+$a = Get-DbaDatabase -SqlInstance ROB-XPS
+$TotalCmdlet = @()
+$TotalStatement= @()
+$TotalMethod = @()
+0..10 | ForEach-Object {
+
+$withcmdlet = Measure-Command {
+$a | ForEach-Object {
+ $psitem.AutoClose
+}
+}
+    $TotalCmdlet += $withcmdlet 
+    
+$withstatement = Measure-Command {
+foreach ($Beard in $a) {
+        $Beard.AutoClose
+}
+}
+    $TotalStatement += $withstatement
+
+$WithMethod = Measure-Command {
+    $A.ForEach{
+            $psitem.AutoClose
+    }
+    }
+
+
+$TotalMethod += $WithMethod
+}
+
+$MCCmdletAverage = ($TotalCmdlet | Measure-Object TotalMilliseconds -Average).Average
+$MCStatementAverage = ($TotalStatement | Measure-Object TotalMilliseconds -Average).Average
+$MCMethodAverage = ($TotalMethod | Measure-Object  TotalMilliseconds -Average).Average
+cls
+Write-Output "Average using ForEach Cmdlet = $MCCmdletAverage Milliseconds"
+Write-Output "Average using ForEach Statement = $MCStatementAverage Milliseconds"
+Write-Output "Average using With ForEach Method = $MCMethodAverage Milliseconds"
+
+#endregion
+
+Copy the code, show scriptanalyser rules green squiggles
+Show Problems pane
+Show auto formatting
+
+then show splatting - how to install and how to use
+
+Install-Module EditorServicesCommandSuite -Scope CurrentUser
+
+# Place this in your VSCode profile
+Import-Module EditorServicesCommandSuite
+Import-EditorCommand -Module EditorServicesCommandSuite
+
+Start-DbaMigration -Source $Source -Destination $Destination -BackupRestore -NetworkShare $Share -WithReplace -ReuseSourceFolderStructure -IncludeSupportDbs -NoAgentServer -NoAudits -NoResourceGovernor -NoSaRename -NoBackupDevices
+
+then show mini map
+
+Settings sync
