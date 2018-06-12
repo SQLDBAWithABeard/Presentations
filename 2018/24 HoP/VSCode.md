@@ -126,6 +126,50 @@ Write "Average using With ForEach Method = $MCMethodAverage Milliseconds"
 
 Copy the code, show scriptanalyser rules green squiggles
 Show Problems pane
+
+Show tasks - use this in tasks.json
+
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "windows": {
+        "options": {
+            "shell": {
+                "executable": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                "args": [
+                    "-NoProfile",
+                    "-ExecutionPolicy",
+                    "Bypass",
+                    "-Command"
+                ]
+            }
+        }
+    },
+    "linux": {
+        "options": {
+            "shell": {
+                "executable": "/usr/bin/pwsh",
+                "args": [
+                    "-NoProfile",
+                    "-Command"
+                ]
+            }
+        }
+    },
+    "tasks": [
+        {
+            "label": "Script Analyser",
+            "type": "shell",
+            "command": "Invoke-ScriptAnalyzer -Path '${file}'",
+            "problemMatcher": [
+                "$pester"
+            ]
+        }
+    ]
+}
+
+
 Show auto formatting
 
 Show code folding
