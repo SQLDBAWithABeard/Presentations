@@ -8,13 +8,13 @@ if (-not (Get-PSDrive -Name SQLGrillen -ErrorAction SilentlyContinue)) {
 }
 
 function prompt {
-    Write-Host ("Dbatools ist großartig >") -NoNewLine -ForegroundColor Green
+    Write-Host ("dbatools ist großartig >") -NoNewLine -ForegroundColor Green
     return " "
 }
 
 Write-Verbose -Message "Created prompt"
 
-Set-Location SQLDays:
+Set-Location SQLGrillen:
 
 
 #region Create containers and volume
