@@ -81,6 +81,8 @@ Show key bindings
 
 Make a change showing intelliense, commit, push show logs
 
+Show Snippets
+
 #region foreach database property
 $a = Get-DbaDatabase -SqlInstance ROB-XPS
 $TotalCmdlet = @()
@@ -89,7 +91,7 @@ $TotalMethod = @()
 0..10 | ForEach-Object {
 
 $withcmdlet = Measure-Command {
-$a | ForEach-Object {
+$a | ForEach {
  $psitem.AutoClose
 }
 }
@@ -112,13 +114,13 @@ $WithMethod = Measure-Command {
 $TotalMethod += $WithMethod
 }
 
-$MCCmdletAverage = ($TotalCmdlet | Measure-Object TotalMilliseconds -Average).Average
+$MCCmdletAverage = ($TotalCmdlet | Measure TotalMilliseconds -Average).Average
 $MCStatementAverage = ($TotalStatement | Measure-Object TotalMilliseconds -Average).Average
 $MCMethodAverage = ($TotalMethod | Measure-Object  TotalMilliseconds -Average).Average
 cls
-Write-Output "Average using ForEach Cmdlet = $MCCmdletAverage Milliseconds"
-Write-Output "Average using ForEach Statement = $MCStatementAverage Milliseconds"
-Write-Output "Average using With ForEach Method = $MCMethodAverage Milliseconds"
+Write "Average using ForEach Cmdlet = $MCCmdletAverage Milliseconds"
+Write "Average using ForEach Statement = $MCStatementAverage Milliseconds"
+Write "Average using With ForEach Method = $MCMethodAverage Milliseconds"
 
 #endregion
 
