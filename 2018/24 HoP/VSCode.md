@@ -17,7 +17,37 @@ Zen mode CTRL K Z
 
 Look at the Extensions
 
+You can install with chocolatey
+
+choco install visualstudiocode --yes
+choco install vscode-powershell --yes
+choco install vscode-mssql --yes
+choco install vscode-gitlens --yes
+
+You can install the extensions with 
+
+    # Install vscodeextensions module and extensions
+
+    if ([version](Get-PackageProvider -Name nuGet).Version -le [version]2.8.5.201) {
+        Write-Verbose "Installing Nuget"
+        Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+    }
+
+    if (-not(Get-Module vscodeextensions -ListAvailable)) {
+        Write-Verbose "Installing VS Code Extension"
+        Install-Module vscodeextensions -Scope CurrentUser -Force
+    }
+
+    $VSCodeExtensions = 'material-theme-pack', 'bracket-pair-colorizer', 'powershell', 'mssql', 'gitlens'
+    $VSCodeExtensions.ForEach{
+            Write-Verbose "Installing VS Code Extension $psitem "
+            Install-VSCodeExtension -ExtensionName $PSitem
+        }
+
+
 F1 to launch command pallete
+
+Themes - make it look like ISE - Then change it back as ISE is horrible :-)
 
 Look how easy it is to clone a repository
 
@@ -41,7 +71,9 @@ Add a new terminal and another, split terminal and again
 
 Show how to run powershell 6 in integrated and in normal
 
-Delete - Move to the right and back down
+Delete - Move to the right and back down, split
+
+Show insiders and F1 grid
 
 Show the Settings - show how to set the default language
 
@@ -93,6 +125,8 @@ Write-Output "Average using With ForEach Method = $MCMethodAverage Milliseconds"
 Copy the code, show scriptanalyser rules green squiggles
 Show Problems pane
 Show auto formatting
+
+Show code folding
 
 then show splatting - how to install and how to use
 
