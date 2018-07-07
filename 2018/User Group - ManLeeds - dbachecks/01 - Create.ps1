@@ -2,19 +2,19 @@
 
 $verbosePreference = 'Continue'
 #region Create New PSDrive and prompt
-if (-not (Get-PSDrive -Name SQLGrillen -ErrorAction SilentlyContinue)) {
-    New-PSDrive -Name SQLGrillen -Root 'C:\Git\Presentations\2018\SQLGrillen - dbachecks' -PSProvider FileSystem | Out-Null
+if (-not (Get-PSDrive -Name $location -ErrorAction SilentlyContinue)) {
+    New-PSDrive -Name $location -Root 'C:\Git\Presentations\2018\User Group - ManLeeds - dbachecks' -PSProvider FileSystem | Out-Null
     Write-Verbose -Message "Created PSDrive"
 }
 
 function prompt {
-    Write-Host ("dbatools ist großartig >") -NoNewLine -ForegroundColor Green
+    Write-Host ("dbatools is Amazing >") -NoNewLine -ForegroundColor Green
     return " "
 }
 
 Write-Verbose -Message "Created prompt"
 
-Set-Location SQLGrillen:
+Set-Location $location + ':'
 
 
 #region Create containers and volume

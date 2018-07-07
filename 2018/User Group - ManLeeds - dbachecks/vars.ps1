@@ -8,3 +8,4 @@ $cred = Import-Clixml $HOME\Documents\sa.cred
 $filenames = (Get-ChildItem C:\SQLBackups\Keep).Name
 $Share = '\\jumpbox.TheBeard.Local\SQLBackups'
 $NetworkShare = '\\bearddockerhost.TheBeard.Local\NetworkSQLBackups'
+$location = 'Leeds'
