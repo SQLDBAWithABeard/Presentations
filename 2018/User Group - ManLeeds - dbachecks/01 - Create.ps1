@@ -14,7 +14,8 @@ function prompt {
 
 Write-Verbose -Message "Created prompt"
 
-Set-Location $location + ':'
+$promptloc = $location + ':'
+Set-Location $promptloc
 
 
 #region Create containers and volume
