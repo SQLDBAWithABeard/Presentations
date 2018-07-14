@@ -75,10 +75,10 @@ Describe "Testing for Demo" {
     }
     Context "Databases" {
         It "$SQL0 should have the right number of databases" {
-            (Get-DbaDatabase -SqlInstance $SQL0 -ExcludeAllSystemDb).Count | Should -Be 9
+            (Get-DbaDatabase -SqlInstance $SQL0 -ExcludeAllSystemDb).Count | Should -Be 10
         }
         It "$SQL1 should have the right number of databases" {
-            (Get-DbaDatabase -SqlInstance $SQL1 -ExcludeAllSystemDb).Count | Should -Be 1
+            (Get-DbaDatabase -SqlInstance $SQL1 -ExcludeAllSystemDb).Count | Should -Be 2
         }
         It "Linux SQL should have the databases" {
             (Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb).Count | Should -Be 22
@@ -116,6 +116,9 @@ Describe "Testing for Demo" {
 Set-DbcConfig -Name app.cluster -Value $SQL0
 Set-DbcConfig -Name skip.hadr.listener.pingcheck -Value $true
 Set-DbcConfig -Name agent.dbaoperatorname -Value 'The DBA Team'
+Set-DbcConfig -Name agent.databasemailprofile -Value 'DBATeam'
+Set-DbcConfig -Name agent.dbaoperatoremail -Value 'TheDBATeam@TheBeard.Local'
+
 
 Invoke-DbcCheck -Check HADR
 Invoke-DbcCheck -Check Agent 

@@ -1,20 +1,22 @@
+$root = 'C:\Git\Presentations\2018\User Group  - dbatools'
+cd $root
 . .\vars.ps1
 
 $verbosePreference = 'Continue'
 #region Create New PSDrive and prompt
-if (-not (Get-PSDrive -Name Finland -ErrorAction SilentlyContinue)) {
-    New-PSDrive -Name Finland -Root 'C:\Git\Presentations\2018\SQL Saturday Finland - dbatools' -PSProvider FileSystem | Out-Null
+if (-not (Get-PSDrive -Name Manchester -ErrorAction SilentlyContinue)) {
+    New-PSDrive -Name Manchester -Root $root -PSProvider FileSystem | Out-Null
     Write-Verbose -Message "Created PSDrive"
 }
 
 function prompt {
-    Write-Host ("Hymyile ja nauti >") -NoNewLine -ForegroundColor Magenta
+    Write-Host ("dbatools is dead mint >") -NoNewLine -ForegroundColor darkgreen
     return " "
 }
 
 Write-Verbose -Message "Created prompt"
 
-Set-Location finland:
+Set-Location Manchester:
 
 # remove sql file for export if exists
 
@@ -271,7 +273,7 @@ Get-ChildItem '\\sql0\c$\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\
 
 #region files
 
-Remove-Item -Path \\sql0.Thebeard.local\f$\Finland -Force
+Remove-Item -Path \\sql0.Thebeard.local\f$\Manchester -Force
 
 #endregion
 
