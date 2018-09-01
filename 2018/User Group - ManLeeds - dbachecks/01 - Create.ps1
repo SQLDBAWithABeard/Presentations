@@ -199,7 +199,41 @@ Get-ChildItem '\\sql0\c$\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\
 
 #endregion
 
+#region Fix historical validation data
 
+$query = @"
+UPDATE [ValidationResults].[dbachecks].[Prod_dbachecks_summary]
+SET TestDate = CAST(DATEADD(day,-6,GetDate()) as date)
+WHERE SummaryId = 1
+
+UPDATE [ValidationResults].[dbachecks].[Prod_dbachecks_summary]
+SET TestDate = CAST(DATEADD(day,-5,GetDate()) as date)
+WHERE SummaryId = 2
+
+UPDATE [ValidationResults].[dbachecks].[Prod_dbachecks_summary]
+SET TestDate = CAST(DATEADD(day,-4,GetDate()) as date)
+WHERE SummaryId = 3
+
+UPDATE [ValidationResults].[dbachecks].[Prod_dbachecks_summary]
+SET TestDate = CAST(DATEADD(day,-3,GetDate()) as date)
+WHERE SummaryId = 4
+
+UPDATE [ValidationResults].[dbachecks].[Prod_dbachecks_summary]
+SET TestDate = CAST(DATEADD(day,-2,GetDate()) as date)
+WHERE SummaryId = 5
+
+UPDATE [ValidationResults].[dbachecks].[Prod_dbachecks_summary]
+SET TestDate = CAST(DATEADD(day,-1,GetDate()) as date)
+WHERE SummaryId = 6
+
+UPDATE [ValidationResults].[dbachecks].[Prod_dbachecks_summary]
+SET TestDate = GetDate()
+WHERE SummaryId = 7
+"@
+
+Invoke-DbaSqlQuery -SqlInstance sqlclusterag -Database HistoricalValidatio -Query "CREATE DATABASE [LinuxDb$Psitem]"
+
+#endregion
 
 
 $verbosePreference = 'SilentlyContinue'
