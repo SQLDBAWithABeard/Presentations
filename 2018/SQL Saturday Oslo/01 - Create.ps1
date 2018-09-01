@@ -8,7 +8,7 @@ if (-not (Get-PSDrive -Name $location -ErrorAction SilentlyContinue)) {
 }
 
 function prompt {
-    Write-Host ("dbatools er fantastisk >") -NoNewLine -ForegroundColor Green
+    Write-Host ("dbachecks er fantastisk >") -NoNewLine -ForegroundColor Green
     return " "
 }
 
