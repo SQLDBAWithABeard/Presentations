@@ -34,7 +34,7 @@ Invoke-DbcCheck -SqlInstance $containers -Check ErrorLog -SqlCredential $cred
 
 ## Or that I have enough diskspace (we try to help where we can - This needs ComputerName :-) 
 
-Invoke-DbcCheck -SqlInstance $SQLInstances -Check DiskCapacity
+Invoke-DbcCheck -SqlInstance $SQLInstances -Check DiskCapacity 
 
 ## or that I have run DBCC CheckDb in the last 7 days
 
@@ -81,7 +81,9 @@ Set-DbcConfig -Name policy.connection.authscheme -Value 'KERBEROS'
 # Which Agent Operator should be defined?
 Set-DbcConfig -Name agent.dbaoperatorname -Value 'The DBA Team'
 # Which Agent Operator email should be defined?
-Set-DbcConfig -Name agent.dbaoperatoremail -Value 'DBATeam@TheBeard.Local'
+Set-DbcConfig -Name agent.dbaoperatoremail -Value 'TheDBATeam@TheBeard.Local'
+# What is the name of our mail profile that should be on the machine?
+Set-DbcConfig -Name agent.databasemailprofile -Value 'DBATeam'
 # Which failsafe operator shoudl be defined?
 Set-DbcConfig -Name agent.failsafeoperator -Value 'The DBA Team'
 # Where is the whoisactive stored procedure?
@@ -105,7 +107,7 @@ Set-DbcConfig -Name skip.tempdbfilesonc -Value $true
 # Should I skip the check for temp files count?
 Set-DbcConfig -Name skip.tempdbfilecount -Value $true
 # Which Checks should be excluded?
-Set-DbcConfig -Name command.invokedbccheck.excludecheck -Value LogShipping,ExtendedEvent, HADR, PseudoSimple,SPN, TestLastBackupVerifyOnly,IdentityUsage
+Set-DbcConfig -Name command.invokedbccheck.excludecheck -Value LogShipping,ExtendedEvent, HADR, PseudoSimple,SPN, TestLastBackupVerifyOnly,IdentityUsage,FKCKTrusted, DiskAllocationUnit
 # How many months before a build is unsupported do I want to fail the test?
 Set-DbcConfig -Name policy.build.warningwindow -Value 6
 
