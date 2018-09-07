@@ -1,4 +1,4 @@
-Return "This is a demo Beardy!"
+﻿Return "This is a demo Beardy!"
 ## The SQL Server Provider is just like Object Explorer in SSMS (Sort of)
 ##
 
@@ -56,7 +56,7 @@ Get-DbaTcpPort -SqlServer $allservers | ogv
 
 ## My latency 
 
-Test-SqlNetworkLatency  $allservers | ogv
+Test-DbaNetworkLatency  $allservers | ogv
 
 ## Last backup?
 
@@ -404,4 +404,5 @@ $roles = Get-ChildItem
 $sysadmin = $roles['sysadmin']
 $sysadmin | Get-Member
 $sysadmin.EnumMemberNames()
+
 

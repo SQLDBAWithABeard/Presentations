@@ -1,4 +1,4 @@
-$root = 'C:\Git\Presentations\2018\User Group  - dbatools'
+﻿$root = 'C:\Git\Presentations\2018\User Group  - dbatools'
 cd $root
 . .\vars.ps1
 
@@ -120,7 +120,7 @@ Remove-PSSession $session
 
 $containers.ForEach{
     $Container = $Psitem
-    $NameLevel = (Get-DbaSqlBuildReference -SqlInstance $Container -SqlCredential $cred).NameLevel
+    $NameLevel = (Get-DbaBuildReference -SqlInstance $Container -SqlCredential $cred).NameLevel
     Write-Verbose -Message "$NameLevel"
     switch ($NameLevel) {
         2017 { 
@@ -170,7 +170,7 @@ $db.Query("
 -- =============================================
 -- Author:		Evil Thief
 -- Create date: <A Long Long Time Ago
--- Description:	Once upon a time there were four little Rabbits, and their names were — Flopsy,Mopsy,Cotton-tail,and Peter.
+-- Description:	Once upon a time there were four little Rabbits, and their names were â€” Flopsy,Mopsy,Cotton-tail,and Peter.
 -- They lived with their Mother in a sand-bank, underneath the root of a very big fir-tree.
 -- =============================================
 CREATE PROCEDURE dbo.Steal_All_The_Emails
@@ -216,7 +216,7 @@ $Containers.ForEach{
     EXEC master.dbo.sp_addlinkedserver @server = N'" + $PSitem + "', @srvproduct=N'SQL Server'
     EXEC master.dbo.sp_addlinkedsrvlogin @rmtsrvname = N'" + $PSitem + "', @locallogin = NULL , @useself = N'False', @rmtuser = N'sa', @rmtpassword = N'Password0!'
     END"
-    Invoke-DbaSqlQuery -SqlInstance $sql0 -Database master -Query $query
+    Invoke-DbaQuery -SqlInstance $sql0 -Database master -Query $query
     Write-Verbose -Message "Added linked Servers to $SQL0"
 }
 #remove from sql1
@@ -225,7 +225,7 @@ $Containers.ForEach{
     (SELECT * FROM sys.servers WHERE name = '" + $PSitem + "')
     BEGIN
     EXEC master.sys.sp_dropserver '" + $PSitem + "','droplogins'   END"
-    Invoke-DbaSqlQuery -SqlInstance $sql1 -Database master -Query $query
+    Invoke-DbaQuery -SqlInstance $sql1 -Database master -Query $query
     Write-Verbose -Message "Removed linked servers from $SQL1"
 }
 
@@ -237,11 +237,11 @@ Get-DbaDatabase -SqlInstance $sql0 -Database AdventureWorks2014_CLONE |Remove-Db
 Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb | Remove-DbaDatabase -Confirm:$false
 Write-Verbose -Message "removed databases from Linux instance"
 
-Invoke-DbaSqlQuery -SqlInstance $LinuxSQL -SqlCredential $cred -Database master -Query "CREATE DATABASE [DBA-Admin]"
+Invoke-DbaQuery -SqlInstance $LinuxSQL -SqlCredential $cred -Database master -Query "CREATE DATABASE [DBA-Admin]"
 Write-Verbose -Message "Created DBA-Admin database"
 
 (0..20)| ForEach-Object {
-    Invoke-DbaSqlQuery -SqlInstance $LinuxSQL -SqlCredential $cred -Database master -Query "CREATE DATABASE [LinuxDb$Psitem]"
+    Invoke-DbaQuery -SqlInstance $LinuxSQL -SqlCredential $cred -Database master -Query "CREATE DATABASE [LinuxDb$Psitem]"
 }
 Write-Verbose -Message "Created 20 dumb databases"
 Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred |ForEach-Object {
@@ -252,8 +252,8 @@ Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred |ForEach-Object {
 
 #region SQL login 
 
-if(Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard){
-    Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard | Remove-DbaLogin -Confirm:$false  
+if(Get-DbaErrorLogin -SqlInstance $SQL1 -Login TheBeard){
+    Get-DbaErrorLogin -SqlInstance $SQL1 -Login TheBeard | Remove-DbaLogin -Confirm:$false  
     Write-Verbose -Message "removed theBeard from $SQL1"  
 }
 
@@ -261,7 +261,7 @@ if(Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard){
 
 #region Extended Events
 
-$Sessions = (Get-DbaXEventSession -SqlInstance $sql0).Where{$_.Name -notin ('AlwaysOn_Health','system_health','telemetry_xevents')}
+$Sessions = (Get-DbaXESession -SqlInstance $sql0).Where{$_.Name -notin ('AlwaysOn_Health','system_health','telemetry_xevents')}
 Remove-DbaXESession -SqlInstance $sql0 -Session $Sessions.Name
 
 Get-DbaXESession -SqlInstance $SQL0 -Session AlwaysOn_health | Stop-DbaXESession
@@ -349,5 +349,9 @@ $Colours = [enum]::GetValues([System.ConsoleColor])
 
 
 #>
+
+
+
+
 
 

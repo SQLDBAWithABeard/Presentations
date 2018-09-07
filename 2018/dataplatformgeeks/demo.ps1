@@ -1,4 +1,4 @@
-# Set some vars
+﻿# Set some vars
 $new = 'ROB-XPS\BOLTON'
 $old = $instance = 'ROB-XPS\SQL2016'
 $allservers = $old, $new
@@ -51,11 +51,11 @@ Test-DbaLastBackup -SqlInstance $old | Out-GridView
 Test-DbaLastBackup -SqlInstance $old -Destination $new | Out-GridView
 
 # Know how snapshots used to be a PITA? Now they're super easy
-New-DbaDatabaseSnapshot -SqlInstance $new -Database DBA-Admin -Name DBAAdmin_snapshot
-Get-DbaDatabaseSnapshot -SqlInstance $new
+New-DbaDbSnapshot -SqlInstance $new -Database DBA-Admin -Name DBAAdmin_snapshot
+Get-DbaDbSnapshot -SqlInstance $new
 Get-DbaProcess -SqlInstance $new -Database DBAAdmin_snapshot | Stop-DbaProcess
 Restore-DbaFromDatabaseSnapshot -SqlInstance $new -Database db1 -Snapshot DBAAdmin_snapshot
-Remove-DbaDatabaseSnapshot -SqlInstance $new -Snapshot DBAAdmin_snapshot # or -Database db1
+Remove-DbaDbSnapshot -SqlInstance $new -Snapshot DBAAdmin_snapshot # or -Database db1
 
 # We evaluated 37,545 SQL Server stored procedures on 9 servers in 8.67 seconds!
 $old | Find-DbaStoredProcedure -Pattern backup 
@@ -68,9 +68,9 @@ Detach-DbaDatabase -SqlInstance $instance -Database DBAutomationTarget
 Find-DbaOrphanedFile -SqlInstance $instance | Out-GridView
 
 # View and change service account
-Get-DbaSqlService -ComputerName $SQLHost | Out-GridView
-Get-DbaSqlService -ComputerName $SQLHost | Select * | Out-GridView
-Get-DbaSqlService -Instance SQL2016 -Type Agent | Update-DbaSqlServiceAccount -Username 'Local system'
+Get-DbaService -ComputerName $SQLHost | Out-GridView
+Get-DbaService -ComputerName $SQLHost | Select * | Out-GridView
+Get-DbaService -Instance SQL2016 -Type Agent | Update-DbaServiceAccount -Username 'Local system'
 
 # Check out how complete our sp_configure command is
 Get-DbaSpConfigure -SqlInstance $new | Out-GridView
@@ -98,8 +98,8 @@ Invoke-Item $home
 $instance | Install-DbaMaintenanceSolution -ReplaceExisting -BackupLocation C:\temp -InstallJobs
 
 # Get db space AND write it to table
-Get-DbaDatabaseFile -SqlInstance $instance | Out-GridView
-Get-DbaDatabaseFile -SqlInstance $instance -IncludeSystemDB | Write-DbaDataTable -SqlInstance $instance -Database tempdb -Table DiskSpaceExample -AutoCreateTable
+Get-DbaDbFile -SqlInstance $instance | Out-GridView
+Get-DbaDbFile -SqlInstance $instance -IncludeSystemDB | Write-DbaDataTable -SqlInstance $instance -Database tempdb -Table DiskSpaceExample -AutoCreateTable
 Invoke-DbaSqlcmd -ServerInstance $instance -Database tempdb -Query 'SELECT * FROM dbo.DiskSpaceExample' | Out-GridView
 
 # History
@@ -121,19 +121,27 @@ Read-DbaTraceFile -SqlInstance $instance | Out-GridView
 # don't have remoting access? Explore the filesystem. Uses master.sys.xp_dirtree
 Get-DbaFile -SqlInstance $instance
 Get-DbaFile -SqlInstance $instance -Depth 3 -Path 'C:\Program Files\Microsoft SQL Server' | Out-GridView
-New-DbaSqlDirectory -SqlInstance $instance  -Path 'C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\test'
+New-DbaDirectory -SqlInstance $instance  -Path 'C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\test'
 
 # Out-GridView madness <3
 Get-DbaDatabase -SqlInstance $old | Out-GridView -PassThru | Copy-DbaDatabase -Destination $new -BackupRestore -NetworkShare \\workstation\c$\temp -Force
 
 # We've even got our own config system!
-Get-DbaConfig | Out-GridView
+Get-DbatoolsConfig | Out-GridView
 
 # Check out our logs directory, so Enterprise :D
-Invoke-Item (Get-DbaConfig -FullName path.dbatoolslogpath).Value
+Invoke-Item (Get-DbatoolsConfig -FullName path.dbatoolslogpath).Value
 
 # Want to see what's in our logs?
 Get-DbatoolsLog | Out-GridView
 
 # Need to send us diagnostic information? Use this support package generator
 New-DbatoolsSupportPackage
+
+
+
+
+
+
+
+

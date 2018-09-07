@@ -1,4 +1,4 @@
-## Create the tables with the sql files
+﻿## Create the tables with the sql files
 
 ## Then run the checks and save them to a variable - DON'T FORGET the PassThru!
 $Testresults = Invoke-DbcCheck -PassThru
@@ -22,7 +22,7 @@ UPDATE [dbachecks].[Checks] SET [Describe] = 'Ola - " + (Get-DbcConfigValue -Nam
 "
 #endregion
 
-Invoke-DbaSqlQuery -SqlInstance $SQL0 -Database ValidationResults -Query $query
+Invoke-DbaQuery -SqlInstance $SQL0 -Database ValidationResults -Query $query
 
 # Write the results to the staging table
 $Testresults | Write-DbaDataTable -SqlInstance $Instance -Database $Database -Schema dbachecks -Table Prod_dbachecks_summary_stage -FireTriggers -Truncate -Confirm:$False

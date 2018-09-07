@@ -1,4 +1,4 @@
-cd presentations:\
+﻿cd presentations:\
 Return 'Oi Beardy, You may be an MVP but this is a demo, don''t run the whole thing, fool!!'
 
 ## We are going to use the development branch because it's cool and has all the latest funky
@@ -155,26 +155,26 @@ Describe "Testing my Defaults" {
 
 ## SHow me the views in a database (now we will use the SQL on Linux server because we can - but they work on Windows too!!)
 
-Get-DbaDatabaseView -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters -ExcludeSystemView
+Get-DbaDbView -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters -ExcludeSystemView
 
 ## Show Me UDFs in database or on an instance
 
-Get-DbaDatabaseUdf -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters -ExcludeSystemUdf
+Get-DbaDbUdf -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters -ExcludeSystemUdf
 
 ## Show me Database Partition functions
 
-Get-DbaDatabasePartitionFunction -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters 
+Get-DbaDbPartitionFunction -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters 
 
 # more detail
 
-Get-DbaDatabasePartitionFunction -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters | Select *
+Get-DbaDbPartitionFunction -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters | Select *
 
 ## Show Database Partition Schemes
 
-Get-DbaDatabasePartitionScheme -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters 
+Get-DbaDbPartitionScheme -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters 
 
 # more detail
-Get-DbaDatabasePartitionScheme -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters | Select *
+Get-DbaDbPartitionScheme -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters | Select *
 
 # Export the create tables TSQL for my database please
 
@@ -302,3 +302,7 @@ Invoke-DbaDiagnosticQuery -SqlInstance Rob-XPS\SQL2016 | Out-GridView
 $Suffix = 'Manchester_' + (Get-Date -Format yyyy-MM-dd_HH-mm-ss)
 Invoke-DbaDiagnosticQuery -SqlInstance Bolton -SqlCredential $cred | Export-DbaDiagnosticQuery -Path C:\temp\Diagnostics -Suffix $Suffix
 explorer c:\temp\diagnostics
+
+
+
+

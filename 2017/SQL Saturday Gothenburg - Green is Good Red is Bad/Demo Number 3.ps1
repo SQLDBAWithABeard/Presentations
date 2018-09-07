@@ -1,4 +1,4 @@
-## Test Cases and Tags
+﻿## Test Cases and Tags
 
 cd 'Presentations:\SQL Saturday Gothenburg - Green is Good Red is Bad'
 cls 
@@ -25,7 +25,7 @@ Invoke-Pester -Tag Memory
 
 cls
 Invoke-Pester -Tag TempDB
-Test-DbaTempDbConfiguration -SqlInstance ROb-XPS
+Test-DbaTempdbConfig -SqlInstance ROb-XPS
 
 cls 
 Invoke-Pester -Tag ServerName

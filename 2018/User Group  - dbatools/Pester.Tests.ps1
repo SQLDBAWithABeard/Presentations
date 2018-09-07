@@ -1,4 +1,4 @@
-. .\vars.ps1
+﻿. .\vars.ps1
 Describe "Testing for Demo" {
     Context "PowerShell"{
         $modules = 'dbachecks','dbatools','Pester','BurntToast'
@@ -30,7 +30,7 @@ Describe "Testing for Demo" {
         }
         $SQLInstances.ForEach{
             It "$Psitem Should be able to access the share" {
-                Test-DbaSqlPath -SqlInstance $psitem -Path $Share | SHould -BeTrue
+                Test-DbaPath -SqlInstance $psitem -Path $Share | SHould -BeTrue
             }
         }
         It "should have all the backup files in the share keep folder" {
@@ -53,7 +53,7 @@ Describe "Testing for Demo" {
         }
         $SQLInstances.ForEach{
             It "$Psitem Should be able to access the share $NetworkShare" {
-                Test-DbaSqlPath -SqlInstance $psitem -Path $NetworkShare| SHould -BeTrue
+                Test-DbaPath -SqlInstance $psitem -Path $NetworkShare| SHould -BeTrue
             }
         }
         It "Should not have the Finland folder on $sql0" {
@@ -97,7 +97,7 @@ Describe "Testing for Demo" {
     }
     Context "Users" {
         It "$SQL1 should not have TheBeard Login"{
-            Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard | Should -BeNullOrEmpty
+            Get-DbaErrorLogin -SqlInstance $SQL1 -Login TheBeard | Should -BeNullOrEmpty
         }
     }
     Context "Extended Event Sessions"{
@@ -122,3 +122,4 @@ Set-DbcConfig -Name agent.dbaoperatoremail -Value 'TheDBATeam@TheBeard.Local'
 
 Invoke-DbcCheck -Check HADR
 Invoke-DbcCheck -Check Agent 
+

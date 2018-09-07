@@ -1,4 +1,4 @@
-## Test Cases and Tags
+﻿## Test Cases and Tags
 
 cd 'Presentations:\SQL Glasgow'
 
@@ -15,7 +15,7 @@ Invoke-Pester -Tag Latency
 Invoke-Pester -Tag Memory
 
 Invoke-Pester -Tag TempDB
-Test-DbaTempDbConfiguration -SqlInstance ROb-XPS
+Test-DbaTempdbConfig -SqlInstance ROb-XPS
  
 Invoke-Pester -Tag ServerName
  

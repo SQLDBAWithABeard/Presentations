@@ -27,7 +27,7 @@ $win.Configuration.Alter()
 
 Compare-WinLinuxConfigs
 
-Copy-SqlSpConfigure -Source $WinSQl1 -Destination $linuxSQL -DestinationSqlCredential $cred -Configs DefaultBackupCompression
+Copy-DbaSpConfigure -Source $WinSQl1 -Destination $linuxSQL -DestinationSqlCredential $cred -Configs DefaultBackupCompression
 
 Compare-WinLinuxConfigs
 
@@ -37,14 +37,16 @@ $linux.Configuration.Alter()
 Compare-WinLinuxConfigs
 
 $linuxConfigPath = 'C:\Temp\Linuxconfig.sql'
-Export-SqlSpConfigure -SqlServer $linuxSQL -SqlCredential $cred -Path $LinuxConfigPath
+Export-DbaSpConfigure -SqlServer $linuxSQL -SqlCredential $cred -Path $LinuxConfigPath
 notepad $linuxConfigPath
 
 $WinConfigPath = 'C:\Temp\Winconfig.sql'
-Export-SqlSpConfigure -SqlServer $WinSQl1 -Path $winConfigPath
+Export-DbaSpConfigure -SqlServer $WinSQl1 -Path $winConfigPath
 notepad $winConfigPath
 
-Import-SqlSpConfigure -Path $WinConfigPath -SqlServer $linuxSQL -SqlCredential $cred
+Import-DbaSpConfigure -Path $WinConfigPath -SqlServer $linuxSQL -SqlCredential $cred
 
 
 Compare-WinLinuxConfigs
+
+
