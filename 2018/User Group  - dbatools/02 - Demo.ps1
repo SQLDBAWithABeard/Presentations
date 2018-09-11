@@ -91,7 +91,7 @@ Get-DbaBuildReference -Build 10.0.6000,10.50.6000 |Format-Table
 ## Or you are a consultant who comes in and sees that the databases have never been properly backed up
 
 Explorer $NetworkShare
-Get-DbaDatabase -SqlInstance $sql0 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters | Backup-DbaDatabase -BackupDirectory $NetworkShare
+Get-DbaDatabase -SqlInstance $sql0 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters,ValidationResults | Backup-DbaDatabase -BackupDirectory $NetworkShare
 
 ## Whats our Backup ThroughPut ?
 Measure-DbaBackupThroughput -SqlInstance $sql0
@@ -114,7 +114,7 @@ Get-DbaDatabase -SqlInstance $sql1 | Format-Table
 #region check space
 ## Check that we have enough space on the destination (obviously we couldnt do it this way if we SQL0 was broken)
 
-$Databases = (Get-DbaDatabase -SqlInstance $SQL0 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters).Name
+$Databases = (Get-DbaDatabase -SqlInstance $SQL0 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters,ValidationResults -Status Normal).Name
 $measurement = $Databases.ForEach{
 Measure-DbaDiskSpaceRequirement -Source $SQL0 -Destination $sql1 -Database $PSItem
 }
@@ -137,6 +137,10 @@ Restore-DbaDatabase -SqlInstance $sql1 -Path $NetworkShare -WithReplace
 ## Check databases on sql1
 Get-DbaDatabase -SqlInstance $sql1 | Format-Table
 
+# Back them up
+
+Get-DbaDatabase -SqlInstance $sql1 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters,ValidationResults | Backup-DbaDatabase -BackupDirectory $NetworkShare
+
 ## Happy suits :-)
 ## Now go and fix the broken server!!!
 #endregion
@@ -153,8 +157,8 @@ Get-DbaDatabase -SqlInstance $sql1 | Format-Table
 ## Now it is so easy to do this
 ## Watch
 
-explorer '\\sql1.TheBeard.Local\F$\Data'
-Test-DbaLastBackup -SqlInstance $sql1 -ExcludeDatabase WideWorldImporters | Out-GridView
+explorer '\\sql0.TheBeard.Local\F$\Data'
+Test-DbaLastBackup -SqlInstance $sql1 -ExcludeDatabase WideWorldImporters,ValidationResults | Out-GridView
 #endregion
 
 #region agent jobs
@@ -253,13 +257,13 @@ New-DbaDirectory -SqlInstance $sql0 -Path 'F:/Finland/'
 ## Oh and dbatools can restore from a Ola Hallengren directory too
 
 ## show the databases
-Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb -ExcludeDatabase 'DBA-Admin' |Format-Table
+Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb  |Format-Table
 
 ## Remove them
-Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb -ExcludeDatabase 'DBA-Admin' | Remove-DbaDatabase -Confirm:$false
+Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb | Remove-DbaDatabase -Confirm:$false
 
 ## show the databases - There are none
-Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb -ExcludeDatabase 'DBA-Admin'
+Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb 
 
 ## Restore from Ola directory
 Restore-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -Path '/var/opt/mssql/data/BeardLinuxSQL' -AllowContinue
