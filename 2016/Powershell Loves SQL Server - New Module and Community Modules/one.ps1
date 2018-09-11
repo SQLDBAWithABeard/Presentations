@@ -146,24 +146,24 @@ Get-DbaRestoreHistory -SqlServer . -Detailed
 ## Get the TCP port
 Get-DbaTcpPort -SqlServer .
 ## Compatability Levels
-Test-DbaDatabaseCompatibility -SqlServer . -Detailed|ft -AutoSize
+Test-DbaDbCompatibility -SqlServer . -Detailed|ft -AutoSize
 ## Collation
-Test-DbaDatabaseCollation -SqlServer . -Detailed | ft -AutoSize
+Test-DbaDbCollation -SqlServer . -Detailed | ft -AutoSize
 ## Which authorisation are we using?
 Test-DbaConnectionAuthScheme -SqlServer . -Detailed
 ## Max memory
-Get-SqlMaxMemory -SqlServer . 
+Get-DbaMaxMemory -SqlServer . 
 ## Get SP_WhoIsActive Results
 (Get-SqlAgentJob -ServerInstance . ).where{$_.Name -like '*DatabaseIntegrityCheck*'}.start()
-Show-SqlWhoIsActive -SqlServer . -Database DBA-Admin
+Invoke-DbaWhoIsActive -SqlServer . -Database DBA-Admin
 ## Need Database FreeSpace
 Get-DbaDatabaseFreespace -SqlServer . 
 ## What databases are on my server?
-Show-SqlDatabaseList -SqlServer .
+Show-DbaDbList -SqlServer .
 ## Is my TempDB set up using "best practices"
-Test-SqlTempDbConfiguration -SqlServer .
+Test-DbaTempdbConfig -SqlServer .
 ## Database owners ok?
-Test-DbaDatabaseOwner -SqlServer . -TargetLogin ROB-SURFACEBOOK\mrrob -Detailed | ft -AutoSize
+Test-DbaDbOwner -SqlServer . -TargetLogin ROB-SURFACEBOOK\mrrob -Detailed | ft -AutoSize
 ## Agent Job Owners
 Test-DbaJobOwner -SqlServer . -Detailed -TargetLogin sa |ft -AutoSize
 ## Power Plan ok?
@@ -205,6 +205,15 @@ Test-OLAInstance -Instance $Servers -CheckForBackups -CheckForDBFolders -JobSuff
 ii 'C:\Users\mrrob\Desktop\Installing SSRS Reports for dbareports.webm'
 ## and the best bit the Cortana Integration
 ii 'C:\Users\mrrob\Desktop\PowerBi Reports and Cortana for dbareports.mkv'
+
+
+
+
+
+
+
+
+
 
 
 

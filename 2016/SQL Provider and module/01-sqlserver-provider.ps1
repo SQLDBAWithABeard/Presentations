@@ -1,4 +1,4 @@
-## The SQL Server Provider is just like Object Explorer in SSMS (Sort of)
+﻿## The SQL Server Provider is just like Object Explorer in SSMS (Sort of)
 ##
 
 ## NOTE: Get the SSMS latest release from here https://sqlps.io/dl
@@ -48,7 +48,7 @@ Get-DbaTcpPort -SqlServer $allservers | ogv
 
 ## My latency 
 
-Test-SqlNetworkLatency  $allservers | ogv
+Test-DbaNetworkLatency  $allservers | ogv
 
 ## Free Space
 
@@ -75,7 +75,7 @@ $cred = Get-Credential
 
 Get-DbaUptime -SqlServer linuxvnextctp14 -SQLCredential $cred
 Get-DbaTcpPort -SqlServer linuxvnextctp14 -SQLCredential $cred
-Test-SqlNetworkLatency -Sqlserver linuxvnextctp14 -SQLCredential $cred
+Test-DbaNetworkLatency -Sqlserver linuxvnextctp14 -SQLCredential $cred
 Get-DbaLastBackup -SqlServer linuxvnextctp14 -Credential $cred | Format-Table -AutoSize
 Get-DbaLastGoodCheckDb -SqlServer linuxvnextctp14 -Credential $cred |Format-Table -AutoSize
 
@@ -413,4 +413,6 @@ $roles = Get-ChildItem
 $sysadmin = $roles['sysadmin']
 $sysadmin | Get-Member
 $sysadmin.EnumMemberNames()
+
+
 

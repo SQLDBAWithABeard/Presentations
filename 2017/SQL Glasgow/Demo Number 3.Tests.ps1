@@ -17,7 +17,7 @@ Describe 'Testing Access to Backup Share' -Tag Instance, Backup {
     $SQLServers.ForEach{$testCases += @{Name = $_}}
     It "<Name> has access to Backup Share $BackupShare" -TestCases $testCases {
         Param($Name)
-        Test-DbaSqlPath -SqlServer $Name -Path $BackupShare | Should Be $True
+        Test-DbaPath -SqlServer $Name -Path $BackupShare | Should Be $True
     }
 }
 
@@ -29,7 +29,7 @@ Describe "Testing Database Collation" -Tag Instance, Collation {
     $SQLServers.ForEach{$testCases += @{Name = $_}}
     It "<Name> databases have the right collation" -TestCases $testCases {
         Param($Name)
-        $Collation = Test-DbaDatabaseCollation -SqlServer $Name
+        $Collation = Test-DbaDbCollation -SqlServer $Name
         $Collation.IsEqual -contains $false | Should Be $false
     }
 
@@ -68,7 +68,7 @@ Describe 'Testing Virtual Log FIles' -Tag Database, VLF {
     if (!$SQLServers) {Write-Warning "No Servers to Look at - Check the config.json"}
     $SQLServers.ForEach{
         Context "Testing $_" {
-            $Results = Test-DbaVirtualLogFile -SqlInstance $_ 
+            $Results = Test-DbaDbVirtualLogFile -SqlInstance $_ 
             if ($Results.COunt -gt 1) {
                 $Results.ForEach{
                     It "$($_.Database) Should have less than $MaxVLFs VLFs" {
@@ -91,7 +91,7 @@ Describe 'Testing TempDB Configuration' -Tag TempDB, Instance {
     $SQLServers.ForEach{
         Context "Testing $_" {
             It " Should pass the default TempDB Configuration" {
-                (Test-DbaTempDbConfiguration -SqlInstance $_).IsBestPractice | Should Be $true
+                (Test-DbaTempdbConfig -SqlInstance $_).IsBestPractice | Should Be $true
             }
         }
     }
@@ -205,7 +205,7 @@ Describe 'Testing FullRecovery Model' -Tag Backup, Database {
     if (!$SQLServers) {Write-Warning "No Servers to Look at - Check the config.json"}
     $SQLServers.ForEach{
         Context "Testing Full Recovery Model on  $_" {
-            $Results = Test-DbaFullRecoveryModel -SqlInstance $_ -Detailed
+            $Results = Test-DbaRecoveryModel -SqlInstance $_ -Detailed
             $Results.ForEach{
                 It "$($_.Database) Should have had a Full backup if in Full Recovery Model" {
                     $_.ConfiguredRecoveryModel | Should Be $_.ActualRecoveryModel
@@ -221,7 +221,7 @@ Describe 'Testing Database Owner' -Tag Owner, Database {
     if (!$SQLServers) {Write-Warning "No Servers to Look at - Check the config.json"}
     $SQLServers.ForEach{
         Context "Testing Database Owners on  $_" {
-            $Results = Test-DbaDatabaseOwner -SqlInstance $_ -TargetLogin $TargetDatabaseOwner
+            $Results = Test-DbaDbOwner -SqlInstance $_ -TargetLogin $TargetDatabaseOwner
             if ($Results.COunt -gt 1) {
                 $Results.ForEach{
                     It "$($_.Database) Owner should Not be $TargetDatabaseOwner" {
@@ -244,7 +244,7 @@ Describe 'Testing Database Compatability' -Tag Compatability {
     if (!$SQLServers) {Write-Warning "No Servers to Look at - Check the config.json"}
     $SQLServers.ForEach{
         Context "Testing Database Compatability on  $_" {
-            $Results = Test-DbaDatabaseCompatibility -SqlInstance $_ -Detailed
+            $Results = Test-DbaDbCompatibility -SqlInstance $_ -Detailed
             
             if ($Results.COunt -gt 1) {
                 $Results.ForEach{
@@ -349,4 +349,11 @@ Describe "Testing Extended Event Sessions" -Tag  XEvents {
         }
     }
 }
+
+
+
+
+
+
+
 

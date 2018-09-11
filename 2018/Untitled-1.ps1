@@ -1,4 +1,4 @@
-$Instance = 'ROB-XPS'
+﻿$Instance = 'ROB-XPS'
 #region comparing foreach
 $a = 0..10000
 0..10 | ForEach-Object {
@@ -237,7 +237,7 @@ $sw.Stop()
 $sw
 
 (0..200)| ForEach-Object {
-    Invoke-DbaSqlQuery -SqlInstance $Instance  -Database master -Query "CREATE DATABASE [Test_$Psitem]"
+    Invoke-DbaQuery -SqlInstance $Instance  -Database master -Query "CREATE DATABASE [Test_$Psitem]"
 }
 
 #endregion

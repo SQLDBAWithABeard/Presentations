@@ -1,4 +1,4 @@
-<# Where the magic happens#>
+﻿<# Where the magic happens#>
 Return 'Hey Beardy This is a Demo!! '
 $SQLServers = (Get-VM -ComputerName beardnuc | Where-Object {$_.Name -like '*SQL2016N1' -or $_.Name -Like '*SQL*2012*' -or $_.Name -Like '*SQL*2014*' -or $_.Name -Like '*SQL*2008*'  -or $_.Name -Like '*SQL*2005*'  -and $_.State -eq 'Running'}).Name
 $singleServer = "Rob-XPS"
@@ -10,15 +10,15 @@ Get-Help  Test-SQLConnection -Full
 #>
  
  #Test connection to instances
-Test-SqlConnection -SqlServer $SingleServer
+Test-DbaConnection -SqlServer $SingleServer
 
-$SQLServers[0..3] | % {Test-SqlConnection -SqlServer $_}
+$SQLServers[0..3] | % {Test-DbaConnection -SqlServer $_}
 
 <#
     Test Latency
     You can use a custom query and define the number of retries
 #>
-Test-SqlNetworkLatency -SqlServer $SQLServers -Query "SELECT * FROM master.sys.databases" -Count 4 | Format-Table
+Test-DbaNetworkLatency -SqlServer $SQLServers -Query "SELECT * FROM master.sys.databases" -Count 4 | Format-Table
 
 <#
     Get TCP port
@@ -73,7 +73,7 @@ $win.Configuration.Alter()
 Compare-SPConfigs
 
 # so know we need to make them the same
-Copy-SqlSpConfigure -Source $WinSQl1 -Destination $WinSQL2 -DestinationSqlCredential $cred -Configs DefaultBackupCompression
+Copy-DbaSpConfigure -Source $WinSQl1 -Destination $WinSQL2 -DestinationSqlCredential $cred -Configs DefaultBackupCompression
 
 # and compare them
 Compare-SPConfigs
@@ -86,18 +86,18 @@ Compare-SPConfigs
 # They are different - Maybe we dont have the servers connected
 # Maybe the new server is not built yet
 # Maybe we need to have the configuration in a file for auditing
-# Lets export it to file with Export-SqlSpConfigure
+# Lets export it to file with Export-DbaSpConfigure
 $WinSQL2ConfigPath = 'C:\Temp\Linuxconfig.sql'
-Export-SqlSpConfigure -SqlServer $WinSQL2 -SqlCredential $cred -Path $WinSQL2ConfigPath
+Export-DbaSpConfigure -SqlServer $WinSQL2 -SqlCredential $cred -Path $WinSQL2ConfigPath
 notepad $WinSQL2ConfigPath
 
 # if we export the windows configuration
 $WinConfigPath = 'C:\Temp\Winconfig.sql'
-Export-SqlSpConfigure -SqlServer $WinSQl1 -Path $winConfigPath
+Export-DbaSpConfigure -SqlServer $WinSQl1 -Path $winConfigPath
 notepad $winConfigPath
 
 # We can use it to make the linux server the same - remember we changed the backup  compression
-Import-SqlSpConfigure -Path $WinConfigPath -SqlServer $WinSQL2 -SqlCredential $cred
+Import-DbaSpConfigure -Path $WinConfigPath -SqlServer $WinSQL2 -SqlCredential $cred
 
 
 Compare-SPConfigs
@@ -121,26 +121,26 @@ Test-DbaMaxMemory -SqlServer $singleServer
 
     By default only best practices rules not in use are showed. Use -Detailed to get also the ones already in use
 #>
-Test-SqlTempDbConfiguration -SqlServer $singleServer
+Test-DbaTempdbConfig -SqlServer $singleServer
 
-Test-SqlTempDbConfiguration -SqlServer $singleServer -Detailed | ft -AutoSize -Wrap
+Test-DbaTempdbConfig -SqlServer $singleServer -Detailed | ft -AutoSize -Wrap
 
 <#
     Disclaimer: The function will not perform any actions that would shrink or delete data files.
-    If a user desires this, they will need to reduce tempdb so that it is â€œsmallerâ€ than what the
+    If a user desires this, they will need to reduce tempdb so that it is Ã¢â‚¬Å“smallerÃ¢â‚¬Â than what the
     function will size it to before running the function.
 
     You can force the number of files
     You have to say the total size you want for tempdb
 #>
-Set-SqlTempDbConfiguration -SqlServer $singleServer -DataFileCount 4 -datafilesizemb 4096
+Set-DbaTempdbConfig -SqlServer $singleServer -DataFileCount 4 -datafilesizemb 4096
 
 <# DBCC CheckDb #>
 # You can use the SQLServer Provider to read your Registered Servers or CMS
 # cd 'SQLSERVER:\sqlregistration\database engine server group\BEARDNUC'
 # $2016servers = (Get-ChildItem).Where{$_.Name -like '*SQL2016N*'}.Name
 
-# When was the last good CheckDb - Cláudio please explain how to do it in T-SQL
+# When was the last good CheckDb - ClÃ¡udio please explain how to do it in T-SQL
 # I'll do it like this!!
 $2016Servers = $SQLServers.Where{$_ -like '*2016*' -or $_ -like '*2014*'} #Note: the .Where method only works on PowerShell v4+
 Get-DbaLastGoodCheckDb -SqlServer $2016servers | ogv
@@ -179,7 +179,7 @@ Test-DbaIdentityUsage -SqlInstance $2016Servers -NoSystemDb | Ogv
 
 
 ## 30 minutes
-<# Find-DbaDatabaseGrowthEvent #>
+<# Find-DbaDbGrowthEvent #>
 Invoke-Sqlcmd2 -ServerInstance $singleServer -Query "IF EXISTS (SELECT 1 FROM sys.databases WHERE name = 'AutoGrowth')
 BEGIN
 	ALTER DATABASE [AutoGrowth] SET  SINGLE_USER WITH ROLLBACK IMMEDIATE
@@ -221,7 +221,7 @@ WHILE (@Iteration < 2000)
 Invoke-Sqlcmd2 -ServerInstance $singleServer -Query $queryForceAutoGrowthEvents -Database AutoGrowth
 
 
-Find-DbaDatabaseGrowthEvent -SqlInstance $singleServer -Database AutoGrowth | OGV
+Find-DbaDbGrowthEvent -SqlInstance $singleServer -Database AutoGrowth | OGV
 
 
 <# Read-DBAtransactionlog #>
@@ -302,14 +302,14 @@ Invoke-Sqlcmd2 -ServerInstance ROB-XPS -Database AdventureWorks2014 -query $quer
 
 ## Rob - Can you find the duplicate indexes for me please
 
-Find-SqlDuplicateIndex -SqlServer ROB-XPS
+Find-DbaDuplicateIndex -SqlServer ROB-XPS
 
-Find-SqlDuplicateIndex -SqlServer ROB-XPS -IncludeOverlapping -FilePath  c:\temp\indexes.txt
+Find-DbaDuplicateIndex -SqlServer ROB-XPS -IncludeOverlapping -FilePath  c:\temp\indexes.txt
 notepad c:\temp\indexes.txt
 
-## Cláudio to create overlapping indexes in AdventureWorks2014
+## ClÃ¡udio to create overlapping indexes in AdventureWorks2014
 
-Find-SqlDuplicateIndex -SqlServer ROB-XPS -IncludeOverLapping
+Find-DbaDuplicateIndex -SqlServer ROB-XPS -IncludeOverLapping
 
 <# Unused Indexes #>
 
@@ -320,7 +320,7 @@ Find-SqlDuplicateIndex -SqlServer ROB-XPS -IncludeOverLapping
 
 <# Test-SQLPath #>
 
-Test-SqlPath -SqlServer SQL2016N1 -Path Z:
+Test-DbaPath -SqlServer SQL2016N1 -Path Z:
 
 Describe 'Testing Access to Backup Share' -Tag Server, Backup {
 ## This is getting a list of server name from Hyper-V - You can chagne this to a list of SQL instances
@@ -331,7 +331,7 @@ $testCases= @()
 $SQLServers.ForEach{$testCases += @{Name = $_}}
     It "<Name> has access to Backup Share Z:" -TestCases $testCases {
         Param($Name)
-        Test-SqlPath -SqlServer $Name -Path Z: | Should Be $True
+        Test-DbaPath -SqlServer $Name -Path Z: | Should Be $True
     }
 }
 
@@ -386,4 +386,17 @@ Backup-DbaDatabase -SqlInstance sql2016n1 -Databases Viennadbareports -BackupDir
 
 $Config = (Get-Content TestConfig.JSON) -join "`n" | ConvertFrom-Json
 Invoke-Pester
+
+
+
+
+
+
+
+
+
+
+
+
+
 

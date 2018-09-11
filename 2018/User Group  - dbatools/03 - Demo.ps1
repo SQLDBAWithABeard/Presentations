@@ -1,14 +1,14 @@
-#region Setup Variables
+﻿#region Setup Variables
 . .\vars.ps1
 #endregion
 
 #region Reset Admin
 
-Get-DbaLogin -SqlInstance $sql1 |Format-Table
+Get-DbaErrorLogin -SqlInstance $sql1 |Format-Table
 
 Reset-DbaAdmin -SqlInstance $SQL1 -Login TheBeard 
 
-Get-DbaLogin -SqlInstance $sql1 |Format-Table
+Get-DbaErrorLogin -SqlInstance $sql1 |Format-Table
 
 ## connect in SSMS and run 
 
@@ -91,7 +91,7 @@ Get-DbaProcess -SqlInstance $sql1 -Login TheBeard
 
 ## In fact I don't want his login there
 
-Get-DbaLogin -SqlInstance $sql1 -Login TheBeard | Remove-DbaLogin -Confirm:$false
+Get-DbaErrorLogin -SqlInstance $sql1 -Login TheBeard | Remove-DbaLogin -Confirm:$false
 
 ## Much better :-)
 
@@ -117,7 +117,7 @@ $invokeDbaDatabaseCloneSplat = @{
     UpdateStatistics = $true
     Database = 'AdventureWorks2014'
 }
-Invoke-DbaDatabaseClone @invokeDbaDatabaseCloneSplat
+Invoke-DbaDbClone @invokeDbaDatabaseCloneSplat
 
 ## Now run in SSMS
 
@@ -146,9 +146,9 @@ Invoke-DbaDatabaseClone @invokeDbaDatabaseCloneSplat
 Get-DbaExecutionPlan -SqlInstance $sql0 -Database AdventureWorks2014_CLONE
 
 # create a snapshot
-New-DbaDatabaseSnapshot -SqlInstance $sql0 -Database AdventureWorks2012 -Name AD2012_snap
+New-DbaDbSnapshot -SqlInstance $sql0 -Database AdventureWorks2012 -Name AD2012_snap
 
-Get-DbaDatabaseSnapshot -SqlInstance $sql0
+Get-DbaDbSnapshot -SqlInstance $sql0
 
 Get-DbaProcess -SqlInstance $sql0 -Database AdventureWorks2012 | Stop-DbaProcess
 Get-DbaProcess -SqlInstance $sql0 -Database AD2012_snap| Stop-DbaProcess
@@ -156,7 +156,7 @@ Get-DbaProcess -SqlInstance $sql0 -Database AD2012_snap| Stop-DbaProcess
 # restore from snapshot
 Restore-DbaFromDatabaseSnapshot -SqlInstance $sql0 -Database AdventureWorks2012 -Snapshot AD2012_snap
 
-Remove-DbaDatabaseSnapshot -SqlInstance $sql0 -Snapshot AD2012_snap # or -Database AdventureWorks2014
+Remove-DbaDbSnapshot -SqlInstance $sql0 -Snapshot AD2012_snap # or -Database AdventureWorks2014
 
 #endregion
 
@@ -233,7 +233,7 @@ Find-DbaDbGrowthEvent -SqlInstance $sql0 | Format-Table
 Get-DbaTrace -SqlInstance $sql0 | ConvertTo-DbaXESession -Name 'Default Trace' | Start-DbaXESession
 
 # need to open in a seperate window as it doesnt respect CTRL C to cancel :-)
-Start powershell {Get-DbaXESession -SqlInstance sql0 -Session AlwaysOn_health | Watch-DbaXEventSession}
+Start powershell {Get-DbaXESession -SqlInstance sql0 -Session AlwaysOn_health | Watch-DbaXESession}
 
 Switch-SqlAvailabilityGroup -Path SQLSERVER:\SQL\SQL1\DEFAULT\AvailabilityGroups\SQLClusterAG
 
@@ -300,7 +300,7 @@ $dbs | Invoke-Parallel -ImportVariables -ScriptBlock {
 
 #endregion
 
-Get-DbaXESession -SqlInstance $SQL0 -Session 'Deadlock Graphs' | Read-DbaXEventFile | Out-GridView
+Get-DbaXESession -SqlInstance $SQL0 -Session 'Deadlock Graphs' | Read-DbaXEFile | Out-GridView
 
 ## or maybe you want to replay some captured workload
 
@@ -314,11 +314,11 @@ Get-ChildItem creating_tables.xel | Read-DbaXEFile | Invoke-DbaXeReplay -SqlInst
 #region Query Store
 
 # You can get your Query Store options 
-Get-DbaDbQueryStoreOptions -SqlInstance $sql0 -Database AdventureWorks2014
+Get-DbaDbQueryStoreOption -SqlInstance $sql0 -Database AdventureWorks2014
 
 # You can also set them 
 
-Set-DbaDbQueryStoreOptions -SqlInstance $sql0 -Database AdventureWorks2014 -MaxSize 200
+Set-DbaDbQueryStoreOption -SqlInstance $sql0 -Database AdventureWorks2014 -MaxSize 200
 #endregion
 
 #region Query
@@ -367,11 +367,11 @@ $linux.Configuration.Alter()
 Compare-SPConfigs -SourceInstance $sql0 -DestinationInstance $linuxSQL -DestinationCred $cred
 
 $linuxConfigPath = 'C:\Temp\Linuxconfig.sql'
-Export-SqlSpConfigure -SqlServer $linuxSQL -SqlCredential $cred -Path $LinuxConfigPath
+Export-DbaSpConfigure -SqlServer $linuxSQL -SqlCredential $cred -Path $LinuxConfigPath
 Open-EditorFile $linuxConfigPath
 
 $WinConfigPath = 'C:\Temp\Winconfig.sql'
-Export-SqlSpConfigure -SqlServer $sql0 -Path $winConfigPath
+Export-DbaSpConfigure -SqlServer $sql0 -Path $winConfigPath
 Open-EditorFile $winConfigPath
 
 Import-DbaSpConfigure -Path $WinConfigPath -SqlServer $linuxSQL -SqlCredential $cred
@@ -379,3 +379,13 @@ Import-DbaSpConfigure -Path $WinConfigPath -SqlServer $linuxSQL -SqlCredential $
 Compare-SPConfigs -SourceInstance $sql0 -DestinationInstance $linuxSQL -DestinationCred $cred
 
 #endregion
+
+
+
+
+
+
+
+
+
+
