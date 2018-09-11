@@ -30,6 +30,8 @@ Set-DbcConfig -Name app.sqlinstance -Value $SQLInstances
 Set-DbcConfig -Name skip.hadr.listener.pingcheck -Value $true
 Set-DbcConfig -Name agent.dbaoperatorname -Value 'The DBA Team'
 Set-DbcConfig -Name domain.name -Value 'TheBeard.Local'
+Set-DbcConfig -Name agent.failsafeoperator -Value 'The DBA Team'
+Set-DbcConfig -Name agent.databasemailprofile 'DBATeam'
 
 Invoke-DbcCheck -Check HADR
 Invoke-DbcCheck -Check Agent 
