@@ -29,8 +29,8 @@ $propcompare = foreach ($prop in $oldprops) {
 
 $propcompare | Out-GridView
 
-# Copy-SqlSpConfigure
-Copy-SqlSpConfigure -Source $old -Destination $new -Configs DefaultBackupCompression, IsSqlClrEnabled
+# Copy-DbaSpConfigure
+Copy-DbaSpConfigure -Source $old -Destination $new -Configs DefaultBackupCompression, IsSqlClrEnabled
 
 # Get-DbaSpConfigure - @sirsql
 Get-DbaSpConfigure -SqlServer $new | Where-Object { $_.ConfigName -in 'DefaultBackupCompression', 'IsSqlClrEnabled' } | 
@@ -61,19 +61,19 @@ Invoke-Item (Get-Item SQLSERVER:\SQL\LOCALHOST\DEFAULT).DefaultFile
 Test-DbaLastBackup -SqlServer $instance | Out-GridView
 Test-DbaLastBackup -SqlServer $instance -Destination $new -VerifyOnly | Out-GridView
 
-# Test-VirtualLog file - Expand-SqlTLogResponsibly down below
-$allservers | Test-DbaVirtualLogFile
-$bigvlfs = $allservers | Test-DbaVirtualLogFile | Where-Object {$_.Count -ge 50} | Sort-Object Count -Descending
+# Test-VirtualLog file - Expand-DbaTLogResponsibly down below
+$allservers | Test-DbaDbVirtualLogFile
+$bigvlfs = $allservers | Test-DbaDbVirtualLogFile | Where-Object {$_.Count -ge 50} | Sort-Object Count -Descending
 $bigvlfs
 
 # Virtual Log files - if time allots - 2 commands left before beard
-# Expand-SqlTLogResponsibly by @ClaudioESSilva
+# Expand-DbaTLogResponsibly by @ClaudioESSilva
 $database = ($bigvlfs | Select -Last 1).Database
-Expand-SqlTLogResponsibly -SqlServer $instance -Databases $database -TargetLogSizeMB 16 -IncrementSizeMB 1 -ShrinkLogFile -ShrinkSizeMB 1 
-Test-DbaVirtualLogFile -SqlServer $instance -Databases $database
+Expand-DbaTLogResponsibly -SqlServer $instance -Databases $database -TargetLogSizeMB 16 -IncrementSizeMB 1 -ShrinkLogFile -ShrinkSizeMB 1 
+Test-DbaDbVirtualLogFile -SqlServer $instance -Databases $database
 
 # Awesome!
-Reset-SqlAdmin -SqlServer $instance -Login sqladmin
+Reset-DbaAdmin -SqlServer $instance -Login sqladmin
 
 # Remove dat orphan - by @sqlstad
 Find-DbaOrphanedFile -SqlServer $instance
@@ -81,17 +81,17 @@ Find-DbaOrphanedFile -SqlServer $instance
 Find-DbaOrphanedFile -SqlServer $instance -LocalOnly | Remove-Item
 
 # One of my favs! - by @sqldbawithbeard
-Get-Help Remove-SqlDatabaseSafely -Online
-Remove-SqlDatabaseSafely -SqlServer $instance -Databases AdventureWorks2008R2 -BackupFolder \\workstation\migration
+Get-Help Remove-DbaDatabaseSafely -Online
+Remove-DbaDatabaseSafely -SqlServer $instance -Databases AdventureWorks2008R2 -BackupFolder \\workstation\migration
 
 # Test/Repair Windows/SQL Server name
 Test-DbaServerName -SqlServer $allservers
 Repair-DbaServerName -SqlServer $allservers
 
 # Get and Set SqlTempDbConfiguration - by @mike_fal
-Get-Help Test-SqlTempDbConfiguration -Online
-Test-SqlTempDbConfiguration -SqlServer $instance
-Set-SqlTempDbConfiguration -SqlServer $instance -DataFileSizeMb 2048
+Get-Help Test-DbaTempdbConfig -Online
+Test-DbaTempdbConfig -SqlServer $instance
+Set-DbaTempdbConfig -SqlServer $instance -DataFileSizeMb 2048
 
 # Test-DbaPowerPlan
 Invoke-Item C:\github\TrainingMaterial\Videos\Test-DbaPowerPlan.mp4
@@ -113,8 +113,8 @@ $allservers | Find-DbaStoredProcedure -Pattern '\w+@\w+\.\w+'
 $allservers | Test-DbaSpn | Out-GridView -PassThru | Set-DbaSpn -Whatif
 
 # Now
-Test-DbaFullRecoveryModel -SqlServer $instance
-Test-DbaFullRecoveryModel -SqlServer $instance | Where { $_.ConfiguredRecoveryModel -ne $_.ActualRecoveryModel }
+Test-DbaRecoveryModel -SqlServer $instance
+Test-DbaRecoveryModel -SqlServer $instance | Where { $_.ConfiguredRecoveryModel -ne $_.ActualRecoveryModel }
 
 # backup header
 Read-DbaBackupHeader -SqlServer $instance -Path C:\migration\SQL2012\WSS_Content\FULL\SQL2012_WSS_Content_FULL_20161218_113644.bak
@@ -140,20 +140,34 @@ Resolve-DbaNetworkName -ComputerName $instance
 Resolve-DbaNetworkName -ComputerName $env:computername
 
 # Test Db compat
-Test-DbaDatabaseCompatibility -SqlServer $instance -Detailed | Format-Table -AutoSize
+Test-DbaDbCompatibility -SqlServer $instance -Detailed | Format-Table -AutoSize
 
 # Test Db collation
-Test-DbaDatabaseCollation -SqlServer $instance -Detailed | Format-Table -AutoSize
+Test-DbaDbCollation -SqlServer $instance -Detailed | Format-Table -AutoSize
  
 # Get Db Free Space AND write it to disk
 Get-DbaDatabaseFreespace -SqlServer $instance
-Get-DbaDatabaseFreespace -SqlServer $instance -IncludeSystemDBs | Out-DbaDataTable | Write-DbaDataTable -SqlServer $instance -Table tempdb.dbo.DiskSpaceExample
-Get-DbaDatabaseFreespace -SqlServer $instance -IncludeSystemDBs | Out-DbaDataTable | Write-DbaDataTable -SqlServer $instance -Table tempdb.dbo.DiskSpaceExample -AutoCreateTable
+Get-DbaDatabaseFreespace -SqlServer $instance -IncludeSystemDBs | ConvertTo-DbaDataTable | Write-DbaDataTable -SqlServer $instance -Table tempdb.dbo.DiskSpaceExample
+Get-DbaDatabaseFreespace -SqlServer $instance -IncludeSystemDBs | ConvertTo-DbaDataTable | Write-DbaDataTable -SqlServer $instance -Table tempdb.dbo.DiskSpaceExample -AutoCreateTable
 
 # Run a lil query
 Ssms.exe "C:\temp\tempdbquery.sql"
 
-# Copy-SqlDatabase
+# Copy-DbaDatabase
 Get-Command *Orphan*
-Copy-SqlDatabase -Source $old -Destination $new -DetachAttach -Reattach -Databases WSS_Logging -Force
-Repair-SqlOrphanUser -SqlServer $new
+Copy-DbaDatabase -Source $old -Destination $new -DetachAttach -Reattach -Databases WSS_Logging -Force
+Repair-DbaOrphanUser -SqlServer $new
+
+
+
+
+
+
+
+
+
+
+
+
+
+

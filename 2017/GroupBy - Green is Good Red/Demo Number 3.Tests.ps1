@@ -9,7 +9,7 @@ $testCases= @()
 $SQLServers.ForEach{$testCases += @{Name = $_}}
     It "<Name> has access to Backup Share" -TestCases $testCases {
         Param($Name)
-        Test-SqlPath -SqlServer $Name -Path C:\MSSQL\BACKUP | Should Be $True
+        Test-DbaPath -SqlServer $Name -Path C:\MSSQL\BACKUP | Should Be $True
     }
 }
 
@@ -19,7 +19,7 @@ $testCases= @()
     $SQLServers.ForEach{$testCases += @{Name = $_}}
     It "<Name> databases have the right collation" -TestCases $testCases {
         Param($Name)
-        $Collation = Test-DbaDatabaseCollation -SqlServer $Name
+        $Collation = Test-DbaDbCollation -SqlServer $Name
         $Collation.IsEqual -contains $false | Should Be $false
     }
 
@@ -47,3 +47,4 @@ if(!$SQLServers){Write-Warning "No Servers to Look at"}
         }
     }
 }
+

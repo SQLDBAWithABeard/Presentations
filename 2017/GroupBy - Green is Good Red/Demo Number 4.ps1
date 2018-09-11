@@ -1,4 +1,4 @@
-## Use a configuration file
+﻿## Use a configuration file
 
 Get-Content GIT:\dbatools-scripts-local\TestConfig.json
 code-insiders C:\Users\mrrob\OneDrive\Documents\GitHub\dbatools-scripts-local\TestConfig.json
@@ -8,7 +8,7 @@ cls
 ## We can get them from Hyper-V
 ## $SQLServers = (Get-VM -ComputerName $Config.CollationDatabase.HyperV -ErrorAction SilentlyContinue| Where-Object {$_.Name -like "*SQL*" -and $_.State -eq 'Running'}).Name
 ## From Registered Servers with dbatools
-## $SQLServers = Get-SqlRegisteredServerName -SqlServer sqlserver2014a -Group HR, Accounting
+## $SQLServers = Get-DbaRegisteredServer -SqlServer sqlserver2014a -Group HR, Accounting
 
 ## From CMS using SQLProvider
 ## cd 'SQLSERVER:\sqlregistration\Central Management Server Group\SERVER'

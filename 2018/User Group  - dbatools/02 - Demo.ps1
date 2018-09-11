@@ -1,4 +1,4 @@
-#region Setup Variables
+﻿#region Setup Variables
 . .\vars.ps1
 #endregion
 
@@ -71,16 +71,16 @@ Test-DbaLinkedServerConnection -SqlInstance $sql1
 #region Look at Builds
 $builds = @()
 $SQLInstances.ForEach{
-    $builds += Get-DbaSqlBuildReference -SqlInstance $PSitem 
+    $builds += Get-DbaBuildReference -SqlInstance $PSitem 
 }
 
 $containers.ForEach{
-    $Builds += Get-DbaSqlBuildReference -SqlInstance $PSitem -SqlCredential $cred
+    $Builds += Get-DbaBuildReference -SqlInstance $PSitem -SqlCredential $cred
 }
 
 $Builds | Format-Table
 
-Get-DbaSqlBuildReference -Build 10.0.6000,10.50.6000 |Format-Table
+Get-DbaBuildReference -Build 10.0.6000,10.50.6000 |Format-Table
 
 #endregion
 
@@ -236,7 +236,7 @@ Get-DbaRestoreHistory -SqlInstance $sql1
 ## But we still need to know if the SQL account can get to the folder otherwise we have no backups
 ## Also useful for testing access for other requirements for SQL Server
 
-Test-DbaSqlPath -SqlInstance $SQL0 -Path $NetworkShare
+Test-DbaPath -SqlInstance $SQL0 -Path $NetworkShare
 
 ## or explore a filepath from the SQL Service account
 ## By default it is the data path
@@ -248,7 +248,7 @@ Get-DbaFile -SqlInstance $LinuxSQL -SqlCredential $cred -Path '/var/opt/mssql/da
 
 ## and create a directory
 
-New-DbaSqlDirectory -SqlInstance $sql0 -Path 'F:/Finland/'
+New-DbaDirectory -SqlInstance $sql0 -Path 'F:/Finland/'
 
 ## Oh and dbatools can restore from a Ola Hallengren directory too
 
@@ -276,7 +276,7 @@ Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb 
 Get-DbaServerProtocol -ComputerName $sql0
 
 # Get the registry root
-Get-DbaSqlRegistryRoot -ComputerName $sql0
+Get-DbaRegistryRoot -ComputerName $sql0
 
 # Get the SQL ErrorLog
 Get-DbaSqlLog -SqlInstance $SQL1 | Out-GridView
@@ -285,14 +285,21 @@ Get-DbaSqlLog -SqlInstance $SQL1 | Out-GridView
 Get-DbaOperatingSystem -ComputerName $sql0 
 
 # Get db file information AND write it to table
-Get-DbaDatabaseFile -SqlInstance $sql0 | Out-GridView
-Get-DbaDatabaseFile -SqlInstance $sql0  | Write-DbaDataTable -SqlInstance $sql0 -Database tempdb -Table DiskSpaceExample -AutoCreateTable
-Invoke-DbaSqlQuery -ServerInstance $sql0 -Database tempdb -Query 'SELECT * FROM dbo.DiskSpaceExample' | Out-GridView
+Get-DbaDbFile -SqlInstance $sql0 | Out-GridView
+Get-DbaDbFile -SqlInstance $sql0  | Write-DbaDataTable -SqlInstance $sql0 -Database tempdb -Table DiskSpaceExample -AutoCreateTable
+Invoke-DbaQuery -ServerInstance $sql0 -Database tempdb -Query 'SELECT * FROM dbo.DiskSpaceExample' | Out-GridView
 
 # Get and change service account
-Get-DbaSqlService -ComputerName $sql0 | Out-GridView
-Get-DbaSqlService -ComputerName $sql0 | Select-Object * | Out-GridView
-## Get-DbaSqlService -Instance $sql0 -Type Agent | Update-DbaSqlServiceAccount  -Username 'Local system' -WhatIf
+Get-DbaService -ComputerName $sql0 | Out-GridView
+Get-DbaService -ComputerName $sql0 | Select-Object * | Out-GridView
+## Get-DbaService -Instance $sql0 -Type Agent | Update-DbaServiceAccount  -Username 'Local system' -WhatIf
 
 
 #endregion
+
+
+
+
+
+
+

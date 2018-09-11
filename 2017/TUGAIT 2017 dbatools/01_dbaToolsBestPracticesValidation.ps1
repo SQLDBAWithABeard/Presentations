@@ -37,8 +37,8 @@ $start = [System.Diagnostics.Stopwatch]::StartNew()
 <#
     Test SqlNetworkLatency
 #>
-Write-Output "Will run Test-SqlNetworkLatency" 
-$SqlNetworkLatency = Test-SqlNetworkLatency -SqlServer $serverList -SqlCredential $SqlCredential -Verbose | Out-DbaDataTable 
+Write-Output "Will run Test-DbaNetworkLatency" 
+$SqlNetworkLatency = Test-DbaNetworkLatency -SqlServer $serverList -SqlCredential $SqlCredential -Verbose | ConvertTo-DbaDataTable 
 Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $SqlNetworkLatency -Table NetworkLatency -AutoCreateTable
 
 #You guys decide if it is a best practive to put in place on your estate or not! 
@@ -48,7 +48,7 @@ Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $
    MaxDop
 #>
 Write-Output "Will run Test-DbaMaxDop" 
-$MaxDop = Test-DbaMaxDop -SqlServer $serverList -SqlCredential $SqlCredential -Detailed | Out-DbaDataTable
+$MaxDop = Test-DbaMaxDop -SqlServer $serverList -SqlCredential $SqlCredential -Detailed | ConvertTo-DbaDataTable
 Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $Maxdop -Table MaxDop -AutoCreateTable
 
 #$MaxDop | Format-Table -AutoSize -Wrap
@@ -60,7 +60,7 @@ Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $
     MaxMemory
 #>
 Write-Output "Will run Test-DbaMaxMemory" 
-$MaxMemory = Test-DbaMaxMemory -SqlServer $serverList -SqlCredential $SqlCredential | Out-DbaDataTable
+$MaxMemory = Test-DbaMaxMemory -SqlServer $serverList -SqlCredential $SqlCredential | ConvertTo-DbaDataTable
 Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $MaxMemory -Table MaxMemory -AutoCreateTable
 
 #$MaxMemory | Format-Table -AutoSize -Wrap
@@ -74,8 +74,8 @@ Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $
 <#
     TempDB
 #>
-Write-Output "Will run Test-SqlTempDbConfiguration" 
-$tempDB = Test-SqlTempDbConfiguration -SqlServer $serverList -SqlCredential $SqlCredential -Verbose -Detailed | Out-DbaDataTable
+Write-Output "Will run Test-DbaTempdbConfig" 
+$tempDB = Test-DbaTempdbConfig -SqlServer $serverList -SqlCredential $SqlCredential -Verbose -Detailed | ConvertTo-DbaDataTable
 Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $tempDB -Table TempDB -AutoCreateTable
 
 
@@ -83,8 +83,8 @@ Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $
 <#
     Get databases owner 
 #>
-Write-Output "Will run Test-DbaDatabaseOwner" 
-$DatabaseOwner = Test-DbaDatabaseOwner -SqlServer $serverList -SqlCredential $SqlCredential -Detailed -Verbose | Out-DbaDataTable
+Write-Output "Will run Test-DbaDbOwner" 
+$DatabaseOwner = Test-DbaDbOwner -SqlServer $serverList -SqlCredential $SqlCredential -Detailed -Verbose | ConvertTo-DbaDataTable
 Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $DatabaseOwner -Table DatabaseOwner -AutoCreateTable
 
 
@@ -99,7 +99,7 @@ Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $
 #{
 #    #Write-Output "$($dbToChange.Server) | $($dbToChange.Database)"
 #    #$exp = 
-#    Set-DbaDatabaseOwner -SqlServer $($dbToChange.Server) -SqlCredential $SqlCredential -Databases $($dbToChange.Database) # -WhatIf -Verbose
+#    Set-DbaDbOwner -SqlServer $($dbToChange.Server) -SqlCredential $SqlCredential -Databases $($dbToChange.Database) # -WhatIf -Verbose
 #    #Write-Host $exp
 #    #Invoke-Expression $exp
 #}
@@ -109,7 +109,7 @@ Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $
    Get jobs owner 
 #>
 Write-Output "Will run Test-DbaJobOwner" 
-$JobsOwner = Test-DbaJobOwner -SqlServer $serverList -SqlCredential $SqlCredential -Detailed | Out-DbaDataTable
+$JobsOwner = Test-DbaJobOwner -SqlServer $serverList -SqlCredential $SqlCredential -Detailed | ConvertTo-DbaDataTable
 Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $JobsOwner -Table JobsOwner -AutoCreateTable
 
 
@@ -122,7 +122,7 @@ Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $
     Test ServerName
 #>
 Write-Output "Will run Test-DbaServerName" 
-$DbaServerName = Test-DbaServerName -SqlServer $serverList  -Credential $SqlCredential -Detailed -Verbose | Out-DbaDataTable
+$DbaServerName = Test-DbaServerName -SqlServer $serverList  -Credential $SqlCredential -Detailed -Verbose | ConvertTo-DbaDataTable
 Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $DbaServerName -Table ServerName -AutoCreateTable
 
 #$ServerName | Format-Table -Wrap -AutoSize
@@ -133,8 +133,8 @@ Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $
 <#
     Test Database Compatibility Level
 #>
-Write-Output "Will run Test-DbaDatabaseCompatibility" 
-$DatabaseCompatibilityLevel = Test-DbaDatabaseCompatibility -SqlServer $serverList -Credential $SqlCredential -Detailed -Verbose | Out-DbaDataTable
+Write-Output "Will run Test-DbaDbCompatibility" 
+$DatabaseCompatibilityLevel = Test-DbaDbCompatibility -SqlServer $serverList -Credential $SqlCredential -Detailed -Verbose | ConvertTo-DbaDataTable
 Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $DatabaseCompatibilityLevel -Table DatabaseCompatibilityLevel -AutoCreateTable
 
 #$DatabaseCompatibilityLevel | Format-Table -Wrap -AutoSize
@@ -145,8 +145,8 @@ Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $
 <#
     Test Database Collation 
 #>
-Write-Output "Will run Test-DbaDatabaseCollation" 
-$DatabaseCollation = Test-DbaDatabaseCollation -SqlServer $serverList -Credential $SqlCredential -Detailed -Verbose | Out-DbaDataTable
+Write-Output "Will run Test-DbaDbCollation" 
+$DatabaseCollation = Test-DbaDbCollation -SqlServer $serverList -Credential $SqlCredential -Detailed -Verbose | ConvertTo-DbaDataTable
 Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $DatabaseCollation -Table DatabaseCollation -AutoCreateTable
 
 #$DatabaseCollation | Format-Table -Wrap -AutoSize
@@ -158,15 +158,15 @@ Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $
     Test PowerPlan configuration
 #>
 Write-Output "Will run Test-DbaPowerPlan" 
-$PowerPlan = Test-DbaPowerPlan -ComputerName $serverList -Detailed -Verbose | Out-DbaDataTable
+$PowerPlan = Test-DbaPowerPlan -ComputerName $serverList -Detailed -Verbose | ConvertTo-DbaDataTable
 Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $PowerPlan -Table PowerPlan -AutoCreateTable
 
 
 <#
     Test DbaFullRecoveryModel
 #>
-Write-Output "Will run Test-DbaFullRecoveryModel" 
-$DbaFullRecoveryModel = Test-DbaFullRecoveryModel -SqlServer $serverList -SqlCredential $SqlCredential -Detailed -Verbose | Out-DbaDataTable
+Write-Output "Will run Test-DbaRecoveryModel" 
+$DbaFullRecoveryModel = Test-DbaRecoveryModel -SqlServer $serverList -SqlCredential $SqlCredential -Detailed -Verbose | ConvertTo-DbaDataTable
 Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $DbaFullRecoveryModel -Table FullRecoveryModel -AutoCreateTable
 
 
@@ -174,22 +174,22 @@ Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $
     Test DbaDiskAllocation
 #>
 Write-Output "Will run Test-DbaDiskAllocation" 
-$DbaDiskAllocation = Test-DbaDiskAllocation -SqlServer $serverList -Detailed -Verbose | Out-DbaDataTable
+$DbaDiskAllocation = Test-DbaDiskAllocation -SqlServer $serverList -Detailed -Verbose | ConvertTo-DbaDataTable
 Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $DbaDiskAllocation -Table DiskAllocation -AutoCreateTable
 
 <#
     Test DbaDiskAlignment
 #>
 Write-Output "Will run Test-DbaDiskAlignment" 
-$DbaDiskAlignment = Test-DbaDiskAlignment -SqlServer $serverList -Detailed -Verbose | Out-DbaDataTable
+$DbaDiskAlignment = Test-DbaDiskAlignment -SqlServer $serverList -Detailed -Verbose | ConvertTo-DbaDataTable
 Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $DbaDiskAlignment -Table DiskAlignment -AutoCreateTable
 
 
 <#
     Test DbaVirtualLogFile
 #>
-Write-Output "Will run Test-DbaVirtualLogFile" 
-$DbaVirtualLogFile = Test-DbaVirtualLogFile -SqlServer $serverList -SqlCredential $SqlCredential -Verbose | Out-DbaDataTable
+Write-Output "Will run Test-DbaDbVirtualLogFile" 
+$DbaVirtualLogFile = Test-DbaDbVirtualLogFile -SqlServer $serverList -SqlCredential $SqlCredential -Verbose | ConvertTo-DbaDataTable
 Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $DbaVirtualLogFile -Table VirtualLogFile -AutoCreateTable
 
 
@@ -197,7 +197,7 @@ Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $
     Get DbaLastBackup
 #>
 Write-Output "Will run Test-DbaLastBackup" 
-$DbaLastBackup = Get-DbaLastBackup -SqlServer $serverList -Credential $SqlCredential -Verbose | Out-DbaDataTable
+$DbaLastBackup = Get-DbaLastBackup -SqlServer $serverList -Credential $SqlCredential -Verbose | ConvertTo-DbaDataTable
 Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $DbaLastBackup -Table LastBackup -AutoCreateTable
 
 
@@ -205,7 +205,7 @@ Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $
     Get DbaLastGoodCheckDb
 #>
 Write-Output "Will run Test-DbaLastGoodCheckDb" 
-$DbaLastGoodCheckDb = Get-DbaLastGoodCheckDb -SqlServer $serverList -Credential $SqlCredential -Verbose | Out-DbaDataTable
+$DbaLastGoodCheckDb = Get-DbaLastGoodCheckDb -SqlServer $serverList -Credential $SqlCredential -Verbose | ConvertTo-DbaDataTable
 Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $DbaLastGoodCheckDb -Table LastGoodCheckDb -AutoCreateTable
 
 
@@ -213,20 +213,30 @@ Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $
     Test DbaOptimizeForAdHoc
 #>
 Write-Output "Will run Test-DbaOptimizeForAdHoc" 
-$DbaOptimizeForAdHoc = Test-DbaOptimizeForAdHoc -SqlServer $serverList -SqlCredential $SqlCredential -Verbose | Out-DbaDataTable
+$DbaOptimizeForAdHoc = Test-DbaOptimizeForAdHoc -SqlServer $serverList -SqlCredential $SqlCredential -Verbose | ConvertTo-DbaDataTable
 Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $DbaOptimizeForAdHoc -Table OptimizeForAdHoc -AutoCreateTable
 
 
 <#
     Test DbaValidLogin
 #>
-Write-Output "Will run Test-DbaValidLogin" 
-$DbaValidLogin = Test-DbaValidLogin -SqlServer $serverList -SqlCredential $SqlCredential -Detailed -Verbose | Where {$_ -ne $null} | Out-DbaDataTable 
+Write-Output "Will run Test-DbaWindowsLogin" 
+$DbaValidLogin = Test-DbaWindowsLogin -SqlServer $serverList -SqlCredential $SqlCredential -Detailed -Verbose | Where {$_ -ne $null} | ConvertTo-DbaDataTable 
 Write-DbaDataTable -SqlServer $centralServer -Database $centralDB -InputObject $DbaValidLogin -Table ValidLogin -AutoCreateTable
 
-#Test-DbaValidLogin -SqlServer sql2012 -SqlCredential $SqlCredential -Detailed -Verbose | Out-DbaDataTable 
+#Test-DbaWindowsLogin -SqlServer sql2012 -SqlCredential $SqlCredential -Detailed -Verbose | ConvertTo-DbaDataTable 
 
 Write-Output "Number of servers: $($serverList.Count)"
 $start.elapsed
+
+
+
+
+
+
+
+
+
+
 
 

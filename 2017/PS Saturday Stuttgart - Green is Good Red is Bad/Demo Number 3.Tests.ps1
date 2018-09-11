@@ -11,7 +11,7 @@ Describe 'Testing Access to Backup Share' -Tag Server, Backup {
     $SQLServers.ForEach{$testCases += @{Name = $_}}
     It "<Name> has access to Backup Share C:\MSSQL\Backup" -TestCases $testCases {
         Param($Name)
-        Test-DbaSqlPath -SqlServer $Name -Path C:\MSSQL\Backup | Should Be $True
+        Test-DbaPath -SqlServer $Name -Path C:\MSSQL\Backup | Should Be $True
     }
 }
 
@@ -24,7 +24,7 @@ Describe "Testing Database Collation" -Tag Server, Collation {
     $SQLServers.ForEach{$testCases += @{Name = $_}}
     It "<Name> databases have the right collation" -TestCases $testCases {
         Param($Name)
-        $Collation = Test-DbaDatabaseCollation -SqlServer $Name
+        $Collation = Test-DbaDbCollation -SqlServer $Name
         $Collation.IsEqual -contains $false | Should Be $false
     }
 
@@ -55,3 +55,4 @@ Describe "Testing Last Known Good DBCC" -Tag Database, DBCC {
         }
     }
 }
+

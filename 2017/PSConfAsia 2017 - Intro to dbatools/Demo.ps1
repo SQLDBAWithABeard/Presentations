@@ -1,4 +1,4 @@
-cd presentations:\
+﻿cd presentations:\
 Return 'Oi Beardy, You may be an MVP but this is a demo, don''t run the whole thing, fool!!'
 
 ## You should use Install-Module dbatools -Scope CurrentUser
@@ -161,26 +161,26 @@ Describe "Testing my Defaults" {
 
 ## SHow me the views in a database (now we will use the SQL on Linux server because we can - but they work on Windows too!!)
 
-Get-DbaDatabaseView -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters -ExcludeSystemView
+Get-DbaDbView -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters -ExcludeSystemView
 
 ## Show Me UDFs in database or on an instance
 
-Get-DbaDatabaseUdf -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters -ExcludeSystemUdf
+Get-DbaDbUdf -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters -ExcludeSystemUdf
 
 ## Show me Database Partition functions
 
-Get-DbaDatabasePartitionFunction -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters 
+Get-DbaDbPartitionFunction -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters 
 
 # more detail
 
-Get-DbaDatabasePartitionFunction -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters | Select *
+Get-DbaDbPartitionFunction -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters | Select *
 
 ## Show Database Partition Schemes
 
-Get-DbaDatabasePartitionScheme -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters 
+Get-DbaDbPartitionScheme -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters 
 
 # more detail
-Get-DbaDatabasePartitionScheme -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters | Select *
+Get-DbaDbPartitionScheme -SqlInstance bolton -SqlCredential $cred -Database WideWorldImporters | Select *
 
 #endregion
 
@@ -303,7 +303,7 @@ $Depends
 # but the object returns more than that lets look at the first 1
 $Depends| Select -First 1 | Select *
 
-Get-DbaUserLevelPermission -SqlInstance rob-xps\sql2016 | Out-GridView
+Get-DbaUserPermission -SqlInstance rob-xps\sql2016 | Out-GridView
 
 ## everyone uses sp_whoisactive
 
@@ -340,3 +340,7 @@ Read-DbaTransactionLog -SqlInstance $Instance3 -Database DEMOdbareports |ogv
 
 Read-DbaBackupHeader -SqlInstance $Instance3 -Path C:\MSSQL\BACKUP\ROB-XPS\DEMOdbareports\DIFF\ROB-XPS_DEMOdbareports_DIFF_20170921_072547.bak
 #endregion
+
+
+
+

@@ -1,4 +1,4 @@
-## Pester Demo
+﻿## Pester Demo
 
 ## RUN THEN Talk
 
@@ -21,13 +21,13 @@ Describe "Do things Exist" {
     }
     Context "SQL Servers" {
         It "Default SQL Instance exists" {
-            (Test-SqlConnection -SqlServer ROB-XPS).ConnectSuccess -eq $true | Should Be $true
+            (Test-DbaConnection -SqlServer ROB-XPS).ConnectSuccess -eq $true | Should Be $true
         }
         It "SQL2016 SQL Instance exists" {
-            (Test-SqlConnection -SqlServer ROB-XPS\SQL2016).ConnectSuccess -eq $true | Should Be $true
+            (Test-DbaConnection -SqlServer ROB-XPS\SQL2016).ConnectSuccess -eq $true | Should Be $true
         }
         It "DAVE SQL Instance exists" {
-            (Test-SqlConnection -SqlServer ROB-XPS\DAVE).ConnectSuccess -eq $true | Should Be $true
+            (Test-DbaConnection -SqlServer ROB-XPS\DAVE).ConnectSuccess -eq $true | Should Be $true
         }
         $srv = New-Object Microsoft.SqlServer.Management.Smo.Server ROB-XPS
         $Errorlog = $srv.ErrorLogPath + '\ERRORLOG'
@@ -69,13 +69,13 @@ Describe "Do things Exist" {
             Test-Path C:\MSSQL\BACKUP | Should Be $true
         }
         It "The Backup Share exists and is accessible by Default SQL Server" {
-            Test-SqlPath -SqlServer ROB-XPS -Path C:\MSSQL\BACKUP | Should Be $true
+            Test-DbaPath -SqlServer ROB-XPS -Path C:\MSSQL\BACKUP | Should Be $true
         }
         It "The Backup Share exists and is accessible by DAVE SQL Server" {
-            Test-SqlPath -SqlServer ROB-XPS\DAVE -Path C:\MSSQL\BACKUP | Should Be $true
+            Test-DbaPath -SqlServer ROB-XPS\DAVE -Path C:\MSSQL\BACKUP | Should Be $true
         }
         It "The Backup Share exists and is accessible by SQL2016 SQL Server" {
-            Test-SqlPath -SqlServer ROB-XPS\SQL2016 -Path C:\MSSQL\BACKUP | Should Be $true
+            Test-DbaPath -SqlServer ROB-XPS\SQL2016 -Path C:\MSSQL\BACKUP | Should Be $true
         }
         It "Should have the jenkins file" {
             Test-Path 'C:\Program Files (x86)\Jenkins\jenkins.exe' | should be $true
@@ -123,5 +123,7 @@ Describe "Do things Exist" {
         }
     }
 }
+
+
 
 
