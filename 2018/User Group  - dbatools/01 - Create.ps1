@@ -1,4 +1,4 @@
-﻿$root = 'C:\Git\Presentations\2018\User Group  - dbatools'
+$root = 'C:\Git\Presentations\2018\User Group  - dbatools'
 cd $root
 . .\vars.ps1
 
@@ -170,7 +170,7 @@ $db.Query("
 -- =============================================
 -- Author:		Evil Thief
 -- Create date: <A Long Long Time Ago
--- Description:	Once upon a time there were four little Rabbits, and their names were â€” Flopsy,Mopsy,Cotton-tail,and Peter.
+-- Description:	Once upon a time there were four little Rabbits, and their names were Flopsy,Mopsy,Cotton-tail,and Peter.
 -- They lived with their Mother in a sand-bank, underneath the root of a very big fir-tree.
 -- =============================================
 CREATE PROCEDURE dbo.Steal_All_The_Emails
