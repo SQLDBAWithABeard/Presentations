@@ -42,19 +42,36 @@ Invoke-DbcCheck -SqlInstance $SQLInstances -Check LastGoodCheckDb
 
 (Get-DbaAgentJob -SqlInstance $SQLInstances -Job 'DatabaseIntegrityCheck - USER_DATABASES','DatabaseIntegrityCheck - SYSTEM_DATABASES').Start()
 
-## I get a call about a system that uses an Availbility group
-## Maybe I want to check that its all ok
-## Or maybe I have finished patching and need to know all is well
-## I need to set the app.cluster configuration to one of the nodes 
-## and I need to set the domain.name value
+#region
+## Email from manager
+
+$newBurntToastNotificationSplat = @{
+    Text = 'Major System Problem - The Availability Group is Broken. -  DROP EVERYTHING and DO IT NOW','Angry Manager'
+    AppLogo = 'C:\Users\enterpriseadmin.THEBEARD\Desktop\angryboss.jpg'
+}
+New-BurntToastNotification @newBurntToastNotificationSplat
+#endregion
+
+## Hmm Better get onto this quick
+
 
 Set-DbcConfig -Name app.cluster -Value $SQL0
 Set-DbcConfig -Name domain.name -Value 'TheBeard.Local'
-
-## I also skip the ping check for the listener as we are in Azure
 Set-DbcConfig -Name skip.hadr.listener.pingcheck -Value $true
 
 Invoke-DbcCheck -Check HADR
+
+
+#region
+## 
+
+$newBurntToastNotificationSplat = @{
+    Text = "NO - It's NOT the Availability Group or SQL at ALL"
+    AppLogo = 'C:\Users\enterpriseadmin.THEBEARD\Desktop\SarkyDBA.jpg'
+}
+New-BurntToastNotification @newBurntToastNotificationSplat
+#endregion
+
 
 ## I can set the configuration values for any of the 141 items and then run my checks
 

@@ -4,7 +4,15 @@
 $Testresults = Invoke-DbcCheck -PassThru
 
 ## Get the latest checks and put them into the database
-Get-DbcCheck | Write-DbaDataTable -SqlInstance $sql0 -Database ValidationResults -Schema dbachecks -Table Checks -Truncate -Confirm:$False -AutoCreateTable
+$writeDbaDataTableSplat = @{
+    SqlInstance = $sql0
+    AutoCreateTable = $true
+    Table = 'Checks'
+    Schema = 'dbachecks'
+    Truncate = $true
+    Database = 'ValidationResults'
+}
+Get-DbcCheck | Write-DbaDataTable @writeDbaDataTableSplat
 
 #region Update the entries for the Ola Job Names to match the cofigurations
 $query = "
