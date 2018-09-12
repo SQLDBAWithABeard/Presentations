@@ -14,6 +14,11 @@ Describe "Testing for Demo" {
                 (Test-DbaConnection -SqlInstance $PSItem ).ConnectSuccess | Should -BeTrue
             }
         }
+        $mirrors.ForEach{
+            It "$Psitem should be accepting SQL Connections" {
+                (Test-DbaConnection -SqlInstance $PSItem ).ConnectSuccess | Should -BeTrue
+            }
+        }
         $Containers.ForEach{
             It "$Psitem should be accepting SQL Connections" {
                 (Test-DbaConnection -SqlInstance $PSItem -SqlCredential $cred ).ConnectSuccess | Should -BeTrue
@@ -97,7 +102,7 @@ Describe "Testing for Demo" {
     }
     Context "Users" {
         It "$SQL1 should not have TheBeard Login"{
-            Get-DbaErrorLogin -SqlInstance $SQL1 -Login TheBeard | Should -BeNullOrEmpty
+            Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard | Should -BeNullOrEmpty
         }
     }
     Context "Extended Event Sessions"{
