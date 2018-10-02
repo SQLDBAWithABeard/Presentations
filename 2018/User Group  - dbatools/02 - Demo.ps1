@@ -95,10 +95,10 @@ Get-DbaBuildReference -Build 10.0.6000,10.50.6000 |Format-Table
 ## Or you are a consultant who comes in and sees that the databases have never been properly backed up
 
 Explorer $NetworkShare
-Get-DbaDatabase -SqlInstance $sql0 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters,ValidationResults | Backup-DbaDatabase -BackupDirectory $NetworkShare
+Get-DbaDatabase -SqlInstance $sql0 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters,ValidationResults | Backup-DbaDatabase -BackupDirectory $NetworkShare -Type FULL
 
 ## Whats our Backup ThroughPut ?
-Measure-DbaBackupThroughput -SqlInstance $sql0
+Measure-DbaBackupThroughput -SqlInstance $sql0 |Write-DbaDataTable -SqlInstance $sql0 -Database tempdb -Table throughput -AutoCreateTable
 
 #endregion
 
@@ -126,7 +126,7 @@ New-BurntToastNotification @newBurntToastNotificationSplat
 ## but you have seen we can do linked servers and we can do prety much anything on the instance with the Copy-Dba* commands :-)
 
 ## Check databases on sql1
-Get-DbaDatabase -SqlInstance $sql1 | Format-Table
+Get-DbaDatabase -SqlInstance $sql0 | Format-Table
 
 #region check space
 ## Check that we have enough space on the destination (obviously we couldnt do it this way if we SQL0 was broken)
@@ -197,7 +197,7 @@ Get-DbaAgentJobCategory -SqlInstance $SQL0
 Get-DbaAgentJobStep -SqlInstance $SQL0 -Job 'DatabaseBackup - USER_DATABASES - FULL'
 
 ## It even has intellisense
-Get-DbaAgentJobStep -SqlInstance $SQL0 -Jo
+Get-DbaAgentJobStep -SqlInstance $SQL0 -
 
 Get-DbaAgentJobStep -SqlInstance $SQL0 -Job 'DatabaseBackup - USER_DATABASES - FULL' | Select *
 
@@ -237,7 +237,7 @@ $installDbaMaintenanceSolutionSplat = @{
     SqlCredential = $cred
     Verbose = $true
 }
-Install-DbaMaintenanceSolution @installDbaMaintenanceSolutionSplat
+Install-DbaMaintenanceSolution @installDbaMaintenanceSolutionSplat 
 
 Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred
 
