@@ -78,6 +78,10 @@ $containers.ForEach{
     $Builds += Get-DbaBuildReference -SqlInstance $PSitem -SqlCredential $cred
 }
 
+$mirrors.ForEach{
+    $Builds += Get-DbaBuildReference -SqlInstance $PSitem 
+}
+
 $Builds | Format-Table
 
 Get-DbaBuildReference -Build 10.0.6000,10.50.6000 |Format-Table
@@ -97,6 +101,19 @@ Get-DbaDatabase -SqlInstance $sql0 -ExcludeAllSystemDb -ExcludeDatabase WideWorl
 Measure-DbaBackupThroughput -SqlInstance $sql0
 
 #endregion
+
+#region
+## Email from manager
+
+$newBurntToastNotificationSplat = @{
+    Text = 'P1 -ALERT - ALERT
+BeardWidget is Broken. FIX IT NOW','Angry Manager'
+    AppLogo = 'C:\Users\enterpriseadmin.THEBEARD\Desktop\angryboss.jpg'
+}
+New-BurntToastNotification @newBurntToastNotificationSplat 
+#endregion
+
+## Hmm Better get onto this quick
 
 #region DISASTER
 ## OH NO A DISASTER HAS BEFALLEN US!
@@ -140,6 +157,16 @@ Get-DbaDatabase -SqlInstance $sql1 | Format-Table
 # Back them up
 
 Get-DbaDatabase -SqlInstance $sql1 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters,ValidationResults | Backup-DbaDatabase -BackupDirectory $NetworkShare
+
+#region
+$newBurntToastNotificationSplat = @{
+    Text = "FIXED - P1 Alert Over
+Be Calm - The Beard has fixed it."
+    AppLogo = 'C:\Users\enterpriseadmin.THEBEARD\Desktop\SarkyDBA.jpg'
+}
+New-BurntToastNotification @newBurntToastNotificationSplat
+
+#endregion
 
 ## Happy suits :-)
 ## Now go and fix the broken server!!!

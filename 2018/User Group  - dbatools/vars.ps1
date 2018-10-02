@@ -4,6 +4,7 @@ $SQL2017Container = 'bearddockerhost,15789'
 $sql0 = 'sql0'
 $sql1 = 'sql1'
 $LinuxSQL = 'beardlinuxsql'
+$mirrors = 'sql0\mirror','sql1\mirror'
 $cred = Import-Clixml $HOME\Documents\sa.cred
 $filenames = (Get-ChildItem C:\SQLBackups\Keep).Name
 $Share = '\\jumpbox.TheBeard.Local\SQLBackups'
