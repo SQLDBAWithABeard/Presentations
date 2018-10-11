@@ -4,11 +4,11 @@
 
 #region Reset Admin
 
-Get-DbaErrorLogin -SqlInstance $sql1 |Format-Table
+Get-DbaLogin -SqlInstance $sql1 |Format-Table
 
 Reset-DbaAdmin -SqlInstance $SQL1 -Login TheBeard 
 
-Get-DbaErrorLogin -SqlInstance $sql1 |Format-Table
+Get-DbaLogin -SqlInstance $sql1 |Format-Table
 
 ## connect in SSMS and run 
 
@@ -91,7 +91,7 @@ Get-DbaProcess -SqlInstance $sql1 -Login TheBeard
 
 ## In fact I don't want his login there
 
-Get-DbaErrorLogin -SqlInstance $sql1 -Login TheBeard | Remove-DbaLogin -Confirm:$false
+Get-DbaLogin -SqlInstance $sql1 -Login TheBeard | Remove-DbaLogin -Confirm:$false
 
 ## Much better :-)
 
