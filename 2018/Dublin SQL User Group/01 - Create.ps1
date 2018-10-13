@@ -121,7 +121,7 @@ If (-Not (Test-Path C:\SQLBackups\SQLBackupsForTesting -ErrorAction SilentlyCont
 Get-ChildItem C:\SQLBackups\SQLBackupsForTesting | Remove-item -Force
 Write-Verbose -Message "Emptied backup directory"
 # remove databases from sql1 
-Get-DbaDatabase -SqlInstance $sql1 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters | Remove-DbaDatabase -Confirm:$False
+Get-DbaDatabase -SqlInstance $sql1 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters, ValidationResults | Remove-DbaDatabase -Confirm:$False
 Write-Verbose -Message "Removed databases from $SQL1"
 
 $db.Query("CREATE NONCLUSTERED INDEX [IX_Employee_OrganizationLevel_OrganizationNode1] ON [HumanResources].[Employee]
