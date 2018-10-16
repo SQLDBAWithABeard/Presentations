@@ -1,6 +1,6 @@
 . .\vars.ps1
 
-Reset-DbcConfig
+$null = Reset-DbcConfig
 
 Describe "Testing for Demo" {
     Context "PowerShell"{
@@ -25,15 +25,15 @@ Describe "Testing for Demo" {
     }
 }
 
-Set-DbcConfig -Name app.cluster -Value $SQL0
-Set-DbcConfig -Name app.sqlinstance -Value $SQLInstances
-Set-DbcConfig -Name skip.hadr.listener.pingcheck -Value $true
-Set-DbcConfig -Name agent.dbaoperatorname -Value 'The DBA Team'
-Set-DbcConfig -Name domain.name -Value 'TheBeard.Local'
-Set-DbcConfig -Name agent.failsafeoperator -Value 'The DBA Team'
-Set-DbcConfig -Name agent.databasemailprofile 'DBATeam'
+$null = Set-DbcConfig -Name app.cluster -Value $SQL0
+$null = Set-DbcConfig -Name app.sqlinstance -Value $SQLInstances
+$null = Set-DbcConfig -Name skip.hadr.listener.pingcheck -Value $true
+$null = Set-DbcConfig -Name agent.dbaoperatorname -Value 'The DBA Team'
+$null = Set-DbcConfig -Name domain.name -Value 'TheBeard.Local'
+$null = Set-DbcConfig -Name agent.failsafeoperator -Value 'The DBA Team'
+$null = Set-DbcConfig -Name agent.databasemailprofile 'DBATeam'
 
 Invoke-DbcCheck -Check HADR
 Invoke-DbcCheck -Check Agent 
 
-Reset-DbcConfig
+$null = Reset-DbcConfig
