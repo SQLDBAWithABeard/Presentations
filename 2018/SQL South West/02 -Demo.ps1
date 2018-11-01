@@ -30,7 +30,7 @@ Invoke-DbcCheck -SqlInstance $sql0 -Check AutoClose
 
 # its so easy, there is even intellisense
 
-Invoke-DbcCheck -SqlInstance $sql0 -Check 
+Invoke-DbcCheck -SqlInstance $sql0 -Check AutoUpdateStatistics
 
 ## I am not limited to just one server/instance
 ## Maybe I want to check all my containers for Errors
@@ -39,7 +39,7 @@ Invoke-DbcCheck -SqlInstance $containers -Check ErrorLog -SqlCredential $cred
 
 ## Or that I have enough diskspace (we try to help where we can - This needs ComputerName :-) 
 
-Invoke-DbcCheck -SqlInstance $SQLInstances -Check DiskCapacity 
+Invoke-DbcCheck -ComputerName $SQLInstances -Check DiskCapacity 
 
 ## or that I have run DBCC CheckDb in the last 7 days
 
@@ -81,7 +81,7 @@ New-BurntToastNotification @newBurntToastNotificationSplat
 #endregion
 
 
-## I can set the configuration values for any of the 152 items and then run my checks
+## I can set the configuration values for any of the 160 items and then run my checks
 
 #region Set config for Production
 
