@@ -49,10 +49,10 @@ Get-DbaLinkedServer -SqlInstance $sql1
 (Get-DbaLinkedServer -sqlinstance $sql0)[0] | Select-Object SQLInstance, Name, RemoteServer, RemoteUser
 
 ## I can script out the T-SQL for the linked server
-(Get-DbaLinkedServer -sqlinstance $sql0)[0] | Export-DbaScript 
+(Get-DbaLinkedServer -sqlinstance $sql0)[0] | Export-DbaScript -Path C:\temp\sql0-LinkedServer-Export-11012018081839.sql
 
 ## But I cant use the password :-(
-Get-ChildItem *sql0-LinkedServer-Export* | Open-EditorFile
+Open-EditorFile C:\temp\sql0-LinkedServer-Export-11012018081839.sql
 
 ## Its ok, with dbatools I can just copy them over anyway :-) Dont need to know the password
 
@@ -84,7 +84,9 @@ $mirrors.ForEach{
 
 $Builds | Format-Table
 
-Get-DbaBuildReference -Build 10.0.6000,10.50.6000 |Format-Table
+Get-DbaBuildReference -Build 10.00.6556, 10.50.6000 |Format-Table
+
+Get-DbaBuildReference -Build 7.00.961, 8.00.2039 , 9.00.5254|Format-Table
 
 #endregion
 
@@ -95,19 +97,55 @@ Get-DbaBuildReference -Build 10.0.6000,10.50.6000 |Format-Table
 ## Or you are a consultant who comes in and sees that the databases have never been properly backed up
 
 Explorer $NetworkShare
-Get-DbaDatabase -SqlInstance $sql0 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters,ValidationResults | Backup-DbaDatabase -BackupDirectory $NetworkShare -Type FULL
+Get-DbaDatabase -SqlInstance $sql0 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters, ValidationResults | Backup-DbaDatabase -BackupDirectory $NetworkShare -Type FULL -CopyOnly
 
 ## Whats our Backup ThroughPut ?
+Measure-DbaBackupThroughput -SqlInstance $sql0 
+
+## You can add it (and anything returned from PowerShell) to a table with Write-DbaDataTable
 Measure-DbaBackupThroughput -SqlInstance $sql0 |Write-DbaDataTable -SqlInstance $sql0 -Database tempdb -Table throughput -AutoCreateTable
+
+## Query the table
+Invoke-DbaQuery -SqlInstance $SQL0 -Database tempdb -Query "SELECT * FROM throughput" 
+
+# EVERYTHING is an object
+
+$throughput = Invoke-DbaQuery -SqlInstance $SQL0 -Database tempdb -Query "SELECT * FROM throughput" 
+$throughput
+$throughput | ConvertTo-Csv
+$throughput | ConvertTo-Xml 
+$throughput | ConvertTo-Json
+
+# There is no Excel on this machine (Like your Servers)
+# If you use Doug Finkes ImportExcel module
+# Install-Module ImportExcel
+
+$throughput | Export-Excel -Path C:\temp\Excel\Throughput.xlsx
+Explorer C:\temp\Excel
+
+## Add some formatting
+
+$excel = $throughput | Export-Excel -Path C:\temp\Excel\ThroughputAutoSize.xlsx -WorksheetName "Backup Throughput" -AutoSize -FreezeTopRow -AutoFilter 
+
+## Add some conditional formatting
+$excel = $throughput | Export-Excel -Path C:\temp\Excel\ThroughputConditional.xlsx -WorksheetName "Backup Throughput" -AutoSize -FreezeTopRow -AutoFilter -PassThru
+Add-ConditionalFormatting -WorkSheet $excel.Workbook.Worksheets[1] -Address "e2:e1048576" -ForeGroundColor "RED" -RuleType LessThanOrEqual -ConditionValue 20
+Add-ConditionalFormatting -WorkSheet $excel.Workbook.Worksheets[1] -Address "e2:e1048576" -ForeGroundColor "Green" -RuleType GreaterThan -ConditionValue 20
+Add-ConditionalFormatting -WorkSheet $excel.Workbook.Worksheets[1] -Address "i2:i1048576" -BackgroundColor "Green" -RuleType GreaterThan -ConditionValue 100
+Add-ConditionalFormatting -WorkSheet $excel.Workbook.Worksheets[1] -Address "i2:i1048576" -BackgroundColor "YELLOW" -RuleType Between -ConditionValue 50 -ConditionValue2 99
+Add-ConditionalFormatting -WorkSheet $excel.Workbook.Worksheets[1] -Address "i2:i1048576" -BackgroundColor "RED" -RuleType Between -ConditionValue 0 -ConditionValue2 50
+$excel.Save() ; $excel.Dispose()
+
+## You can do that with ANY object - Into a database with Write-DbaDataTable - Into an Excel Sheet with ImportExcel
 
 #endregion
 
-#region
+#region UH-OH
 ## Email from manager
 
 $newBurntToastNotificationSplat = @{
-    Text = 'P1 -ALERT - ALERT
-BeardWidget is Broken. FIX IT NOW','Angry Manager'
+    Text    = 'P1 -ALERT - ALERT
+BeardWidget is Broken. FIX IT NOW', 'Angry Manager'
     AppLogo = 'C:\Users\enterpriseadmin.THEBEARD\Desktop\angryboss.jpg'
 }
 New-BurntToastNotification @newBurntToastNotificationSplat 
@@ -126,23 +164,31 @@ New-BurntToastNotification @newBurntToastNotificationSplat
 ## but you have seen we can do linked servers and we can do prety much anything on the instance with the Copy-Dba* commands :-)
 
 ## Check databases on sql1
-Get-DbaDatabase -SqlInstance $sql0 | Format-Table
+Get-DbaDatabase -SqlInstance $sql1 | Format-Table
 
 #region check space
 ## Check that we have enough space on the destination (obviously we couldnt do it this way if we SQL0 was broken)
 
-$Databases = (Get-DbaDatabase -SqlInstance $SQL0 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters,ValidationResults -Status Normal).Name
+$Databases = (Get-DbaDatabase -SqlInstance $SQL0 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters, ValidationResults -Status Normal).Name
 $measurement = $Databases.ForEach{
-Measure-DbaDiskSpaceRequirement -Source $SQL0 -Destination $sql1 -Database $PSItem
+    Measure-DbaDiskSpaceRequirement -Source $SQL0 -Destination $sql1 -Database $PSItem
 }
 
+## How much space do we need ?
 $measurement.DifferenceSize | Measure-Object -Property Megabyte -Sum
 $measurement.DifferenceSize | Measure-Object -Property GigaByte -Sum
 
+## Check the space on teh server
 Get-DbaDiskSpace -ComputerName $sql1
 
+## Or - Read the backup header and get the size
 $Path = (Get-ChildItem \\bearddockerhost\NetworkSQLBackups\AdventureWorks2012*).FullName
+
+Read-DbaBackupHeader -Path $path -SqlInstance $sql1
+
 (Read-DbaBackupHeader -Path $path -SqlInstance $sql1).BackupSizeMb
+
+## Or compare the requirements for a source and a destination - The difference size
 
 Measure-DbaDiskSpaceRequirement -Source $SQL0 -Destination $sql1 -Database AdventureWorks2012
 #endregion
@@ -156,11 +202,11 @@ Get-DbaDatabase -SqlInstance $sql1 | Format-Table
 
 # Back them up
 
-Get-DbaDatabase -SqlInstance $sql1 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters,ValidationResults | Backup-DbaDatabase -BackupDirectory $NetworkShare
+Get-DbaDatabase -SqlInstance $sql1 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters, ValidationResults | Backup-DbaDatabase -BackupDirectory $NetworkShare
 
-#region
+#region Send an Email
 $newBurntToastNotificationSplat = @{
-    Text = "FIXED - P1 Alert Over
+    Text    = "FIXED - P1 Alert Over
 Be Calm - The Beard has fixed it."
     AppLogo = 'C:\Users\enterpriseadmin.THEBEARD\Desktop\SarkyDBA.jpg'
 }
@@ -184,8 +230,11 @@ New-BurntToastNotification @newBurntToastNotificationSplat
 ## Now it is so easy to do this
 ## Watch
 
-explorer '\\sql0.TheBeard.Local\F$\Data'
-Test-DbaLastBackup -SqlInstance $sql1 -ExcludeDatabase WideWorldImporters,ValidationResults | Out-GridView
+## This is my Data Drive on SQL1
+explorer '\\sql1.TheBeard.Local\F$\Data'
+
+## Now I am going to test the last backups for SQL1 on SQL1
+Test-DbaLastBackup -SqlInstance $sql1 -ExcludeDatabase WideWorldImporters, ValidationResults | Out-GridView
 #endregion
 
 #region agent jobs
@@ -193,11 +242,12 @@ Test-DbaLastBackup -SqlInstance $sql1 -ExcludeDatabase WideWorldImporters,Valida
 ## Look at the agent jobs
 
 Get-DbaAgentJob -SqlInstance $SQL0
-Get-DbaAgentJobCategory -SqlInstance $SQL0
-Get-DbaAgentJobStep -SqlInstance $SQL0 -Job 'DatabaseBackup - USER_DATABASES - FULL'
 
-## It even has intellisense
-Get-DbaAgentJobStep -SqlInstance $SQL0 -
+Get-DbaAgentJobCategory -SqlInstance $SQL0
+
+Get-DbaAgentSchedule -SqlInstance $sql0
+
+Get-DbaAgentJobStep -SqlInstance $SQL0 -Job 'DatabaseBackup - USER_DATABASES - FULL'
 
 Get-DbaAgentJobStep -SqlInstance $SQL0 -Job 'DatabaseBackup - USER_DATABASES - FULL' | Select *
 
@@ -223,19 +273,20 @@ Get-DbaAgentJobHistory -SqlInstance $SQL0 -Job 'DatabaseBackup - USER_DATABASES 
 
 ## How easy it is to install them with dbatools ?
 
+## Lets look at the agent jobs on my linux instance
 Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred
 
-## Install
+## No OLA there lets Install
 
 $installDbaMaintenanceSolutionSplat = @{
-    CleanupTime = 74
-    InstallJobs = $true
-    Solution = 'All'
-    SqlInstance = $LinuxSQL
-    LogToTable = $true
-    Database = 'DBA-Admin'
+    CleanupTime   = 74
+    InstallJobs   = $true
+    Solution      = 'All'
+    SqlInstance   = $LinuxSQL
+    LogToTable    = $true
+    Database      = 'DBA-Admin'
     SqlCredential = $cred
-    Verbose = $true
+    Verbose       = $true
 }
 Install-DbaMaintenanceSolution @installDbaMaintenanceSolutionSplat 
 
@@ -245,6 +296,22 @@ Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred
 (Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred -Job 'DatabaseBackup - USER_DATABASES - FULL').start()
 Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred | Format-Table
 
+$scriptBlock = {
+    $x = 0
+    while ($x -lt 5) {
+        (Get-DbaAgentJob -SqlInstance $Using:LinuxSQL -SqlCredential $Using:cred -Job 'DatabaseBackup - USER_DATABASES - DIFF').start()
+        $y = 0
+        while ($y -lt 5) {
+            (Get-DbaAgentJob -SqlInstance $Using:LinuxSQL -SqlCredential $Using:cred -Job 'DatabaseBackup - USER_DATABASES - LOG').start()
+            $y ++  
+            Start-Sleep -Seconds 2
+        }
+        Start-Sleep -Seconds 2
+        $x ++
+    }
+}
+
+Start-Job -Name DoSomeBackupsPlease -ScriptBlock $scriptBlock 
 ## Check the history
 Get-DbaAgentJobHistory -SqlInstance $LinuxSQL -SqlCredential $cred -Job 'DatabaseBackup - USER_DATABASES - FULL'
 
@@ -255,8 +322,6 @@ Get-DbaBackupHistory -SqlInstance $LinuxSQL -SqlCredential $cred  # other params
 
 ## Answer the question - When was this database LAST backed up
 Get-DbaLastBackup -SqlInstance $LinuxSQL -SqlCredential $cred | Format-Table
-
-## Yes - That is working on SQL on Linux beause it is just the same as SQL on Windows from a SQL point of view
 
 ## What about checking the last time a database was restored?
 
@@ -275,25 +340,32 @@ Test-DbaPath -SqlInstance $SQL0 -Path $NetworkShare
 Get-DbaFile -SqlInstance $LinuxSQL -SqlCredential $cred 
 
 ## but you can explore other paths too
-Get-DbaFile -SqlInstance $LinuxSQL -SqlCredential $cred -Path '/var/opt/mssql/data/BeardLinuxSQL/LinuxDb9/FULL/'
+Get-DbaFile -SqlInstance $LinuxSQL -SqlCredential $cred -Path '/var/opt/mssql/data/BeardLinuxSQL/LinuxDb7/'
+Get-DbaFile -SqlInstance $LinuxSQL -SqlCredential $cred -Path '/var/opt/mssql/data/BeardLinuxSQL/LinuxDb7/FULL/'
+Get-DbaFile -SqlInstance $LinuxSQL -SqlCredential $cred -Path '/var/opt/mssql/data/BeardLinuxSQL/LinuxDb7/DIFF/'
+Get-DbaFile -SqlInstance $LinuxSQL -SqlCredential $cred -Path '/var/opt/mssql/data/BeardLinuxSQL/LinuxDb7/LOG/'
 
 ## and create a directory
 
-New-DbaDirectory -SqlInstance $sql0 -Path 'F:/Finland/'
+New-DbaDirectory -SqlInstance $sql0 -Path 'F:/Seattle/'
 
 ## Oh and dbatools can restore from a Ola Hallengren directory too
+
+## Check the job is not running
+Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred | Format-Table
+Get-Job -Name DoSomeBackupsPlease -IncludeChildJob | Select *
 
 ## show the databases
 Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb  |Format-Table
 
-## Remove them
+## Remove them - DON'T DO THIS ON PRODUCTION!!!!
 Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb | Remove-DbaDatabase -Confirm:$false
 
 ## show the databases - There are none
 Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb 
 
 ## Restore from Ola directory
-Restore-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -Path '/var/opt/mssql/data/BeardLinuxSQL' -AllowContinue
+Restore-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -Path '/var/opt/mssql/data/BeardLinuxSQL' -AllowContinue -Verbose
 
 ## show the databases
 Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb | Format-Table
@@ -310,7 +382,7 @@ Get-DbaServerProtocol -ComputerName $sql0
 Get-DbaRegistryRoot -ComputerName $sql0
 
 # Get the SQL ErrorLog
-Get-DbaSqlLog -SqlInstance $SQL1 | Out-GridView
+Get-DbaErrorLog -SqlInstance $SQL1 | Out-GridView
 
 # Get the Operating System
 Get-DbaOperatingSystem -ComputerName $sql0 
