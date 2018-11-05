@@ -1,5 +1,6 @@
 ﻿#region Setup Variables
 . .\vars.ps1
+$ErrorActionPreference = 'SilentlyContinue'
 #endregion
 
 #region Reset Admin
@@ -300,7 +301,7 @@ Compare-SPConfigs -SourceInstance $sql0 -DestinationInstance $linuxSQL -Destinat
 
 
 
-
+$ErrorActionPreference = 'Continue'
 
 
 
