@@ -134,7 +134,7 @@ Add-ConditionalFormatting -WorkSheet $excel.Workbook.Worksheets[1] -Address "e2:
 Add-ConditionalFormatting -WorkSheet $excel.Workbook.Worksheets[1] -Address "i2:i1048576" -BackgroundColor "Green" -RuleType GreaterThan -ConditionValue 100
 Add-ConditionalFormatting -WorkSheet $excel.Workbook.Worksheets[1] -Address "i2:i1048576" -BackgroundColor "YELLOW" -RuleType Between -ConditionValue 50 -ConditionValue2 99
 Add-ConditionalFormatting -WorkSheet $excel.Workbook.Worksheets[1] -Address "i2:i1048576" -BackgroundColor "RED" -RuleType Between -ConditionValue 0 -ConditionValue2 50
-$excel.Save() ; $excel.Dispose()
+Close-ExcelPackage $excel 
 
 ## You can do that with ANY object - Into a database with Write-DbaDataTable - Into an Excel Sheet with ImportExcel
 
@@ -292,6 +292,7 @@ Install-DbaMaintenanceSolution @installDbaMaintenanceSolutionSplat
 
 Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred
 
+#region If you need to create some dummy backups (Rob - Today you don't)
 ## Run the job
 (Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred -Job 'DatabaseBackup - USER_DATABASES - FULL').start()
 Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred | Format-Table
@@ -312,6 +313,9 @@ $scriptBlock = {
 }
 
 Start-Job -Name DoSomeBackupsPlease -ScriptBlock $scriptBlock 
+
+#endregion
+
 ## Check the history
 Get-DbaAgentJobHistory -SqlInstance $LinuxSQL -SqlCredential $cred -Job 'DatabaseBackup - USER_DATABASES - FULL'
 
@@ -353,7 +357,7 @@ New-DbaDirectory -SqlInstance $sql0 -Path 'F:/Seattle/'
 
 ## Check the job is not running
 Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred | Format-Table
-Get-Job -Name DoSomeBackupsPlease -IncludeChildJob | Select *
+Get-Job -Name DoSomeBackupsPlease -IncludeChildJob | Select JobStateInfo 
 
 ## show the databases
 Get-DbaDatabase -SqlInstance $LinuxSQL -SqlCredential $cred -ExcludeAllSystemDb  |Format-Table
