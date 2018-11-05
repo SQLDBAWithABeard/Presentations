@@ -252,8 +252,8 @@ Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred |ForEach-Object {
 
 #region SQL login 
 
-if(Get-DbaErrorLogin -SqlInstance $SQL1 -Login TheBeard){
-    Get-DbaErrorLogin -SqlInstance $SQL1 -Login TheBeard | Remove-DbaLogin -Confirm:$false  
+if(Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard){
+    Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard | Remove-DbaLogin -Confirm:$false  
     Write-Verbose -Message "removed theBeard from $SQL1"  
 }
 
