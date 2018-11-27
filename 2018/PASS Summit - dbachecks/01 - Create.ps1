@@ -1,9 +1,10 @@
+cd 'c:\Git\Presentations\2018\PASS Summit - dbachecks'
 . .\vars.ps1
 
 $verbosePreference = 'Continue'
 #region Create New PSDrive and prompt
 if (-not (Get-PSDrive -Name $location -ErrorAction SilentlyContinue)) {
-    New-PSDrive -Name $location -Root 'C:\Git\Presentations\2018\SQLGLA' -PSProvider FileSystem | Out-Null
+    New-PSDrive -Name $location -Root 'c:\Git\Presentations\2018\PASS Summit - dbachecks' -PSProvider FileSystem | Out-Null
     Write-Verbose -Message "Created PSDrive"
 }
 
