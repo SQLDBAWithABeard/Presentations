@@ -1,22 +1,22 @@
-$root = 'C:\Git\Presentations\2018\User Group  - dbatools'
+$root = 'C:\Git\Presentations\2018\PASS Summit - dbatools'
 cd $root
 . .\vars.ps1
 
 $verbosePreference = 'Continue'
 #region Create New PSDrive and prompt
-if (-not (Get-PSDrive -Name Manchester -ErrorAction SilentlyContinue)) {
-    New-PSDrive -Name Manchester -Root $root -PSProvider FileSystem | Out-Null
+if (-not (Get-PSDrive -Name $location -ErrorAction SilentlyContinue)) {
+    New-PSDrive -Name $location -Root $root -PSProvider FileSystem | Out-Null
     Write-Verbose -Message "Created PSDrive"
 }
 
 function prompt {
-    Write-Host ("dbatools is dead mint >") -NoNewLine -ForegroundColor darkgreen
+    Write-Host ("dbatools its awesome >") -NoNewLine -ForegroundColor darkgreen
     return " "
 }
 
 Write-Verbose -Message "Created prompt"
 
-Set-Location Manchester:
+Set-Location "$location`:\"
 
 # remove sql file for export if exists
 
@@ -240,10 +240,10 @@ Write-Verbose -Message "removed databases from Linux instance"
 Invoke-DbaQuery -SqlInstance $LinuxSQL -SqlCredential $cred -Database master -Query "CREATE DATABASE [DBA-Admin]"
 Write-Verbose -Message "Created DBA-Admin database"
 
-(0..20)| ForEach-Object {
+(0..7)| ForEach-Object {
     Invoke-DbaQuery -SqlInstance $LinuxSQL -SqlCredential $cred -Database master -Query "CREATE DATABASE [LinuxDb$Psitem]"
 }
-Write-Verbose -Message "Created 20 dumb databases"
+Write-Verbose -Message "Created 7 dumb databases"
 Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred |ForEach-Object {
     Remove-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred -Job $PSItem -Confirm:$false
     Write-Verbose -Message "Removed all the agent jobs from linux instance"
@@ -252,8 +252,8 @@ Get-DbaAgentJob -SqlInstance $LinuxSQL -SqlCredential $cred |ForEach-Object {
 
 #region SQL login 
 
-if(Get-DbaErrorLogin -SqlInstance $SQL1 -Login TheBeard){
-    Get-DbaErrorLogin -SqlInstance $SQL1 -Login TheBeard | Remove-DbaLogin -Confirm:$false  
+if(Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard){
+    Get-DbaLogin -SqlInstance $SQL1 -Login TheBeard | Remove-DbaLogin -Confirm:$false  
     Write-Verbose -Message "removed theBeard from $SQL1"  
 }
 

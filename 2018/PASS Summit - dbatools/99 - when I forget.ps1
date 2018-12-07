@@ -1,4 +1,7 @@
+$root = 'C:\Git\Presentations\2018\PASS Summit - dbatools'
+cd $root
 . .\vars.ps1
+
 
 $verbosePreference = 'Continue'
 #region Create New PSDrive and prompt
@@ -8,7 +11,7 @@ if (-not (Get-PSDrive -Name $location -ErrorAction SilentlyContinue)) {
 }
 
 function prompt {
-    Write-Host ("dbachecks - It's So Cool  >") -NoNewLine -ForegroundColor Green
+    Write-Host ("dbatools its awesome  >") -NoNewLine -ForegroundColor Green
     return " "
 }
 
