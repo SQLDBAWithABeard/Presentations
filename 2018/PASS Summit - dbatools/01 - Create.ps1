@@ -10,7 +10,7 @@ if (-not (Get-PSDrive -Name $location -ErrorAction SilentlyContinue)) {
 }
 
 function prompt {
-    Write-Host ("dbatools its awesome >") -NoNewLine -ForegroundColor darkgreen
+    Write-Host ("dbatools its awesome on PowerShell Core Now >") -NoNewLine -ForegroundColor darkgreen
     return " "
 }
 
