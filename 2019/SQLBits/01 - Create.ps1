@@ -2,8 +2,8 @@ Set-Location GIT:\Presentations\2019\SQLBits\
 Write-PSFMessage "Getting the variables" -Level Output 
 
 . .\vars.ps1
-
-$AGName = "dbatools-ag"
+Write-PSFMessage "Working on ROB-XPS" -Level Output 
+Import-Module dbachecks
 
 if ($ENV:COMPUTERNAME -eq 'JumpBox') {
 
@@ -211,8 +211,7 @@ ALTER INDEX [IX_Employee_OrganizationLevel_OrganizationNode1] ON [HumanResources
     $verbosePreference = 'SilentlyContinue'
 }
 elseif ($ENV:COMPUTERNAME -eq 'ROB-XPS') {
-    Write-PSFMessage "Working on ROB-XPS" -Level Output 
-    Import-Module dbachecks
+
     Set-Location GIT:\Presentations\2019\SQLBits\docker
     Write-PSFMessage "Docker-Compose Up" -Level Output 
     docker-compose up -d
