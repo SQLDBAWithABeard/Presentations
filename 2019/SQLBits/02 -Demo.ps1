@@ -42,9 +42,19 @@ Invoke-DbcCheck -SqlInstance $containers -Check ErrorLog
 
 Invoke-DbcCheck -SqlInstance $ENV:COMPUTERNAME -Check DiskCapacity 
 
+## Lets look at a configuration
+
+Get-DbcConfig -Name app.sqlinstance
+
+# So we can set this so that we have a default set of instances we want to check
+
+Set-DbcConfig -Name app.sqlinstance -Value $containers
+
+# Now I dont need to specify the instances 
+
 ## or that I have run DBCC CheckDb in the last 7 days
 
-Invoke-DbcCheck -SqlInstance $containers -Check LastGoodCheckDb 
+Invoke-DbcCheck -Check LastGoodCheckDb 
 
 
 
@@ -55,7 +65,7 @@ Invoke-DbcCheck -SqlInstance $containers -Check LastGoodCheckDb
 
 # I wonder if I have Ola Hallengrens Maintenance Solution installed ?
 
-Invoke-DbcCheck -SqlInstance $containers -Check OlaInstalled
+Invoke-DbcCheck  -Check OlaInstalled
 
 # Ah ok - quick diversion to the cool that is dbatools - just so you see how easy it is
 
@@ -63,7 +73,7 @@ Install-DbaMaintenanceSolution -SqlInstance $containers
 
 # How many seconds ? :-D
 
-Invoke-DbcCheck -SqlInstance $containers -Check OlaInstalled
+Invoke-DbcCheck -Check OlaInstalled
 
 # Lets start those DBCC running
 $getDbaAgentJobSplat = @{
@@ -72,7 +82,7 @@ $getDbaAgentJobSplat = @{
 }
 (Get-DbaAgentJob @getDbaAgentJobSplat).Start()
 
-Invoke-DbcCheck -SqlInstance $containers -Check LastGoodCheckDb
+Invoke-DbcCheck  -Check LastGoodCheckDb
 
 
 ## The problem with the last lot of checks I ran was that I could not scroll up and 
@@ -81,10 +91,60 @@ Invoke-DbcCheck -SqlInstance $containers -Check LastGoodCheckDb
 
 ## Just show the fails
 
-Invoke-DbcCheck -SqlInstance $containers -Check LastGoodCheckDb -Show Fails
+Invoke-DbcCheck -Check LastGoodCheckDb -Show Fails
 
 Invoke-DbcCheck -SqlInstance $sql0,$sql1 -Check FutureFileGrowth -Show Failed
 
+# How about my linked servers ?
+
+Invoke-DbcCheck -Check LinkedServerConnection 
+
+# Are my builds supported? and will they be supported in 6 months?
+
+Invoke-DbcCheck -Check SupportedBuild
+
+#
+
+Invoke-DbcCheck -Check DatabaseStatus
+
+#
+
+Invoke-DbcCheck -Check PseudoSimple
+
+# 
+
+Invoke-DbcCheck -Check DatabaseExists
+
+# great you've shown that the system databases exist
+# I need to know if my production pubs and NorthWind Databases are ok
+# This is the process to use for any configuration
+# lets see what configuration we have for a the check
+
+Get-DbcCheck -Pattern DatabaseExists | Format-List
+
+Get-DbcConfig -Name database.exists
+
+Set-DbcConfig -Name database.exists -Value 'pubs', 'Northwind' -Append
+
+Get-DbcConfigValue -Name database.exists
+
+Invoke-DbcCheck -Check DatabaseExists
+
+Invoke-DbcCheck -Check ValidDatabaseOwner
+
+Get-DbcCheck -Pattern ValidDatabaseOwner | Format-List
+
+Get-DbcConfig -Name policy.validdbowner.name
+
+Get-DbcConfig -Name policy.validdbowner.excludedb
+
+Set-DbcConfig -Name policy.validdbowner.name -Value sqladmin
+
+Invoke-DbcCheck -Check ValidDatabaseOwner
+
+# ah pubs is owned by sa - We could add sa to the config for policy.validdbowner.name
+
+Set-DbcConfig -Name policy.validdbowner.excludedb -Value pubs -Append
 
 #endregion
 
@@ -196,7 +256,6 @@ $invokeDbcCheckSplat = @{
     Check = 'Agent'
     OutputFormat = 'NUnitXml'
     Show = 'Summary'
-    SqlInstance = $containers
     OutputFile = 'C:\temp\Agent_Check_Results.xml'
 }
 Invoke-DbcCheck @invokeDbcCheckSplat
