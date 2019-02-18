@@ -1,4 +1,4 @@
-[datetime]$EndDate = '2019-02-18 08:22'
+[datetime]$EndDate = '2019-03-02 14:33'
 if ($ENV:COMPUTERNAME -eq 'JumpBox') {
     $cred = Import-Clixml $HOME\Documents\sa.cred
     $SQLInstances = 'sql0', 'sql1'
