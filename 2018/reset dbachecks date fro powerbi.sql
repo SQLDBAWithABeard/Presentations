@@ -1,3 +1,4 @@
+/*Resets the date for the demo*/
 USE [ValidationResults]
 GO
 
