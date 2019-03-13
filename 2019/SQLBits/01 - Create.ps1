@@ -3,6 +3,8 @@ Write-PSFMessage "Getting the variables" -Level Output
 
 . .\vars.ps1
 Write-PSFMessage "Working on ROB-XPS" -Level Output 
+
+Import-Module dbatools -RequiredVersion 0.9.534
 Import-Module dbachecks
 
 if ($ENV:COMPUTERNAME -eq 'JumpBox') {
@@ -232,7 +234,7 @@ elseif ($ENV:COMPUTERNAME -eq 'ROB-XPS') {
     Restore-DbaDatabase @restoreDbaDatabaseSplat |OUt-Null
     Write-PSFMessage "Database restored" -Level Output 
     Write-PSFMessage "Linked Servers" -Level Output 
-    $Containers.Where{$Psitem -ne 'localhost,15592'}.ForEach{ 
+    $Containers.ForEach{ 
         $Query = "    
         EXEC master.sys.sp_dropserver 'SQL2014','droplogins';
         EXEC master.sys.sp_dropserver 'SQL2016','droplogins' "
@@ -283,3 +285,4 @@ Invoke-DbaQuery -SqlInstance $sql0 -Database ValidationResults -Query $query
 
 }
 
+Reset-DbcConfig
