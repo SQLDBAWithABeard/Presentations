@@ -1,15 +1,39 @@
+cd 'C:\Git\Presentations\2018\SQL Saturday Slovenia\'
 . .\vars.ps1
 
 $verbosePreference = 'Continue'
 #region Create New PSDrive and prompt
 if (-not (Get-PSDrive -Name $location -ErrorAction SilentlyContinue)) {
-    New-PSDrive -Name $location -Root 'C:\Git\Presentations\2018\SQL Saturday Holland\' -PSProvider FileSystem | Out-Null
+    New-PSDrive -Name $location -Root 'C:\Git\Presentations\2018\SQL Saturday Slovenia\' -PSProvider FileSystem | Out-Null
     Write-Verbose -Message "Created PSDrive"
 }
 
-function prompt {
-    Write-Host ("dbachecks - Het is echt goed >") -NoNewLine -ForegroundColor Green
-    return " "
+
+function Prompt
+{
+    Write-Host "[$(Get-Date -Format "HH:mm:ss")]" -ForegroundColor Yellow -NoNewline
+
+    try
+    {
+        Write-Host "[" -ForegroundColor DarkBlue -NoNewline
+        $history = Get-History -ErrorAction Ignore
+        if ($history)
+        {
+            if (([System.Management.Automation.PSTypeName]'Sqlcollaborative.Dbatools.Utility.DbaTimeSpanPretty').Type)
+            {
+                Write-Host ([Sqlcollaborative.Dbatools.Utility.DbaTimeSpanPretty]($history[-1].EndExecutionTime - $history[-1].StartExecutionTime)) -ForegroundColor DarkBlue -NoNewline
+            }
+            else
+            {
+                Write-Host ($history[-1].EndExecutionTime - $history[-1].StartExecutionTime) -ForegroundColor DarkBlue -NoNewline
+            }
+        }
+        Write-Host "]" -ForegroundColor DarkBlue -NoNewline
+    }
+    catch { }
+  #  Write-Host "] $($executionContext.SessionState.Path.CurrentLocation.ProviderPath)" -NoNewline
+    Write-Host " BeardyMcBeardFace> " -ForegroundColor Green -NoNewline
+ Write-Host  "" -NoNewline
 }
 
 Write-Verbose -Message "Created prompt"

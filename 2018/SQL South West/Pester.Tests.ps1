@@ -1,6 +1,6 @@
 . .\vars.ps1
 
-Reset-DbcConfig
+Reset-DbcConfig |out-null
 
 Describe "Testing for Demo" {
     Context "PowerShell"{
@@ -36,4 +36,4 @@ Set-DbcConfig -Name agent.databasemailprofile 'DBATeam'
 Invoke-DbcCheck -Check HADR
 Invoke-DbcCheck -Check Agent 
 
-Reset-DbcConfig
+Reset-DbcConfig |out-null
