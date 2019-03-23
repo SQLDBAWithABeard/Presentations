@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+    dbatoolssql1:
+        image: dbatools/sqlinstance
+        ports:  
+          - "15591:1433"
+          - "5022:5022"
+        volumes: 
+          - C:\MSSQL\BACKUP\KEEP:/var/opt/mssql/backups
+    dbatoolssql2:
+        image: dbatools/sqlinstance
+        ports:  
+          - "15592:1433"
+          - "5023:5023"
+        volumes: 
+          - C:\MSSQL\BACKUP\KEEP:/var/opt/mssql/backups
+    dbatoolssql3:
+            image: dbatools/sqlinstance
+            ports:  
+              - "15593:1433"
+            volumes: 
+              - C:\MSSQL\BACKUP\KEEP:/var/opt/mssql/backups
+    dbatoolssql4:
+            image: dbatools/sqlinstance
+            ports:  
+              - "15594:1433"
+            volumes: 
+              - C:\MSSQL\BACKUP\KEEP:/var/opt/mssql/backups
