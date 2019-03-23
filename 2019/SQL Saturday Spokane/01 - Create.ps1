@@ -1,4 +1,4 @@
-$root = 'C:\Git\Presentations\2018\PASS Summit - dbatools'
+$root = 'C:\Git\Presentations\2019\SQL Saturday Spokane'
 cd $root
 . .\vars.ps1
 
@@ -9,10 +9,6 @@ if (-not (Get-PSDrive -Name $location -ErrorAction SilentlyContinue)) {
     Write-Verbose -Message "Created PSDrive"
 }
 
-function prompt {
-    Write-Host ("dbatools its awesome on PowerShell Core Now >") -NoNewLine -ForegroundColor darkgreen
-    return " "
-}
 
 Write-Verbose -Message "Created prompt"
 
@@ -96,10 +92,23 @@ Write-Verbose -Message "Copied Files to backup share"
 
 $session = New-PSSession bearddockerhost
 Write-Verbose -Message "Created session on dockerhost"
-$Scriptblock = {docker run -d -p 15789:1433 --name 2017 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y microsoft/mssql-server-windows-developer 
-docker run -d -p 15788:1433 --name 2016 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y dbafromthecold/sqlserver2016dev:sp1 
-docker run -d -p 15787:1433 --name 2014 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y dbafromthecold/sqlserver2014dev:sp2 
-docker run -d -p 15786:1433 --name 2012 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y dbafromthecold/sqlserver2012dev:sp4}
+$Scriptblock = {
+
+# docker run -d -p 15789:1433 --name 2017 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y microsoft/mssql-server-windows-developer 
+# docker run -d -p 15788:1433 --name 2016 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y dbafromthecold/sqlserver2016dev:sp1 
+# docker run -d -p 15787:1433 --name 2014 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y dbafromthecold/sqlserver2014dev:sp2 
+# docker run -d -p 15786:1433 --name 2012 -v sqlbackups:C:\SQLBackups -e sa_password=Password0! -e ACCEPT_EULA=Y dbafromthecold/sqlserver2012dev:sp4
+
+docker start 2017
+docker start 2014
+docker start 2016
+docker start 2012
+
+$ENV:Path = $ENV:Path + "c:\Program Files\Docker\Docker\resources\bin;"
+cd c:\dockerstuff\win2017x11
+
+docker-compose up -d
+}
 
 $Dockerstart = {
     docker start 2017
@@ -108,9 +117,9 @@ $Dockerstart = {
     docker start 2012
 }
 
-# Invoke-Command -Session $session -ScriptBlock $scriptBlock 
-# Write-Verbose -Message "Created containers"
-Invoke-Command -Session $session -ScriptBlock $Dockerstart
+ Invoke-Command -Session $session -ScriptBlock $scriptBlock 
+ Write-Verbose -Message "Created containers"
+# Invoke-Command -Session $session -ScriptBlock $Dockerstart
 Write-Verbose -Message "Started containers"
 Remove-PSSession $session
 

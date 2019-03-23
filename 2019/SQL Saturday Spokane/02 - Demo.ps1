@@ -10,7 +10,7 @@ Return 'Oi Beardy, You may be an MVP but this is a demo, don''t run the whole th
 Get-Command -Module dbatools 
 
 ## How many commands?
-(Get-Command -Module dbatools).Count
+(Get-Command -Module dbatools -CommandType Function ).Count
 
 ## How do we find commands?
 Find-DbaCommand -Tag Backup
