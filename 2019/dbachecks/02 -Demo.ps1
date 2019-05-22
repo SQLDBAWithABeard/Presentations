@@ -1,4 +1,4 @@
-Set-Location 'GIT:\Presentations\2019\SQL Saturday Spokane'
+Set-Location 'GIT:\Presentations\2019\dbachecks'
 #region Start - intro
 . .\vars.ps1
 
@@ -31,7 +31,7 @@ Invoke-DbcCheck -SqlInstance $sql0 -Check AutoClose
 
 # its so easy, there is even intellisense
 
-Invoke-DbcCheck -SqlInstance $sql0 -Check 
+Invoke-DbcCheck -SqlInstance $sql0 -Check MemoryDump
 
 ## I am not limited to just one server/instance
 ## Maybe I want to check all my containers for Errors
@@ -40,7 +40,7 @@ Invoke-DbcCheck -SqlInstance $containers -Check ErrorLog
 
 ## Or that I have enough diskspace (we try to help where we can - This needs ComputerName :-) 
 
-Invoke-DbcCheck -SqlInstance $ENV:COMPUTERNAME -Check DiskCapacity 
+Invoke-DbcCheck -ComputerName $ENV:COMPUTERNAME -Check DiskCapacity 
 
 ## Lets look at a configuration
 
@@ -274,6 +274,7 @@ Explorer C:\windows\Temp\dbachecks
 
 # This takes a minute or 3 to run so run then talk Rob
 Invoke-DbcCheck -SqlInstance $sql0, $sql3  -Check Database -Show Summary -PassThru | Update-DbcPowerBiDataSource -Environment Prod-Database
+Invoke-DbcCheck -SqlInstance $sql0,$sql1,$sql2, $sql3  -Check Database -Show Summary -PassThru | Update-DbcPowerBiDataSource -Environment Prod-Other
 
 
 ## So now you can see the power :-)

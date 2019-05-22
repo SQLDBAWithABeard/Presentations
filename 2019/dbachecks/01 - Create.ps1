@@ -1,4 +1,4 @@
-Set-Location 'GIT:\Presentations\2019\SQL Saturday Spokane'
+Set-Location 'GIT:\Presentations\2019\dbachecks'
 Write-PSFMessage "Getting the variables" -Level Output 
 
 . .\vars.ps1
@@ -209,7 +209,7 @@ ALTER INDEX [IX_Employee_OrganizationLevel_OrganizationNode1] ON [HumanResources
 }
 elseif ($ENV:COMPUTERNAME -eq 'ROB-XPS') {
 
-    Set-Location 'GIT:\Presentations\2019\SQL Saturday Spokane\docker'
+    Set-Location 'GIT:\Presentations\2019\dbachecks\docker'
     Write-PSFMessage "Docker-Compose Up" -Level Output 
     docker-compose up -d
     Write-PSFMessage "Waiting for SQL in Containers to come up" -Level Output 
@@ -276,6 +276,6 @@ Invoke-DbaQuery -SqlInstance $sql0 -Database master -Query $query
 
 $Query = "CREATE SCHEMA dbachecks"
 Invoke-DbaQuery -SqlInstance $sql0 -Database ValidationResults -Query $query
-
+}
 
 Reset-DbcConfig

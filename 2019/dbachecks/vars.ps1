@@ -1,4 +1,4 @@
-[datetime]$EndDate = '2019-03-02 14:33'
+[datetime]$EndDate = '2019-04-17 20:33'
 if ($ENV:COMPUTERNAME -eq 'JumpBox') {
     $cred = Import-Clixml $HOME\Documents\sa.cred
     $SQLInstances = 'sql0', 'sql1'
@@ -28,7 +28,7 @@ if (-not ($PSDefaultParameterValues.'*-Dba*:SqlCredential')) {
         '*-Dbc*:SqlCredential' = $cred
     }
 }
-$location = 'Spokane'
+$location = 'DBAs love PowerShell'
 
 function Prompt { 
     $Date = Get-Date
@@ -85,5 +85,6 @@ function Prompt {
         }
     }
     catch { }
-    "> "
+    "> 
+    "
   }
