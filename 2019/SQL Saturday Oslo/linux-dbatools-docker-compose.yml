@@ -7,11 +7,11 @@ services:
           - "15591:1433"
           - "5022:5022"
         volumes: 
-          - /home/rob/Documents/docker/volumes/dbatools:/var/opt/mssql/backups
+          - /tmp/docker/volumes/dbatools:/var/opt/mssql/backups
     dbatoolssql2:
         image: dbatools/sqlinstance2
         ports:  
           - "15592:1433"
           - "5023:5023"
         volumes: 
-          - /home/rob/Documents/docker/volumes/dbatools:/var/opt/mssql/backups
+          - /tmp/docker/volumes/dbatools:/var/opt/mssql/backups
