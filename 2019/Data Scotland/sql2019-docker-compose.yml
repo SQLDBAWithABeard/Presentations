@@ -9,5 +9,5 @@ services:
           SA_PASSWORD: "dbatools.IO"
           ACCEPT_EULA: "Y"
         volumes: 
-          - C:\MSSQL\BACKUP\KEEP:/var/opt/mssql/backups
+          - C:\MSSQL\BACKUP\:/var/opt/mssql/backups
 
