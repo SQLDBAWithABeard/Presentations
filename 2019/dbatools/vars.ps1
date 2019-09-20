@@ -3,6 +3,7 @@
 
 $containers = "$ENV:ComputerName,15591", "$ENV:ComputerName,15592"
 $SQLInstances = $containers
+$localinstances = "$ENV:ComputerName", "$ENV:ComputerName\DAVE"
 $sql0 = $containers[0]
 $sql1 = $containers[1]
 $cred = Import-Clixml 'dockercompose:\dbatools-2-instances-AG\sacred.xml'

@@ -37,4 +37,5 @@ code-insiders.cmd .\docker-compose.yml
 Pop-Location
 #endregion
 
+Start-Process powershell.exe "-NoExit -Command & {Get-Service MSSQLSERVER, 'MSSQL`$DAVE'} | Start-Service" -Verb RunAs
 Import-Module PSReadline

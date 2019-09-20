@@ -62,10 +62,10 @@ Get-ChildItem SQLSERVER:\SQL\$SQLServer\DAVE\Databases
 ## Just an SMO Server which we can do with as we please :-)
 
 ## NOTE: You can create SQL Authentication SQL SERVER PSDrives as well 
-## Lets connect to SQL Server on Linux
+## even on other ports
+## Lets connect to a container
 
-
-New-PSDrive -Name  SA-XPS -PSProvider SqlServer -Credential (Get-Credential -UserName SA -Message 'Enter SA Credentials') -Root "SQLSERVER:\SQL\$SQLServer\Default"
+New-PSDrive -Name  SA-XPS -PSProvider SqlServer -Credential (Get-Credential -UserName sqladmin -Message 'Enter sqladmin Credentials') -Root "SQLSERVER:\SQL\$sql0\Default"
 
 Set-Location SA-XPS:\
 
@@ -74,9 +74,6 @@ Set-Location SA-XPS:\
 Get-item .
 
 ls
-
-## Can we connect to linux? 
-Set-Location SQLSERVER:\SQL\Linuxvnextctp14
 
 ## This is the best way to create a SMO Server object now
 

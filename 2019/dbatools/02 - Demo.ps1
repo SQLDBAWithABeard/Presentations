@@ -1,7 +1,7 @@
 ﻿#region Setup Variables
 . .\vars.ps1
 #endregion
-
+Pop-Location
 #region Searching and using commands
 
 Return 'Oi Beardy, You may be an MVP but this is a demo, don''t run the whole thing, fool!!'
@@ -94,11 +94,12 @@ Get-DbaLogin -SqlInstance $sql0 | Export-DbaScript -Path C:\temp
 (Get-DbaLinkedServer -sqlinstance $sql0)[0] | Export-DbaScript -Path C:\temp\sql0-LinkedServer-Export-11012018081839.sql
 
 ## But I cant use the password :-(
-Open-EditorFile C:\temp\sql0-LinkedServer-Export-11012018081839.sql
+code-insiders.cmd C:\temp\sql0-LinkedServer-Export-11012018081839.sql
 
-## Its ok, with dbatools I can just copy them over anyway :-) Dont need to know the password
+## Its ok, with dbatools I can just copy them over anyway on windows :-) Dont need to know the password
 
-Copy-DbaLinkedServer -Source $sql0 -Destination $sql1 -
+<#
+Copy-DbaLinkedServer -Source $sql0 -Destination $sql1 -Verbose
 
 ## Now lets look at sql1 linked servers again
 
@@ -107,6 +108,7 @@ Get-DbaLinkedServer -SqlInstance $sql1 | Format-Table
 ## Lets test them to show we have the Password passed over as well
 
 Test-DbaLinkedServerConnection -SqlInstance $sql1
+#>
 
 #endregion
 
@@ -120,7 +122,7 @@ $containers.ForEach{
     $Builds += Get-DbaBuildReference -SqlInstance $PSitem -SqlCredential $cred
 }
 
-$mirrors.ForEach{
+$localinstances.ForEach{
     $Builds += Get-DbaBuildReference -SqlInstance $PSitem 
 }
 
@@ -171,11 +173,11 @@ $excel = $throughput | Export-Excel -Path C:\temp\Excel\ThroughputAutoSize.xlsx 
 
 ## Add some conditional formatting
 $excel = $throughput | Export-Excel -Path C:\temp\Excel\ThroughputConditional.xlsx -WorksheetName "Backup Throughput" -AutoSize -FreezeTopRow -AutoFilter -PassThru
-Add-ConditionalFormatting -WorkSheet $excel.Workbook.Worksheets[1] -Address "e2:e1048576" -ForeGroundColor "RED" -RuleType LessThanOrEqual -ConditionValue 20
-Add-ConditionalFormatting -WorkSheet $excel.Workbook.Worksheets[1] -Address "e2:e1048576" -ForeGroundColor "Green" -RuleType GreaterThan -ConditionValue 20
-Add-ConditionalFormatting -WorkSheet $excel.Workbook.Worksheets[1] -Address "i2:i1048576" -BackgroundColor "Green" -RuleType GreaterThan -ConditionValue 100
-Add-ConditionalFormatting -WorkSheet $excel.Workbook.Worksheets[1] -Address "i2:i1048576" -BackgroundColor "YELLOW" -RuleType Between -ConditionValue 50 -ConditionValue2 99
-Add-ConditionalFormatting -WorkSheet $excel.Workbook.Worksheets[1] -Address "i2:i1048576" -BackgroundColor "RED" -RuleType Between -ConditionValue 0 -ConditionValue2 50
+Add-ConditionalFormatting -WorkSheet $excel.Workbook.Worksheets[1] -Address "e2:e1048576" -ForeGroundColor "RED" -RuleType LessThanOrEqual -ConditionValue 4999999
+Add-ConditionalFormatting -WorkSheet $excel.Workbook.Worksheets[1] -Address "e2:e1048576" -ForeGroundColor "Green" -RuleType GreaterThan -ConditionValue 5000000
+Add-ConditionalFormatting -WorkSheet $excel.Workbook.Worksheets[1] -Address "i2:i1048576" -BackgroundColor "Green" -RuleType GreaterThan -ConditionValue 5000000
+Add-ConditionalFormatting -WorkSheet $excel.Workbook.Worksheets[1] -Address "i2:i1048576" -BackgroundColor "YELLOW" -RuleType Between -ConditionValue 3000000 -ConditionValue2 4999999
+Add-ConditionalFormatting -WorkSheet $excel.Workbook.Worksheets[1] -Address "i2:i1048576" -BackgroundColor "RED" -RuleType Between -ConditionValue 0 -ConditionValue2 3000000
 Close-ExcelPackage $excel 
 
 ## You can do that with ANY object - Into a database with Write-DbaDataTable - Into an Excel Sheet with ImportExcel
