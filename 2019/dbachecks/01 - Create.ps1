@@ -1,11 +1,24 @@
+Remove-Module PSReadline
 Set-Location 'GIT:\Presentations\2019\dbachecks'
 Write-PSFMessage "Getting the variables" -Level Output 
+
+$EndDate = Get-Date -Year 2019 -Month 9 -Day 20 -Hour 16 -Minute 30 -Second 0
+# [datetime]$EndDate = '2019-04-17 20:33'
+$location = 'Bangalore'
+$ShowCountDown = $true
+$CountDownMessage = "dbachecks is awesome in $location "
 
 . .\vars.ps1
 Write-PSFMessage "Working on ROB-XPS" -Level Output 
 
-Import-Module dbatools -RequiredVersion 0.9.534
+# Import-Module dbatools -RequiredVersion 0.9.534
 Import-Module dbachecks
+
+$PSDefaultParameterValues += @{
+    '*db*:SqlCredential' = $cred
+    '*db*:DestinationSqlCredential' = $cred
+    '*db*:SourceSqlCredential' = $cred
+}
 
 if ($ENV:COMPUTERNAME -eq 'JumpBox') {
 
@@ -206,8 +219,7 @@ ALTER INDEX [IX_Employee_OrganizationLevel_OrganizationNode1] ON [HumanResources
 
 
     $verbosePreference = 'SilentlyContinue'
-}
-elseif ($ENV:COMPUTERNAME -eq 'ROB-XPS') {
+}else{
 
     Set-Location 'GIT:\Presentations\2019\dbachecks\docker'
     Write-PSFMessage "Docker-Compose Up" -Level Output 
@@ -224,7 +236,7 @@ elseif ($ENV:COMPUTERNAME -eq 'ROB-XPS') {
     $restoreDbaDatabaseSplat = @{
         SqlInstance                      = $sql0
         UseDestinationDefaultDirectories = $true
-        Path                             = '/var/opt/mssql/backups/AdventureWorks2012-Full Database Backup.bak'
+        Path                             = '/var/opt/mssql/backups/AdventureWorks2016_EXT.bak'
     }
     Restore-DbaDatabase @restoreDbaDatabaseSplat |OUt-Null
     Write-PSFMessage "Database restored" -Level Output 
@@ -279,3 +291,4 @@ Invoke-DbaQuery -SqlInstance $sql0 -Database ValidationResults -Query $query
 }
 
 Reset-DbcConfig
+Import-Module PSReadline

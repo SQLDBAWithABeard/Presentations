@@ -31,7 +31,7 @@ Invoke-DbcCheck -SqlInstance $sql0 -Check AutoClose
 
 # its so easy, there is even intellisense
 
-Invoke-DbcCheck -SqlInstance $sql0 -Check MemoryDump
+Invoke-DbcCheck -SqlInstance $sql0 -Check 
 
 ## I am not limited to just one server/instance
 ## Maybe I want to check all my containers for Errors
@@ -159,14 +159,14 @@ New-BurntToastNotification @newBurntToastNotificationSplat
 #endregion
 
 ## Hmm Better get onto this quick
-
+<#
 #region Check that issue
 Set-DbcConfig -Name app.cluster -Value $SQL0
 Set-DbcConfig -Name domain.name -Value 'TheBeard.Local'
 Set-DbcConfig -Name skip.hadr.listener.pingcheck -Value $true
 
 Invoke-DbcCheck -Check HADR
-
+#>
 #endregion
 
 #region
@@ -260,7 +260,7 @@ $invokeDbcCheckSplat = @{
 }
 Invoke-DbcCheck @invokeDbcCheckSplat
 
-Open-EditorFile C:\temp\Agent_Check_Results.xml
+code-insiders C:\temp\Agent_Check_Results.xml
 
 # But best of all the viewing is the PowerBi
 

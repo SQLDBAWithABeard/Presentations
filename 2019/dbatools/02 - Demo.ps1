@@ -45,34 +45,14 @@ ls C:\MSSQL\BACKUP\KEEP
 
 $restoreDbaDatabaseSplat = @{
     SqlInstance = $sql0
+    DatabaseName = 'AdventureWorks'
     UseDestinationDefaultDirectories = $true
-    Path = '/var/opt/mssql/backups/AdventureWorks2012-Full Database Backup.bak'
+    Path = '/var/opt/mssql/backups/AdventureWorks2016_EXT.bak'
 }
-Restore-DbaDatabase @restoreDbaDatabaseSplat
+Restore-DbaDatabase @restoreDbaDatabaseSplat 
 
-Get-DbaDatabase -SqlInstance $sql0 -Database AdventureWorks2012
-Get-DbaRestoreHistory -SqlInstance $sql0 -Database AdventureWorks2012
-
-Get-DbaAgHadr -SqlInstance $sql0
-
-$AGName = "dbatools-ag"
-
-# setup a powershell splat
-$params = @{
-    Primary = $sql0
-    PrimarySqlCredential = $cred
-    Secondary = $sql1
-    SecondarySqlCredential = $cred
-    Name = $AGName
-    Database = "pubs"
-    ClusterType = "None"
-    SeedingMode = "Automatic"
-    FailoverMode = "Manual"
-    Confirm = $false
- }
- 
-# execute the command
- New-DbaAvailabilityGroup @params -Verbose
+Get-DbaDatabase -SqlInstance $sql0 -Database AdventureWorks
+Get-DbaDbRestoreHistory -SqlInstance $sql0 -Database AdventureWorks
 
 # lets have a look at some Logins and Agent Jobs
 
@@ -80,7 +60,7 @@ Get-DbaLogin -SqlInstance $sql0, $sql1 | Format-Table
 
 Get-DbaAgentJob -SqlInstance $sql0,$sql1 | Format-Table 
 
-## Ah - There is an Availability Group here
+## Ah - Lets pretend thatt there is an Availability Group here
 ## I probably want to make sure that each instance has the same logins and Jobs
 
 Copy-DbaAgentJob -Source $sql0 -Destination $sql1 
@@ -158,11 +138,11 @@ Get-DbaBuildReference -Build 7.00.961, 8.00.2039 , 9.00.5254|Format-Table
 ## Backup the entire instance - Imagine this is our KeepSafe backup store or our regular backup store
 ## Or you are a consultant who comes in and sees that the databases have never been properly backed up
 
-Explorer $NetworkShare
+Explorer C:\MSSQL\BACKUP\KEEP
 Get-DbaDatabase -SqlInstance $sql0 -ExcludeAllSystemDb -ExcludeDatabase WideWorldImporters, ValidationResults | Backup-DbaDatabase -BackupDirectory $NetworkShare -Type FULL -CopyOnly
 
 ## Whats our Backup ThroughPut ?
-Measure-DbaBackupThroughput -SqlInstance $sql0 
+Measure-DbaBackupThroughput -SqlInstance $sql0 |ft
 
 ## You can add it (and anything returned from PowerShell) to a table with Write-DbaDataTable
 Measure-DbaBackupThroughput -SqlInstance $sql0 |Write-DbaDataTable -SqlInstance $sql0 -Database tempdb -Table throughput -AutoCreateTable
@@ -226,7 +206,7 @@ New-BurntToastNotification @newBurntToastNotificationSplat
 ## but you have seen we can do linked servers and we can do prety much anything on the instance with the Copy-Dba* commands :-)
 
 ## Check databases on sql1
-Get-DbaDatabase -SqlInstance $sql1 | Format-Table
+Get-DbaDatabase -SqlInstance $sql1 | Select Name, Status, IsAccessible, RecoveryModel
 
 #region check space
 ## Check that we have enough space on the destination (obviously we couldnt do it this way if we SQL0 was broken)
@@ -237,22 +217,23 @@ $measurement = $Databases.ForEach{
 }
 
 ## How much space do we need ?
-$measurement.DifferenceSize | Measure-Object -Property Megabyte -Sum
-$measurement.DifferenceSize | Measure-Object -Property GigaByte -Sum
+($measurement.DifferenceSize | Measure-Object -Property Megabyte -Sum).Sum
+($measurement.DifferenceSize | Measure-Object -Property GigaByte -Sum).Sum
 
 ## Check the space on teh server
 Get-DbaDiskSpace -ComputerName $sql1
 
 ## Or - Read the backup header and get the size
-$Path = (Get-ChildItem \\bearddockerhost\NetworkSQLBackups\AdventureWorks2012*).FullName
+$fileName = (Get-ChildItem C:\MSSQL\BACKUP\keep\AdventureWorks* | Sort-Object LastWriteTime -Descending | Select -First 1).Name
+$Path = $NetworkShare + $fileName
 
 Read-DbaBackupHeader -Path $path -SqlInstance $sql1
 
-(Read-DbaBackupHeader -Path $path -SqlInstance $sql1).BackupSizeMb
+(Read-DbaBackupHeader -Path $path -SqlInstance $sql1).BackupSize
 
 ## Or compare the requirements for a source and a destination - The difference size
 
-Measure-DbaDiskSpaceRequirement -Source $SQL0 -Destination $sql1 -Database AdventureWorks2012
+Measure-DbaDiskSpaceRequirement -Source $SQL0 -Destination $sql1 -Database AdventureWorks
 #endregion
 
 ## But back to the disaster!
@@ -289,14 +270,12 @@ New-BurntToastNotification @newBurntToastNotificationSplat
 ## remember that a backup is just a file until you know that you can restore it and that it has a valid DBCC CHECKDB
 ##
 ##
-## Now it is so easy to do this
-## Watch
+## Now it is so easy to do this if you have a proper network share as your backuppath
 
-## This is my Data Drive on SQL1
-explorer '\\sql1.TheBeard.Local\F$\Data'
+Start-Process https://youtu.be/50xEuEZr6as
 
 ## Now I am going to test the last backups for SQL1 on SQL1
-Test-DbaLastBackup -SqlInstance $sql1 -ExcludeDatabase WideWorldImporters, ValidationResults | Out-GridView
+# Test-DbaLastBackup -SqlInstance $sql1 -ExcludeDatabase WideWorldImporters, ValidationResults | Out-GridView
 #endregion
 
 #region agent jobs
