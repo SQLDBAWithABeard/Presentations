@@ -291,4 +291,5 @@ Invoke-DbaQuery -SqlInstance $sql0 -Database ValidationResults -Query $query
 }
 
 Reset-DbcConfig
+$PSDefaultParameterValues.Clear()
 Import-Module PSReadline
