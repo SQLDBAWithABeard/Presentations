@@ -27,16 +27,16 @@ Get-DbcCheck | Out-GridView
 
 ## Lets run a quick check - I'm a DBA
 
-Invoke-DbcCheck -SqlInstance $sql0 -Check AutoClose
+Invoke-DbcCheck -SqlInstance $sql0 -SqlCredential $cred -Check AutoClose
 
 # its so easy, there is even intellisense
 
-Invoke-DbcCheck -SqlInstance $sql0 -Check MemoryDump
+Invoke-DbcCheck -SqlInstance $sql0 -SqlCredential $cred -Check 
 
 ## I am not limited to just one server/instance
 ## Maybe I want to check all my containers for Errors
 
-Invoke-DbcCheck -SqlInstance $containers -Check ErrorLog
+Invoke-DbcCheck -SqlInstance $containers -SqlCredential $cred -Check ErrorLog
 
 ## Or that I have enough diskspace (we try to help where we can - This needs ComputerName :-) 
 
@@ -54,7 +54,7 @@ Set-DbcConfig -Name app.sqlinstance -Value $containers
 
 ## or that I have run DBCC CheckDb in the last 7 days
 
-Invoke-DbcCheck -Check LastGoodCheckDb 
+Invoke-DbcCheck -Check LastGoodCheckDb -SqlCredential $cred
 
 
 
@@ -65,24 +65,25 @@ Invoke-DbcCheck -Check LastGoodCheckDb
 
 # I wonder if I have Ola Hallengrens Maintenance Solution installed ?
 
-Invoke-DbcCheck  -Check OlaInstalled
+Invoke-DbcCheck  -Check OlaInstalled -SqlCredential $cred
 
 # Ah ok - quick diversion to the cool that is dbatools - just so you see how easy it is
 
-Install-DbaMaintenanceSolution -SqlInstance $containers 
+Install-DbaMaintenanceSolution -SqlInstance $containers -SqlCredential $cred
 
 # How many seconds ? :-D
 
-Invoke-DbcCheck -Check OlaInstalled
+Invoke-DbcCheck -Check OlaInstalled -SqlCredential $cred
 
 # Lets start those DBCC running
 $getDbaAgentJobSplat = @{
     Job = 'DatabaseIntegrityCheck - USER_DATABASES','DatabaseIntegrityCheck - SYSTEM_DATABASES'
     SqlInstance = $containers
+    SqlCredential = $cred
 }
 (Get-DbaAgentJob @getDbaAgentJobSplat).Start()
 
-Invoke-DbcCheck  -Check LastGoodCheckDb
+Invoke-DbcCheck  -Check LastGoodCheckDb -SqlCredential $cred
 
 
 ## The problem with the last lot of checks I ran was that I could not scroll up and 
@@ -91,9 +92,9 @@ Invoke-DbcCheck  -Check LastGoodCheckDb
 
 ## Just show the fails
 
-Invoke-DbcCheck -Check LastGoodCheckDb -Show Fails
+Invoke-DbcCheck -Check LastGoodCheckDb -SqlCredential $cred -Show Fails
 
-Invoke-DbcCheck -SqlInstance $sql0,$sql1 -Check FutureFileGrowth -Show Failed
+Invoke-DbcCheck -SqlInstance $sql0,$sql1 -SqlCredential $cred -Check FutureFileGrowth -Show Failed
 
 # How about my linked servers ?
 
@@ -109,11 +110,11 @@ Invoke-DbcCheck -Check DatabaseStatus
 
 #
 
-Invoke-DbcCheck -Check PseudoSimple
+Invoke-DbcCheck -Check PseudoSimple -SqlCredential $cred
 
 # 
 
-Invoke-DbcCheck -Check DatabaseExists
+Invoke-DbcCheck -Check DatabaseExists -SqlCredential $cred
 
 # great you've shown that the system databases exist
 # I need to know if my production pubs and NorthWind Databases are ok
@@ -128,9 +129,9 @@ Set-DbcConfig -Name database.exists -Value 'pubs', 'Northwind' -Append
 
 Get-DbcConfigValue -Name database.exists
 
-Invoke-DbcCheck -Check DatabaseExists
+Invoke-DbcCheck -Check DatabaseExists -SqlCredential $cred
 
-Invoke-DbcCheck -Check ValidDatabaseOwner
+Invoke-DbcCheck -Check ValidDatabaseOwner -SqlCredential $cred
 
 Get-DbcCheck -Pattern ValidDatabaseOwner | Format-List
 
@@ -140,7 +141,7 @@ Get-DbcConfig -Name policy.validdbowner.excludedb
 
 Set-DbcConfig -Name policy.validdbowner.name -Value sqladmin
 
-Invoke-DbcCheck -Check ValidDatabaseOwner
+Invoke-DbcCheck -Check ValidDatabaseOwner -SqlCredential $cred
 
 # ah pubs is owned by sa - We could add sa to the config for policy.validdbowner.name
 
@@ -159,14 +160,14 @@ New-BurntToastNotification @newBurntToastNotificationSplat
 #endregion
 
 ## Hmm Better get onto this quick
-
+<#
 #region Check that issue
 Set-DbcConfig -Name app.cluster -Value $SQL0
 Set-DbcConfig -Name domain.name -Value 'TheBeard.Local'
 Set-DbcConfig -Name skip.hadr.listener.pingcheck -Value $true
 
 Invoke-DbcCheck -Check HADR
-
+#>
 #endregion
 
 #region
@@ -241,7 +242,7 @@ Get-Dbcconfig | ogv
 
 ## and run a check like this
 
-Invoke-DbcCheck
+Invoke-DbcCheck -SqlCredential $cred
 
 ## Now that I have set my configuration I can export it
 ## I could save it and source control it
@@ -258,13 +259,13 @@ $invokeDbcCheckSplat = @{
     Show = 'Summary'
     OutputFile = 'C:\temp\Agent_Check_Results.xml'
 }
-Invoke-DbcCheck @invokeDbcCheckSplat
+Invoke-DbcCheck @invokeDbcCheckSplat -SqlCredential $cred
 
-Open-EditorFile C:\temp\Agent_Check_Results.xml
+code-insiders C:\temp\Agent_Check_Results.xml
 
 # But best of all the viewing is the PowerBi
 
-Invoke-DbcCheck -SqlInstance $sql0 , $sql1 -Check Agent -Show Summary -PassThru | Update-DbcPowerBiDataSource -Environment Prod-Agent
+Invoke-DbcCheck -SqlInstance $containers -SqlCredential $cred -Check Agent -ExcludeCheck AgentServiceAccount -Show Summary -PassThru | Update-DbcPowerBiDataSource -Environment Prod-Agent
 
 Start-DbcPowerBi
 
@@ -273,8 +274,8 @@ Start-DbcPowerBi
 Explorer C:\windows\Temp\dbachecks
 
 # This takes a minute or 3 to run so run then talk Rob
-Invoke-DbcCheck -SqlInstance $sql0, $sql3  -Check Database -Show Summary -PassThru | Update-DbcPowerBiDataSource -Environment Prod-Database
-Invoke-DbcCheck -SqlInstance $sql0,$sql1,$sql2, $sql3  -Check Database -Show Summary -PassThru | Update-DbcPowerBiDataSource -Environment Prod-Other
+Invoke-DbcCheck -SqlInstance $sql0, $sql3 -SqlCredential $cred -Check Database -Show Summary -PassThru | Update-DbcPowerBiDataSource -Environment Prod-Database
+Invoke-DbcCheck -SqlInstance $sql0,$sql1,$sql2, $sql3 -SqlCredential $cred -Check Database -Show Summary -PassThru | Update-DbcPowerBiDataSource -Environment Prod-Other
 
 
 ## So now you can see the power :-)
