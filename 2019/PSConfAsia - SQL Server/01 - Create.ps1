@@ -1,10 +1,10 @@
 #region variables
 Remove-Module PsReadLine
 $PresentationFolder = 'Presentations:\2019\dbatools'
-$EndDate = Get-Date -Year 2019 -Month 9 -Day 21 -Hour 15 -Minute 45 -Second 0
+$EndDate = Get-Date -Year 2019 -Month 9 -Day 21 -Hour 13 -Minute 45 -Second 0
 $location = 'Bangalore'
 
-Set-Location $PresentationFolder
+Set-Location $PresentationFolder7
 . .\vars.ps1    
 
 Push-Location -Path $PresentationFolder

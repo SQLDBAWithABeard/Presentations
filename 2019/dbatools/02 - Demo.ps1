@@ -36,7 +36,7 @@ Get-DbaDatabase -SqlInstance $sql0 | Format-Table
 
 $path = '/var/opt/mssql/backups/'
 
-Test-DbaPath -SqlInstance $sql0 -Path $path
+Test-DbaPath -SqlInstance $sql0 -Path $path 
 
 Get-DbaFile -SqlInstance $sql0 -Path $path
 
@@ -51,14 +51,14 @@ $restoreDbaDatabaseSplat = @{
 }
 Restore-DbaDatabase @restoreDbaDatabaseSplat 
 
-Get-DbaDatabase -SqlInstance $sql0 -Database AdventureWorks
+Get-DbaDatabase -SqlInstance $sql0 # -Database AdventureWorks
 Get-DbaDbRestoreHistory -SqlInstance $sql0 -Database AdventureWorks
 
 # lets have a look at some Logins and Agent Jobs
 
-Get-DbaLogin -SqlInstance $sql0, $sql1 | Format-Table 
+Get-DbaLogin -SqlInstance $sql0, $sql1 -ExcludeSystemLogin -Type Windows
 
-Get-DbaAgentJob -SqlInstance $sql0,$sql1 | Format-Table 
+Get-DbaAgentJob -SqlInstance $sql1 | Format-Table 
 
 ## Ah - Lets pretend thatt there is an Availability Group here
 ## I probably want to make sure that each instance has the same logins and Jobs

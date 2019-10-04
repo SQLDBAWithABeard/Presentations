@@ -22,7 +22,7 @@ Set-Location SQLSERVER:\SQLRegistration
 Get-ChildItem
 
 ## Try and tab this :-(
-Set-Location Data
+Set-Location Da
 Set-Location 'Database Engine Server Group'
 Get-ChildItem
 
