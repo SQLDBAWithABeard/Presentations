@@ -2,6 +2,8 @@
 
 The code from my presentations can be found here
 
+[2019 Presentations](https://github.com/SQLDBAWithABeard/Presentations/tree/master/2019)
+
 [2018 Presentations](https://github.com/SQLDBAWithABeard/Presentations/tree/master/2018)
 
 [2017 Presentations](https://github.com/SQLDBAWithABeard/Presentations/tree/master/2017)
