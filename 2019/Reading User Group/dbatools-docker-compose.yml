@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+    dbatoolssql1:
+        container_name: dbatoolssql1
+        image: dbatools/sqlinstance
+        hostname: dbatoolssql1
+        ports:  
+          - "15591:1433"
+          - "5022:5022"
+        volumes: 
+          - C:\MSSQL\BACKUP\KEEP:/var/opt/mssql/backups
+        networks:
+          - internal
+    dbatoolssql2:
+        container_name: dbatoolssql2
+        image: dbatools/sqlinstance2
+        hostname: dbatoolssql2
+        ports:  
+          - "15592:1433"
+          - "5023:5023"
+        volumes: 
+          - C:\MSSQL\BACKUP\KEEP:/var/opt/mssql/backups
+        networks:
+          - internal
+networks:
+  internal:
