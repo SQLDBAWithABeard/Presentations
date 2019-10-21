@@ -13,7 +13,7 @@ $location = 'Munich'
 . .\invoke-Parallel.ps1
 
 $ShowCountDown = $true
-$CountDownEndDate = Get-Date -Year 2019 -Month 10 -Day 19 -Hour 16 -Minute 40
+$CountDownEndDate = Get-Date -Year 2019 -Month 10 -Day 19 -Hour 15 -Minute 40
 $CountDownMessage = 'dbatools loves Munich'
 
 $BackupWin = 'C:\MSSQL\BACKUP\'

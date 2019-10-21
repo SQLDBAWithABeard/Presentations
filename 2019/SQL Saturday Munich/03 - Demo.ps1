@@ -45,6 +45,8 @@ Export-DbaLogin -SqlInstance $sql1
 
 Export-DbaLogin -SqlInstance $sql1 -FilePath c:\temp\sql1_users.sql
 
+Find-DbaCommand -Pattern permissions
+
 Invoke-Item c:\temp\sql1_users.sql
 
 ## Maybe you like sp_WhoIsActive?

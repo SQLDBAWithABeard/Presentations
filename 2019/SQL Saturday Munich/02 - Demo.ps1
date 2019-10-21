@@ -48,6 +48,9 @@ Get-DbaLinkedServer -SqlInstance $sql1
 ## I can script out the T-SQL for the linked server
 (Get-DbaLinkedServer -sqlinstance $sql0)[0] | Export-DbaScript -FilePath C:\temp\sql0-LinkedServer-Export-11012018081839.sql 
 
+Copy-DbaAgentServer -Source $sql0 -Destination $sql1 
+Copy-DbaAgentJob -Source $sql0 -Destination $sql1
+Get-DbaAgentJob -SqlInstance $sql1 |ft
 ## But I cant use the password :-( Open in ADS
 C:\temp\sql0-LinkedServer-Export-11012018081839.sql
 
@@ -282,7 +285,7 @@ Get-DbaAgentJobHistory -SqlInstance $SQL0 -Job 'DatabaseBackup - USER_DATABASES 
 ## How easy it is to install them with dbatools ?
 
 ## Lets look at the agent jobs on my linux instance
-Get-DbaAgentJob -SqlInstance $sql3
+Get-DbaAgentJob -SqlInstance $sql4 |ft
 
 ## No OLA there lets Install
 
@@ -290,7 +293,7 @@ $installDbaMaintenanceSolutionSplat = @{
     CleanupTime   = 74
     InstallJobs   = $true
     Solution      = 'All'
-    SqlInstance   = $sql3
+    SqlInstance   = $sql4
     LogToTable    = $true
     Database      = 'master'
     SqlCredential = $cred
@@ -299,6 +302,8 @@ $installDbaMaintenanceSolutionSplat = @{
 Install-DbaMaintenanceSolution @installDbaMaintenanceSolutionSplat 
 
 Get-DbaAgentJob -SqlInstance $sql3 |Format-Table
+
+Restore-DbaDatabase -SqlInstance $sql1 -
 
 #region If you need to create some dummy backups (Rob - Today you don't)
 ## Run the job
