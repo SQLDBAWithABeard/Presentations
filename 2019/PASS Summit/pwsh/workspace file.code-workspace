@@ -1,0 +1,10 @@
+{
+	"folders": [
+		{
+			"path": "/home/rob/Documents/git/Presentations"
+		}
+	],
+	"settings": {
+		"powershell.scriptAnalysis.settingsPath": "/home/rob/Documents/git/Presentations/2019/PASS Summit/pwsh/PSScriptAnalyzerSettings.psd1"
+	}
+}
