@@ -1,7 +1,7 @@
 #region variables
 $PresentationFolder = 'Presentations:\2019\dbatools'
-$EndDate = Get-Date -Year 2019 -Month 4 -Day 23 -Hour 20 -Minute 45 -Second 0
-$location = 'Spokane'
+$EndDate = Get-Date -Year 2019 -Month 9 -Day 21 -Hour 15 -Minute 45 -Second 0
+$location = 'Bangalore'
 
 Set-Location $PresentationFolder
 . .\vars.ps1    
@@ -29,8 +29,9 @@ docker-compose down
 
 docker-compose up -d
 
+
 # It just takes this file
-Open-EditorFile .\docker-compose.yml
+code-insiders.cmd .\docker-compose.yml
 
 Pop-Location
 #endregion

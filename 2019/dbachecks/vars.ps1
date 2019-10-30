@@ -1,4 +1,4 @@
-[datetime]$EndDate = '2019-04-17 20:33'
+
 if ($ENV:COMPUTERNAME -eq 'JumpBox') {
     $cred = Import-Clixml $HOME\Documents\sa.cred
     $SQLInstances = 'sql0', 'sql1'
@@ -12,7 +12,7 @@ if ($ENV:COMPUTERNAME -eq 'JumpBox') {
     $NetworkShare = '\\bearddockerhost.TheBeard.Local\NetworkSQLBackups'
 
 }
-elseif ($ENV:COMPUTERNAME -eq 'ROB-XPS') {
+else{
     $cred = Import-Clixml C:\MSSQL\BACKUP\sqladmin.cred     
     $containers = 'localhost,15591', 'localhost,15592', 'localhost,15593', 'localhost,15594'
     $sql0 = 'localhost,15591'
@@ -20,16 +20,9 @@ elseif ($ENV:COMPUTERNAME -eq 'ROB-XPS') {
     $sql2 = 'localhost,15593'
     $sql3 = 'localhost,15594'
 }
-if (-not ($PSDefaultParameterValues.'*-Dba*:SqlCredential')) {
-    $PSDefaultParameterValues += @{
-        '*-Dba*:SqlCredential' = $cred
-    }
-    $PSDefaultParameterValues += @{
-        '*-Dbc*:SqlCredential' = $cred
-    }
-}
-$location = 'DBAs love PowerShell'
 
+
+<#
 function Prompt { 
     $Date = Get-Date
     $Mins = ($EndDate - $Date).TotalMinutes
@@ -88,3 +81,4 @@ function Prompt {
     "> 
     "
   }
+  #>
