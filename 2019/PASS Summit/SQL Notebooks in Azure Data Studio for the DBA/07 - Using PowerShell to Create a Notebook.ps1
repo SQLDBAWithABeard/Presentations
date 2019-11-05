@@ -37,7 +37,8 @@ You should check the accounts in this list"
 
 $seventhcelltext = "EXEC sp_helpsrvrolemember 'sysadmin'"
 
-$eighthcelltext = 'Thats all folks!!
+$eighthcelltext = 'Thats all folks!!  
+
 <img src="https://media.giphy.com/media/8P7y2ARUPFpNaaWEZ3/giphy.gif" height="264" title="Windmill">
 '
 # create the cells
