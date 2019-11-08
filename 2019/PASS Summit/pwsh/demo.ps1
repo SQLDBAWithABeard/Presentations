@@ -36,6 +36,29 @@ Get-Process -Name whoopsie
 
 #endregion
 
+#region grep sed (ish)
+## Grep ish
+
+# Get-Content somefile.txt | where { $_ -match "expression"}
+
+Get-Content ./DATA.TXT | Where-Object {$Psitem -match 'Nothing'}
+
+cat DATA.TXT |  Where {$_ -match 'Nothing'}
+cat DATA.TXT |  ? {$_ -match 'Nothing'}
+
+
+
+## SED ish
+
+## cat somefile.txt | %{$_ -replace "expression","replace"}
+
+Get-Content ./DATA.TXT |ForEach-Object {$Psitem -replace 'matters' , 'Is Important'} 
+Get-Content ./DATA.TXT |ForEach-Object {$Psitem -replace 'matters' , 'Is Important'} | Where-Object {$Psitem -match 'Nothing'}
+
+Get-Content ./DATA.TXT |ForEach-Object {$Psitem -replace 'matters' , 'Is Important'} | Where-Object {$Psitem -match 'Nothing'} | Set-Content DATA1.TXT 
+
+#endregion
+
 #region piping
 # open a pwsh to the side and get ID
 
