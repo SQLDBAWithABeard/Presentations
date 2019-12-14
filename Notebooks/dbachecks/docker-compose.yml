@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+    SQL2019:
+        image: beard2019image
+        ports:  
+          - "15592:1433"
+        volumes: 
+          - C:\MSSQL\BACKUPS\KEEP:/var/opt/mssql/backups

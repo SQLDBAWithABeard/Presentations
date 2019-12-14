@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+    2019-CTP32:
+        image:  mcr.microsoft.com/mssql/server:2019-CTP3.2-ubuntu
+        ports:  
+          - "15598:1433"
+        environment:
+          SA_PASSWORD: "dbatools.IO"
+          ACCEPT_EULA: "Y"
+        volumes: 
+          - C:\MSSQL\BACKUP\:/var/opt/mssql/backups
+
