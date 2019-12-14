@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+    dbatools1:
+        image:  dbatools/sqlinstance
+        ports:  
+          - "15598:1433"
+        volumes: 
+          - /tmp/docker/volumes/dbatools:/var/opt/mssql/backups
+
