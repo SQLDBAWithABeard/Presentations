@@ -2,13 +2,13 @@ version: '3.7'
 
 services:
     SQL2019:
-        image: beard2019image
+        image: sqldbawithabeard/dbachecksdemo
         ports:  
           - "15592:1433"
         networks: 
           - BeardsMagicNetwork
     SQL2019-1:
-        image: beard2019image
+        image: sqldbawithabeard/dbachecksdemo
         ports:  
           - "15593:1433"
         networks: 

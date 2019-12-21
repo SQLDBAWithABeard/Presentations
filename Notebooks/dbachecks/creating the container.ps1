@@ -196,8 +196,11 @@ Invoke-DbcCheck -SqlInstance 'localhost,15599' -SqlCredential $cred -Check Faile
 $query = "EXEC msdb.dbo.sp_add_operator @name=N'SQLAdmins', @enabled=1, @email_address=N'SQLAdmins@TheBeard.local'"
 Invoke-DbaQuery -Query $query
 
-$alertsSql = 'D:\OneDrive\Documents\GitHub\Older\tigertoolbox\MaintenanceSolution\6_Agent_Alerts.sql'
+$TigerTeamalertsSql = 'D:\OneDrive\Documents\GitHub\Older\tigertoolbox\MaintenanceSolution\6_Agent_Alerts.sql'
 
+Invoke-DbaQuery -File $TigerTeamalertsSql
+
+$AlertsSql = 'D:\OneDrive\Documents\GitHub\Older\SQLScripts\SQL\03 - Set up SQL Alerting for SQL Errors 016 to 025.sql'
 Invoke-DbaQuery -File $alertsSql
 
 Get-DbaAgentAlert
