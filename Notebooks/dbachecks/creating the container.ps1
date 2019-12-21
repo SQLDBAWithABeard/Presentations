@@ -1,6 +1,6 @@
 
 <#
-docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Password0!" -p 15592:1433 --name beard2019 -d mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
+docker run -v C:\mssql\Backups\KEEP\:/var/opt/mssql/backup/ -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Password0!" -e "MSSQL_AGENT_ENABLED=true" -p 15599:1433 --name beard2019 -d mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04 
 
 # create sqladmin and disable SA
 
@@ -10,11 +10,21 @@ docker commit beard2019 beard2019image
 
 # base image created :-0
 
+docker start beard2019
+
 #>
 
 #region Set Defaults
 $cred = Import-Clixml -Path D:\Creds\THEBEARDROB\sqladmin.cred
-$instanceSMO = Connect-DbaInstance -SqlInstance $instances[1]
+
+$instanceSMOsa = Connect-DbaInstance -SqlInstance 'localhost,15599' -SqlCredential sa
+
+$sqladminPassword = ConvertTo-SecureString 'dbatools.IO' -AsPlainText -Force 
+New-DbaLogin -SqlInstance $instanceSMOsa -Login sqladmin -SecurePassword $sqladminPassword -DefaultDatabase master -Force
+Set-DbaLogin -SqlInstance $instanceSMOsa -Login sqladmin -AddRole sysadmin 
+
+$instanceSMO = Connect-DbaInstance -SqlInstance 'localhost,15599' -SqlCredential $cred
+
 $PSDefaultParameterValues = @{
     "*dba*:SqlCredential"            = $cred
     "*dba*:SourceSqlCredential"      = $cred
@@ -22,7 +32,12 @@ $PSDefaultParameterValues = @{
     "*dba*:SqlInstance"              = $instanceSMO
 }
 
-
+$salogin = Get-DbaLogin -SqlInstance $instanceSMO -Login sa 
+$salogin.Disable()
+$salogin.Rename('OldSa')
+$salogin.Alter()
+Get-DbaLogin -SqlInstance $instanceSMO -Login sa 
+Get-DbaLogin -SqlInstance $instanceSMO -Login Oldsa 
 #endregion
 
 #region Install community tools
@@ -151,3 +166,38 @@ $Reporting.ForEach{
 }
 #endregion
 #endregion
+
+#region Databases
+
+Restore-DbaDatabase -Path /var/opt/mssql/backup/\AdventureWorks2017.bak
+Restore-DbaDatabase -Path /var/opt/mssql/backup/\WideWorldImporters-Full.bak
+Restore-DbaDatabase -Path /var/opt/mssql/backup/\NorthWind.bak 
+Restore-DbaDatabase -Path /var/opt/mssql/backup/\pubs.bak
+
+#endregion
+
+#need to run maintenance solution script ot create the jobs - need to raise a bug for this
+$instanceSMO = Connect-DbaInstance -SqlInstance 'localhost,15599' -SqlCredential $cred
+$PSDefaultParameterValues = @{
+    "*dba*:SqlCredential"            = $cred
+    "*dba*:SourceSqlCredential"      = $cred
+    "*dba*:DestinationSqlCredential" = $cred
+    "*dba*:SqlInstance"              = $instanceSMO
+}
+
+$job = New-DbaAgentJob -Job "The Beard is Important" -Description "This Job must never fail" 
+New-DbaAgentJobStep -Job $job -StepName "Run this SQL" -Subsystem TransactSql -Command "SELECT 1/0" -Database pubs 
+
+(Get-DbaAgentJob).Start()
+
+
+Invoke-DbcCheck -SqlInstance 'localhost,15599' -SqlCredential $cred -Check FailedJob
+
+$query = "EXEC msdb.dbo.sp_add_operator @name=N'SQLAdmins', @enabled=1, @email_address=N'SQLAdmins@TheBeard.local'"
+Invoke-DbaQuery -Query $query
+
+$alertsSql = 'D:\OneDrive\Documents\GitHub\Older\tigertoolbox\MaintenanceSolution\6_Agent_Alerts.sql'
+
+Invoke-DbaQuery -File $alertsSql
+
+Get-DbaAgentAlert

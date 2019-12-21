@@ -5,5 +5,13 @@ services:
         image: beard2019image
         ports:  
           - "15592:1433"
-        volumes: 
-          - C:\MSSQL\BACKUPS\KEEP:/var/opt/mssql/backups
+        networks: 
+          - BeardsMagicNetwork
+    SQL2019-1:
+        image: beard2019image
+        ports:  
+          - "15593:1433"
+        networks: 
+          - BeardsMagicNetwork
+networks: 
+  BeardsMagicNetwork:
