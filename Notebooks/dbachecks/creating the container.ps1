@@ -11,7 +11,9 @@ docker commit beard2019 beard2019image
 # base image created :-0
 
 docker start beard2019
-
+docker commit beard2019 sqldbawithabeard/dbachecksdemo
+docker push sqldbawithabeard/dbachecksdemo:1.0.1
+docker push sqldbawithabeard/dbachecksdemo:latest
 #>
 
 #region Set Defaults
@@ -204,3 +206,14 @@ $AlertsSql = 'D:\OneDrive\Documents\GitHub\Older\SQLScripts\SQL\03 - Set up SQL 
 Invoke-DbaQuery -File $alertsSql
 
 Get-DbaAgentAlert
+
+Get-Command -Module dbatools *xe*
+
+Get-DbaXESessionTemplate -Pattern '15 Second IO Error' | Import-DbaXESessionTemplate 
+Set-DbaSpConfigure -ConfigName BlockedProcessThreshold -Value 5
+Get-DbaXESessionTemplate -Pattern 'Blocked Process Report' | Import-DbaXESessionTemplate
+Get-DbaXESessionTemplate -Pattern 'Stored Procedure Parameters' | Import-DbaXESessionTemplate
+
+Set-DbaSpConfigure  -Name 'OptimizeAdhocWorkloads' -Value 1
+Set-DbaSpConfigure  -Name 'RemoteDacConnectionsEnabled' -Value 1
+Set-DbaSpConfigure -Name 'DefaultBackupCompression' -Value 1
