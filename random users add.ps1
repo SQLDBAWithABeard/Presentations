@@ -1,6 +1,6 @@
 $SqlInstance = 'localhost'
 $databases = (Get-DbaDatabase -SqlInstance $SqlInstance -ExcludeSystem).Name
-$logins =  'akamman', 'alevy', 'beardapp1', 'beardapp2', 'beardapp3', 'beardapp4', 'beardapp5', 'beardapp6', 'beardapp7', 'beardapp8', 'clemaire', 'csilva', 'fatherjack', 'gsartori', 'jamrtin', 'Reporting1', 'Reporting2', 'Reporting3', 'Reporting4', 'smelton', 'SockFactoryApp_User', 'soneill', 'sqladmin', 'Support1', 'Support2', 'Support3', 'Support4', 'Support5', 'Support6', 'tboggiano', 'thebeard', 'wdurkin'
+$logins =  'benji', 'bweissman','akamman', 'alevy', 'beardapp1', 'beardapp2', 'beardapp3', 'beardapp4', 'beardapp5', 'beardapp6', 'beardapp7', 'beardapp8', 'clemaire', 'csilva', 'fatherjack', 'gsartori', 'jamrtin', 'Reporting1', 'Reporting2', 'Reporting3', 'Reporting4', 'smelton', 'SockFactoryApp_User', 'soneill', 'sqladmin', 'Support1', 'Support2', 'Support3', 'Support4', 'Support5', 'Support6', 'tboggiano', 'thebeard', 'wdurkin'
 
 $pwd = 'Password0!'
 $secpwd = ConvertTo-SecureString $pwd -AsPlainText -Force
@@ -23,7 +23,7 @@ foreach ($login in $logins) {
 
 #clear up
 foreach($db in $databases){
-     Remove-DbaDbUser -SqlInstance $SqlInstance -database $db -User $logins
+   #  Remove-DbaDbUser -SqlInstance $SqlInstance -database $db -User $logins
 }
 
-    Remove-DbaLogin -SqlInstance $SqlInstance -Login $logins -Confirm:$false
+  #  Remove-DbaLogin -SqlInstance $SqlInstance -Login $logins -Confirm:$false

@@ -4,6 +4,7 @@ Set-Location 'GIT:\Presentations\2019\dbachecks'
 
 Get-Module dbachecks -ListAvailable
 
+
 ## It's very important to keep up to date using
 
 ## Update-Module dbachecks
@@ -31,12 +32,12 @@ Invoke-DbcCheck -SqlInstance $sql0 -SqlCredential $cred -Check AutoClose
 
 # its so easy, there is even intellisense
 
-Invoke-DbcCheck -SqlInstance $sql0 -SqlCredential $cred -Check 
+Invoke-DbcCheck -SqlInstance $sql0 -SqlCredential $cred -Chec
 
 ## I am not limited to just one server/instance
 ## Maybe I want to check all my containers for Errors
 
-Invoke-DbcCheck -SqlInstance $containers -SqlCredential $cred -Check ErrorLog
+Invoke-DbcCheck -SqlInstance $estate -SqlCredential $cred -Check ErrorLog
 
 ## Or that I have enough diskspace (we try to help where we can - This needs ComputerName :-) 
 
@@ -48,13 +49,13 @@ Get-DbcConfig -Name app.sqlinstance
 
 # So we can set this so that we have a default set of instances we want to check
 
-Set-DbcConfig -Name app.sqlinstance -Value $containers
+Set-DbcConfig -Name app.sqlinstance -Value $estate
 
 # Now I dont need to specify the instances 
 
 ## or that I have run DBCC CheckDb in the last 7 days
 
-Invoke-DbcCheck -Check LastGoodCheckDb -SqlCredential $cred
+Invoke-DbcCheck -Check LastGoodCheckDb 
 
 
 
@@ -69,7 +70,7 @@ Invoke-DbcCheck  -Check OlaInstalled -SqlCredential $cred
 
 # Ah ok - quick diversion to the cool that is dbatools - just so you see how easy it is
 
-Install-DbaMaintenanceSolution -SqlInstance $containers -SqlCredential $cred
+Install-DbaMaintenanceSolution -SqlInstance Beard-Desktop\DAVE 
 
 # How many seconds ? :-D
 
@@ -78,7 +79,7 @@ Invoke-DbcCheck -Check OlaInstalled -SqlCredential $cred
 # Lets start those DBCC running
 $getDbaAgentJobSplat = @{
     Job = 'DatabaseIntegrityCheck - USER_DATABASES','DatabaseIntegrityCheck - SYSTEM_DATABASES'
-    SqlInstance = $containers
+    SqlInstance = $sql0,$sql1, 'Beard-DeskTop\DAVE'
     SqlCredential = $cred
 }
 (Get-DbaAgentJob @getDbaAgentJobSplat).Start()
@@ -125,7 +126,7 @@ Get-DbcCheck -Pattern DatabaseExists | Format-List
 
 Get-DbcConfig -Name database.exists
 
-Set-DbcConfig -Name database.exists -Value 'pubs', 'Northwind' -Append
+Set-DbcConfig -Name database.exists -Value 'master','model', 'pubs', 'Northwind' 
 
 Get-DbcConfigValue -Name database.exists
 
@@ -265,7 +266,7 @@ code-insiders C:\temp\Agent_Check_Results.xml
 
 # But best of all the viewing is the PowerBi
 
-Invoke-DbcCheck -SqlInstance $containers -SqlCredential $cred -Check Agent -ExcludeCheck AgentServiceAccount -Show Summary -PassThru | Update-DbcPowerBiDataSource -Environment Prod-Agent
+Invoke-DbcCheck -SqlInstance $estate -SqlCredential $cred -Check Agent -ExcludeCheck AgentServiceAccount -Show Summary -PassThru | Update-DbcPowerBiDataSource -Environment Prod-Agent
 
 Start-DbcPowerBi
 
@@ -274,8 +275,8 @@ Start-DbcPowerBi
 Explorer C:\windows\Temp\dbachecks
 
 # This takes a minute or 3 to run so run then talk Rob
-Invoke-DbcCheck -SqlInstance $sql0, $sql3 -SqlCredential $cred -Check Database -Show Summary -PassThru | Update-DbcPowerBiDataSource -Environment Prod-Database
-Invoke-DbcCheck -SqlInstance $sql0,$sql1,$sql2, $sql3 -SqlCredential $cred -Check Database -Show Summary -PassThru | Update-DbcPowerBiDataSource -Environment Prod-Other
+Invoke-DbcCheck -SqlInstance $sql0, $sql1 -SqlCredential $cred -Check Database -Show Summary -PassThru | Update-DbcPowerBiDataSource -Environment Prod-Database
+Invoke-DbcCheck -SqlInstance 'BEARD-DeskTop' , 'Beard-Desktop\DAVE' -SqlCredential $cred -Check Database -Show Summary -PassThru | Update-DbcPowerBiDataSource -Environment Prod-Other
 
 
 ## So now you can see the power :-)
@@ -294,3 +295,18 @@ $TestResults
 $TestResults.TestResult.Where{$_.Passed -eq $false}
 
 #endregion
+
+
+
+## Dbachecks Database Connection
+$dbachecksServer = 'Beard-DeskTop'
+$dbachecksDatabase = 'FactoryReporting'
+ 
+
+$checks = 'DatabaseStatus', 'FailedJob', 'InstanceConnection'
+ 
+Invoke-DbcCheck -SqlInstance $estate -Checks $checks -PassThru |
+Convert-DbcResult -Label 'MorningChecks' |
+Write-DbcTable -SqlInstance $dbachecksServer -Database $dbachecksDatabase
+
+Start-DbcPowerBi -FromDatabase
