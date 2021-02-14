@@ -1,5 +1,5 @@
-$KeyVaultName = 'sewells-key-vault'
-$UserName = 'rob@sewells-consulting.co.uk'
+$KeyVaultName = ''
+$UserName = ''
 $role = 'loginmanager'
 #region Get secrets
 $appid = (Get-AzKeyVaultSecret -vaultName $KeyVaultName -name "service-principal-guid").SecretValueText
@@ -8,7 +8,7 @@ $credential = New-Object System.Management.Automation.PSCredential ($appid, $Cli
 $tenantid = (Get-AzKeyVaultSecret -vaultName $KeyVaultName -name "sewells-tenant-Id").SecretValueText
 #endregion
 
-$AzureSQL = Connect-DbaInstance -SqlInstance beard-elasticsql.database.windows.net -Database master -SqlCredential $credential -Tenant $tenantid -TrustServerCertificate
+$AzureSQL = Connect-DbaInstance -SqlInstance  -Database Beard-Audit -SqlCredential $credential -Tenant $tenantid -TrustServerCertificate
 
 $Query = @"
 DECLARE @PrincipalName VARCHAR(250) = '{0}'
@@ -56,7 +56,7 @@ END
 
 "@ -f $UserName, $role
 # $Query
-Invoke-DbaQuery -SqlInstance $AzureSQL -Database master -Query $Query -MessagesToOutput -WarningVariable ResultWarning
+Invoke-DbaQuery -SqlInstance $AzureSQL -Database Beard-Audit -Query $Query -MessagesToOutput -WarningVariable ResultWarning
 
 $Results = Invoke-DbaQuery -SqlInstance $AzureSQL -Database master -Query $Query -MessagesToOutput -WarningVariable ResultWarning -warningAction SilentlyContinue
 while($ResultWarning){
@@ -87,8 +87,8 @@ Submit-BTNotification -Content $Content1
 
 <#
 Invoke-DbaQuery -SqlInstance $AzureSQL -Database master -Query $Query -MessagesToOutput -WarningVariable ResultWarning
-$AzureSQL = Connect-DbaInstance -SqlInstance beard-elasticsql.database.windows.net -Database Beard-Audit -SqlCredential $credential -Tenant $tenantid -TrustServerCertificate
-$UserName = 'Exceptional_JoeyDantoni@sewells-consulting.co.uk'
+$AzureSQL = Connect-DbaInstance -SqlInstance  -Database Beard-Audit -SqlCredential $credential -Tenant $tenantid -TrustServerCertificate
+$UserName = ''
 
 $Query = @"
 DECLARE @PrincipalName VARCHAR(250) = '{0}'

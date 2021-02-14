@@ -1,4 +1,4 @@
-CREATE USER [Dazzling_MonicaRathbun@sewells-consulting.co.uk] 
+CREATE USER [] 
 FROM EXTERNAL PROVIDER
 
-ALTER ROLE db_owner ADD MEMBER [Dazzling_MonicaRathbun@sewells-consulting.co.uk] 
+ALTER ROLE db_owner ADD MEMBER [] 

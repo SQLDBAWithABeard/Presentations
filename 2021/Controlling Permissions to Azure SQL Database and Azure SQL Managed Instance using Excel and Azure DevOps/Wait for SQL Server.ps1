@@ -1,6 +1,6 @@
-Connect-AzAccount
+#  Connect-AzAccount
 
-$KeyVaultName = 'sewells-key-vault'
+$KeyVaultName = ''
 
 #region Get secrets
 $appid = (Get-AzKeyVaultSecret -vaultName $KeyVaultName -name "service-principal-guid").SecretValueText
@@ -17,7 +17,7 @@ $there = $false
 while(-not($there)){
     $date = Get-Date
     try {
-    $AzureSQL = Connect-DbaInstance -SqlInstance beard-elasticsql.database.windows.net -Database Beard-Audit -SqlCredential $credential -Tenant $tenantid -TrustServerCertificate -ConnectTimeout 10 -WarningVariable ResultWarning 
+    $AzureSQL = Connect-DbaInstance -SqlInstance  -Database  -SqlCredential $credential -Tenant $tenantid -TrustServerCertificate -ConnectTimeout 10 -WarningVariable ResultWarning 
        $there = $true 
     }
     catch {

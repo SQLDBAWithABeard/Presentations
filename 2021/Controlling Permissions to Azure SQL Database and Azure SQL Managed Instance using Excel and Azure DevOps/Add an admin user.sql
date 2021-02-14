@@ -1,4 +1,4 @@
-DECLARE @PrincipalName VARCHAR(250) = 'Battling_JohnMorehouse@sewells-consulting.co.uk'
+DECLARE @PrincipalName VARCHAR(250) = ''
 DECLARE @Role VARCHAR(125) 
 DECLARE @SQL NVARCHAR(250)
 IF EXISTS (SELECT Name
