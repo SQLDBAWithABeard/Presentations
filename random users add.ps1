@@ -1,6 +1,6 @@
 $SqlInstance = 'localhost'
 $databases = (Get-DbaDatabase -SqlInstance $SqlInstance -ExcludeSystem).Name
-$logins =  'benji', 'bweissman','akamman', 'alevy', 'beardapp1', 'beardapp2', 'beardapp3', 'beardapp4', 'beardapp5', 'beardapp6', 'beardapp7', 'beardapp8', 'clemaire', 'csilva', 'fatherjack', 'gsartori', 'jamrtin', 'Reporting1', 'Reporting2', 'Reporting3', 'Reporting4', 'smelton', 'SockFactoryApp_User', 'soneill', 'sqladmin', 'Support1', 'Support2', 'Support3', 'Support4', 'Support5', 'Support6', 'tboggiano', 'thebeard', 'wdurkin'
+$logins =  'benji', 'bweissman','akamman', 'alevy', 'beardapp1', 'beardapp2', 'beardapp3', 'beardapp4', 'beardapp5', 'beardapp6', 'beardapp7', 'beardapp8', 'clemaire', 'csilva', 'fatherjack', 'gsartori', 'jamrtin', 'Reporting1', 'Reporting2', 'Reporting3', 'Reporting4', 'smelton', 'SockFactoryApp_User', 'soneill', 'sqladmin', 'Support1', 'Support2', 'Support3', 'Support4', 'Support5', 'Support6', 'tboggiano', 'thebeard', 'wdurkin','Argenis_Fernandez','MrsFatherJack',,'Cathrine_Wilhelmsen','Rie_Irish','Monica_Rathbun','Benji_BenWeissman','Joey_Dantoni', 'John_Morehouse', 'Bob_Facts_Pusatari','Containers_Nocentino','Andrew_Pruski','Matt_Gordon','Thomas_Grohser','Dirk_Hondong','Father_Johan_Brattas','Drew_FurggerwellyIgiveuptryingtospellit'
 
 $pwd = 'Password0!'
 $secpwd = ConvertTo-SecureString $pwd -AsPlainText -Force
