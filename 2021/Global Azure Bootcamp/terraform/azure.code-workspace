@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "..\\VirtualMachines"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "..\\KeyVault"
+		},
+		{
+			"path": "..\\ManagedInstance"
+		},
+		{
+			"path": "..\\..\\..\\Presentations\\2021\\Controlling Permissions to Azure SQL Database and Azure SQL Managed Instance using Excel and Azure DevOps"
+		}
+	],
+	"settings": {}
+}

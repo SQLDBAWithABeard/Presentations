@@ -1,0 +1,130 @@
+variables:
+  location: "westeurope" # location of the resource group use az account list-locations this must be the westeurope type name not the "West Europe" 
+  terraform_resource_group_name: ""
+  terraform_storage_account: ""
+  terraform_storage_key: # will be retrieved by the pipeline
+  agent_ip_address: # will be retrieved by the pipeline
+  key_vault_resource_group_name: ""
+  key_vault_name: ""
+  azure-subscription-id: ""
+  azure-tenant-id: ""
+  azure-client-id: ""
+ 
+trigger: none # will disable CI builds entirely
+
+jobs:
+  - deployment: deployelasticpooldev   # name of the deployment job, A-Z, a-z, 0-9, and underscore
+    displayName: Destroying Elastic Pool Infrastructure on the Dev Environment  # friendly name to display in the UI
+    environment: Dev
+    pool:
+      name: Hosted VS2017
+      demands: azureps
+    strategy:
+      runOnce:
+        deploy:
+              steps:
+                - checkout: self  # self represents the repo where the initial Azure Pipelines YAML file was found
+                  clean: true
+                - task: AzurePowerShell@3
+                  displayName: 'Azure PowerShell script to get the storage key'
+                  inputs:
+                    azureSubscription: ''
+                    ScriptType: InlineScript
+                    Inline: |
+                      # Using this script we will fetch storage key which is required in terraform file to authenticate backend storage account
+
+                      $key=(Get-AzureRmStorageAccountKey -ResourceGroupName $(terraform_resource_group_name) -AccountName $(terraform_storage_account)).Value[0]
+
+                      Write-Host "##vso[task.setvariable variable=terraform_storage_key]$key"
+                      Write-Host "##vso[task.setvariable variable=ARM_ACCESS_KEY]$key"
+                    azurePowerShellVersion: LatestVersion
+                              
+                - task: PowerShell@2
+                  name: GetClientIP
+                  displayName: Get Client IP from Trusted REST API Service
+                  inputs:
+                    targetType: 'inline'
+                    script: |
+                      $resp = Invoke-RestMethod -Uri 'https://afa-aspnet4you.azurewebsites.net/api/GetClientIP'
+                      # $ipAddr = $resp only works local to the task! ** setvariable must be used to pass the variable down the pipeline.**
+                      Write-Host "##vso[task.setvariable variable=agent_ip_address]$resp"
+                      $AgentIPAddress = $resp
+                      Write-Host "Agent IP Address is: $agent_ip_address"
+
+                - task: AzureCLI@1
+                  name: AddFirewallRule
+                  displayName: Add Firewall Rule to Azure Key Vault (Format @ ip)
+                  inputs:
+                    azureSubscription: ''
+                    scriptLocation: 'inlineScript'
+                    inlineScript: 'az keyvault network-rule add --resource-group $(key_vault_resource_group_name) --name $(key_vault_name) --ip-address $(agent_ip_address)'
+                  enabled: true 
+
+                - task: AzurePowerShell@5
+                  displayName: 'Get the azure client secret from Key Vault and set to variable'
+                  inputs:
+                    azureSubscription: ''
+                    ScriptType: 'InlineScript'
+                    Inline: |
+                      $VerbosePreference = 'Continue'
+                      $clientsecret = (Get-AzKeyVaultSecret -VaultName $(key_vault_name)  -Name azure-client-secret).SecretValueText
+                      Write-Host "##vso[task.setvariable variable=azure-client-secret]$clientsecret"
+                    azurePowerShellVersion: 'LatestVersion'
+                    pwsh: true
+                  enabled: true                  
+                      
+                - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+                  displayName: 'Replace tokens in terraform files'
+                  inputs:
+                    rootDirectory: variables
+                    targetFiles: |
+                      **/*.tf
+                      **/*.tfvars
+                    tokenPrefix: '__'
+                    tokenSuffix: '__'
+                  enabled: true
+ 
+                - task: petergroenewegen.PeterGroenewegen-Xpirit-Vsts-Release-Terraform.Xpirit-Vsts-Release-Terraform.Terraform@2
+                  displayName: 'Initialise Terraform for dev'
+                  inputs:
+                    TemplatePath: Build
+                    Arguments: 'init -backend-config="..\variables\dev-backend-config.tfvars"'
+                    InstallTerraform: true
+                    Version: '0.12.29'
+                    UseAzureSub: true
+                    ConnectedServiceNameARM: ''
+                  enabled: true
+
+                - task: Terraform@2
+                  displayName: 'Select Terraform workspace for prod'
+                  inputs:
+                    TemplatePath: 'Build'
+                    Arguments: 'workspace select prod '
+                    InstallTerraform: true
+                    Version: '0.12.29'
+                    UseAzureSub: true
+                    ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
+                    ConnectedServiceNameARM: ''
+                    ManageState: false
+                  enabled: true
+                - task: Terraform@2
+                  displayName: 'Destroy Terraform workspace for prod'
+                  inputs:
+                    TemplatePath: 'Build'
+                    Arguments: 'destroy -var-file="..\variables\dev-backend-config.tfvars" -auto-approve'
+                    InstallTerraform: true
+                    Version: '0.12.29'
+                    UseAzureSub: true
+                    ConnectedServiceNameSelector: 'ConnectedServiceNameARM'
+                    ConnectedServiceNameARM: ''
+                    ManageState: false
+
+                - task: AzureCLI@1
+                  name: RemoveFirewallRule
+                  displayName: Remove Firewall Rule from Azure Key Vault (Format @ ip/32)
+                  inputs:
+                    azureSubscription: ''
+                    scriptLocation: 'inlineScript'
+                    inlineScript: 'az keyvault network-rule remove --resource-group $(key_vault_resource_group_name) --name $(key_vault_name) --ip-address $(agent_ip_address)/32'
+                  enabled: true
+                  condition: always() # we always want this to run so we know the firewall rule was removed   
