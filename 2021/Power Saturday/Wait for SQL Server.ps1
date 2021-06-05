@@ -10,6 +10,9 @@ $Clientsecret = (Get-AzKeyVaultSecret -vaultName $KeyVaultName -name "service-pr
 $credential = New-Object System.Management.Automation.PSCredential ($appid, $Clientsecret)
 $tenantid = (Get-AzKeyVaultSecret -vaultName $KeyVaultName -name "sewells-tenant-Id" -AsPlainText)
 #endregion
+Set-DbatoolsConfig -FullName sql.connection.experimental -Value $true
+$azureAccount = Connect-AzAccount -Credential $Credential -ServicePrincipal -Tenant $tenantid
+$azureToken = (Get-AzAccessToken -ResourceUrl https://database.windows.net).Token
 
 $date = Get-Date
 $message = "{0} - Checking if Azure SQL Server is available" -f $date
@@ -19,7 +22,7 @@ $there = $false
 while(-not($there)){
     $date = Get-Date
     try {
-    $AzureSQL = Connect-DbaInstance -SqlInstance $SQlinstance -Database $database -SqlCredential $credential -Tenant $tenantid -TrustServerCertificate -ConnectTimeout 10 -WarningVariable ResultWarning 
+    $AzureSQL = Connect-DbaInstance -SqlInstance $SQlinstance -Database $database -AccessToken $azureToken -ConnectTimeout 10 -WarningVariable ResultWarning 
        $there = $true 
     }
     catch {
