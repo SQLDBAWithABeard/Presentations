@@ -10,7 +10,11 @@ $credential = New-Object System.Management.Automation.PSCredential ($appid, $Cli
 $tenantid = (Get-AzKeyVaultSecret -vaultName $KeyVaultName -name "sewells-tenant-Id" -AsPlainText)
 #endregion
 
-$AzureSQL = Connect-DbaInstance -SqlInstance $SQlinstance -Database $database -SqlCredential $credential -Tenant $tenantid -TrustServerCertificate
+Set-DbatoolsConfig -FullName sql.connection.experimental -Value $true
+$azureAccount = Connect-AzAccount -Credential $Credential -ServicePrincipal -Tenant $tenantid
+$azureToken = (Get-AzAccessToken -ResourceUrl https://database.windows.net).Token
+
+$AzureSQL = Connect-DbaInstance -SqlInstance $SQlinstance -Database $database -AccessToken $azureToken 
 
 $Query = @"
 DECLARE @PrincipalName VARCHAR(250) = '{0}'
@@ -63,7 +67,7 @@ Invoke-DbaQuery -SqlInstance $AzureSQL -Database $database -Query $Query -Messag
 $Results = Invoke-DbaQuery -SqlInstance $AzureSQL -Database master -Query $Query -MessagesToOutput -WarningVariable ResultWarning -warningAction SilentlyContinue
 while($ResultWarning){
     $date = Get-Date
-    $AzureSQL = Connect-DbaInstance -SqlInstance $AzureSQL -Database master -SqlCredential $credential -Tenant $tenantid -TrustServerCertificate
+    $AzureSQL = Connect-DbaInstance -SqlInstance $AzureSQL -Database master -AccessToken $azureToken 
     $Results = Invoke-DbaQuery -SqlInstance $AzureSQL -Database master -Query $Query -MessagesToOutput -WarningVariable ResultWarning -warningAction SilentlyContinue
     $message = "FAILED : {0} - Can't Add a User Yet" -f $date
     Write-Output $message
@@ -89,7 +93,7 @@ Submit-BTNotification -Content $Content1
 
 <#
 Invoke-DbaQuery -SqlInstance $AzureSQL -Database master -Query $Query -MessagesToOutput -WarningVariable ResultWarning
-$AzureSQL = Connect-DbaInstance -SqlInstance  -Database Beard-Audit -SqlCredential $credential -Tenant $tenantid -TrustServerCertificate
+$AzureSQL = Connect-DbaInstance -SqlInstance  -Database Beard-Audit -AccessToken $azureToken 
 $UserName = ''
 
 $Query = @"
