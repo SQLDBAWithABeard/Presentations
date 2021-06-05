@@ -4,10 +4,10 @@ $role = 'loginmanager'
 $SQlinstance = 'beard-elasticsql.database.windows.net'
 $database = 'Beard-Audit'
 #region Get secrets
-$appid = (Get-AzKeyVaultSecret -vaultName $KeyVaultName -name "service-principal-guid").SecretValueText
+$appid = (Get-AzKeyVaultSecret -vaultName $KeyVaultName -name "service-principal-guid" -AsPlainText)
 $Clientsecret = (Get-AzKeyVaultSecret -vaultName $KeyVaultName -name "service-principal-secret").SecretValue
 $credential = New-Object System.Management.Automation.PSCredential ($appid, $Clientsecret)
-$tenantid = (Get-AzKeyVaultSecret -vaultName $KeyVaultName -name "sewells-tenant-Id").SecretValueText
+$tenantid = (Get-AzKeyVaultSecret -vaultName $KeyVaultName -name "sewells-tenant-Id" -AsPlainText)
 #endregion
 
 $AzureSQL = Connect-DbaInstance -SqlInstance $SQlinstance -Database $database -SqlCredential $credential -Tenant $tenantid -TrustServerCertificate
