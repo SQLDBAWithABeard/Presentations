@@ -83,7 +83,7 @@ END
 
 "@ -f $login.Principal
     # $Query
-    Invoke-DbaQuery -SqlInstance $AzureSQL -Database master -Query $Query -MessagesToOutput
+    Invoke-DbaQuery -SqlInstance $AzureSQL -Query $Query -MessagesToOutput
     $AzureSQL.ConnectionContext.Disconnect()
 }
 
@@ -127,7 +127,7 @@ BEGIN
 END
 "@ -f $login.Principal, $login.Role
     # $Query 
-    Invoke-DbaQuery -SqlInstance $AzureSQL -Database $login.Database -Query $Query -MessagesToOutput
+    Invoke-DbaQuery -SqlInstance $AzureSQL -Query $Query -MessagesToOutput
     $AzureSQL.ConnectionContext.Disconnect()
 }
 
@@ -160,7 +160,7 @@ foreach ($login in $ExcelLogins | Where-Object { $psitem.Admin -eq $false }) {
     END
 "@ -f $login.Principal
     # $Query
-    Invoke-DbaQuery -SqlInstance $AzureSQL -Database master -Query $Query -MessagesToOutput
+    Invoke-DbaQuery -SqlInstance $AzureSQL  -Query $Query -MessagesToOutput
     $AzureSQL.ConnectionContext.Disconnect()
 }
 
