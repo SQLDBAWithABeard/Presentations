@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="24" errors="0" failures="9" not-run="39" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2021-07-10" time="10:06:34">
+  <environment cwd="Git:\Presentations" user-domain="BEARD-DESKTOP" machine-name="BEARD-DESKTOP" platform="Microsoft Windows 10 Pro|C:\WINDOWS|\Device\Harddisk0\Partition3" clr-version="Unknown" nunit-version="2.5.8.0" user="mrrob" os-version="10.0.19043" />
+  <culture-info current-culture="en-GB" current-uiculture="en-US" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Failure" success="False" time="109.3572" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\RootDC.tests.ps1" executed="True" result="Success" success="True" time="22.1206" asserts="0" description="G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\RootDC.tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="[SQLAndSSISandOctopus] DC Generic" executed="True" result="Success" success="True" time="12.8359" asserts="0" description="[SQLAndSSISandOctopus] DC Generic">
+            <results>
+              <test-suite type="TestFixture" name="[SQLAndSSISandOctopus] DC Generic.Role deployment successful" executed="True" result="Success" success="True" time="12.7507" asserts="0" description="[SQLAndSSISandOctopus] DC Generic.Role deployment successful">
+                <results>
+                  <test-case description="[RootDC] Should return the correct amount of machines" name="[SQLAndSSISandOctopus] DC Generic.Role deployment successful.[RootDC] Should return the correct amount of machines" time="0.332" asserts="0" success="True" result="Success" executed="True" />
+                  <test-suite type="ParameterizedTest" name="[SQLAndSSISandOctopus] DC Generic.Role deployment successful.BeardDC should have ADWS running" executed="True" result="Success" success="True" time="5.8558" asserts="0" description="BeardDC should have ADWS running">
+                    <results>
+                      <test-case description="BeardDC should have ADWS running" name="[SQLAndSSISandOctopus] DC Generic.Role deployment successful.BeardDC should have ADWS running(BeardDC)" time="5.8558" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="[SQLAndSSISandOctopus] DC Generic.Role deployment successful.BeardDC should respond to ADWS calls" executed="True" result="Success" success="True" time="6.4203" asserts="0" description="BeardDC should respond to ADWS calls">
+                    <results>
+                      <test-case description="BeardDC should respond to ADWS calls" name="[SQLAndSSISandOctopus] DC Generic.Role deployment successful.BeardDC should respond to ADWS calls(BeardDC)" time="6.4203" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="[SQLAndSSISandOctopus] RootDC specific" executed="True" result="Success" success="True" time="20.1483" asserts="0" description="[SQLAndSSISandOctopus] RootDC specific">
+            <results>
+              <test-suite type="ParameterizedTest" name="[SQLAndSSISandOctopus] RootDC specific.BeardDC should hold PDC emulator FSMO role" executed="True" result="Success" success="True" time="7.2415" asserts="0" description="BeardDC should hold PDC emulator FSMO role">
+                <results>
+                  <test-case description="BeardDC should hold PDC emulator FSMO role" name="[SQLAndSSISandOctopus] RootDC specific.BeardDC should hold PDC emulator FSMO role(BeardDC)" time="7.2415" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2016.tests.ps1" executed="True" result="Failure" success="False" time="36.5964" asserts="0" description="G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2016.tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="[SQLAndSSISandOctopus] SQLServer2016" executed="True" result="Failure" success="False" time="36.2154" asserts="0" description="[SQLAndSSISandOctopus] SQLServer2016">
+            <results>
+              <test-suite type="TestFixture" name="[SQLAndSSISandOctopus] SQLServer2016.Role deployment successful" executed="True" result="Failure" success="False" time="36.1594" asserts="0" description="[SQLAndSSISandOctopus] SQLServer2016.Role deployment successful">
+                <results>
+                  <test-case description="[SQLServer2016] Should return the correct amount of machines" name="[SQLAndSSISandOctopus] SQLServer2016.Role deployment successful.[SQLServer2016] Should return the correct amount of machines" time="0.5305" asserts="0" success="True" result="Success" executed="True" />
+                  <test-suite type="ParameterizedTest" name="[SQLAndSSISandOctopus] SQLServer2016.Role deployment successful.[SQL1] Instance(s) should be running" executed="True" result="Success" success="True" time="7.9337" asserts="0" description="[SQL1] Instance(s) should be running">
+                    <results>
+                      <test-case description="[SQL1] Instance(s) should be running" name="[SQLAndSSISandOctopus] SQLServer2016.Role deployment successful.[SQL1] Instance(s) should be running(SQL1)" time="2.0181" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="[SQL2] Instance(s) should be running" name="[SQLAndSSISandOctopus] SQLServer2016.Role deployment successful.[SQL2] Instance(s) should be running" time="2.0393" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="[SQL3] Instance(s) should be running" name="[SQLAndSSISandOctopus] SQLServer2016.Role deployment successful.[SQL3] Instance(s) should be running" time="2.225" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="[SQL4] Instance(s) should be running" name="[SQLAndSSISandOctopus] SQLServer2016.Role deployment successful.[SQL4] Instance(s) should be running" time="1.6512" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="[SQLAndSSISandOctopus] SQLServer2016.Role deployment successful.[SQL1] Should have SQL Server 2016 installed" executed="True" result="Failure" success="False" time="27.645" asserts="0" description="[SQL1] Should have SQL Server 2016 installed">
+                    <results>
+                      <test-case description="[SQL1] Should have SQL Server 2016 installed" name="[SQLAndSSISandOctopus] SQLServer2016.Role deployment successful.[SQL1] Should have SQL Server 2016 installed(SQL1)" time="6.3712" asserts="0" success="False" result="Failure" executed="True">
+                        <failure>
+                          <message>Expected $true, but got $false.
+at } | Should -Be $true, G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2016.tests.ps1:14</message>
+                          <stack-trace>at &lt;ScriptBlock&gt;, G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2016.tests.ps1:12</stack-trace>
+                        </failure>
+                      </test-case>
+                      <test-case description="[SQL2] Should have SQL Server 2016 installed" name="[SQLAndSSISandOctopus] SQLServer2016.Role deployment successful.[SQL2] Should have SQL Server 2016 installed" time="7.1541" asserts="0" success="False" result="Failure" executed="True">
+                        <failure>
+                          <message>Expected $true, but got $false.
+at } | Should -Be $true, G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2016.tests.ps1:14</message>
+                          <stack-trace>at &lt;ScriptBlock&gt;, G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2016.tests.ps1:12</stack-trace>
+                        </failure>
+                      </test-case>
+                      <test-case description="[SQL3] Should have SQL Server 2016 installed" name="[SQLAndSSISandOctopus] SQLServer2016.Role deployment successful.[SQL3] Should have SQL Server 2016 installed" time="7.5917" asserts="0" success="False" result="Failure" executed="True">
+                        <failure>
+                          <message>Expected $true, but got $false.
+at } | Should -Be $true, G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2016.tests.ps1:14</message>
+                          <stack-trace>at &lt;ScriptBlock&gt;, G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2016.tests.ps1:12</stack-trace>
+                        </failure>
+                      </test-case>
+                      <test-case description="[SQL4] Should have SQL Server 2016 installed" name="[SQLAndSSISandOctopus] SQLServer2016.Role deployment successful.[SQL4] Should have SQL Server 2016 installed" time="6.5278" asserts="0" success="False" result="Failure" executed="True">
+                        <failure>
+                          <message>Expected $true, but got $false.
+at } | Should -Be $true, G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2016.tests.ps1:14</message>
+                          <stack-trace>at &lt;ScriptBlock&gt;, G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2016.tests.ps1:12</stack-trace>
+                        </failure>
+                      </test-case>
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2017.tests.ps1" executed="True" result="Failure" success="False" time="37.1571" asserts="0" description="G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2017.tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="[SQLAndSSISandOctopus] SQLServer2017" executed="True" result="Failure" success="False" time="36.7824" asserts="0" description="[SQLAndSSISandOctopus] SQLServer2017">
+            <results>
+              <test-suite type="TestFixture" name="[SQLAndSSISandOctopus] SQLServer2017.Role deployment successful" executed="True" result="Failure" success="False" time="36.7153" asserts="0" description="[SQLAndSSISandOctopus] SQLServer2017.Role deployment successful">
+                <results>
+                  <test-case description="[SQLServer2017] Should return the correct amount of machines" name="[SQLAndSSISandOctopus] SQLServer2017.Role deployment successful.[SQLServer2017] Should return the correct amount of machines" time="0.4367" asserts="0" success="True" result="Success" executed="True" />
+                  <test-suite type="ParameterizedTest" name="[SQLAndSSISandOctopus] SQLServer2017.Role deployment successful.[SQL1] Instance(s) should be running" executed="True" result="Success" success="True" time="6.5987" asserts="0" description="[SQL1] Instance(s) should be running">
+                    <results>
+                      <test-case description="[SQL1] Instance(s) should be running" name="[SQLAndSSISandOctopus] SQLServer2017.Role deployment successful.[SQL1] Instance(s) should be running(SQL1)" time="1.4753" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="[SQL2] Instance(s) should be running" name="[SQLAndSSISandOctopus] SQLServer2017.Role deployment successful.[SQL2] Instance(s) should be running" time="1.192" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="[SQL3] Instance(s) should be running" name="[SQLAndSSISandOctopus] SQLServer2017.Role deployment successful.[SQL3] Instance(s) should be running" time="0.7686" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="[SQL4] Instance(s) should be running" name="[SQLAndSSISandOctopus] SQLServer2017.Role deployment successful.[SQL4] Instance(s) should be running" time="1.1469" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="[SSIS] Instance(s) should be running" name="[SQLAndSSISandOctopus] SQLServer2017.Role deployment successful.[SSIS] Instance(s) should be running" time="2.0159" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="[SQLAndSSISandOctopus] SQLServer2017.Role deployment successful.[SQL1] Should have SQL Server 2017 installed" executed="True" result="Failure" success="False" time="29.6272" asserts="0" description="[SQL1] Should have SQL Server 2017 installed">
+                    <results>
+                      <test-case description="[SQL1] Should have SQL Server 2017 installed" name="[SQLAndSSISandOctopus] SQLServer2017.Role deployment successful.[SQL1] Should have SQL Server 2017 installed(SQL1)" time="6.2858" asserts="0" success="False" result="Failure" executed="True">
+                        <failure>
+                          <message>Expected $true, but got $false.
+at } | Should -Be $true, G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2017.tests.ps1:14</message>
+                          <stack-trace>at &lt;ScriptBlock&gt;, G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2017.tests.ps1:12</stack-trace>
+                        </failure>
+                      </test-case>
+                      <test-case description="[SQL2] Should have SQL Server 2017 installed" name="[SQLAndSSISandOctopus] SQLServer2017.Role deployment successful.[SQL2] Should have SQL Server 2017 installed" time="5.5594" asserts="0" success="False" result="Failure" executed="True">
+                        <failure>
+                          <message>Expected $true, but got $false.
+at } | Should -Be $true, G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2017.tests.ps1:14</message>
+                          <stack-trace>at &lt;ScriptBlock&gt;, G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2017.tests.ps1:12</stack-trace>
+                        </failure>
+                      </test-case>
+                      <test-case description="[SQL3] Should have SQL Server 2017 installed" name="[SQLAndSSISandOctopus] SQLServer2017.Role deployment successful.[SQL3] Should have SQL Server 2017 installed" time="5.7891" asserts="0" success="False" result="Failure" executed="True">
+                        <failure>
+                          <message>Expected $true, but got $false.
+at } | Should -Be $true, G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2017.tests.ps1:14</message>
+                          <stack-trace>at &lt;ScriptBlock&gt;, G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2017.tests.ps1:12</stack-trace>
+                        </failure>
+                      </test-case>
+                      <test-case description="[SQL4] Should have SQL Server 2017 installed" name="[SQLAndSSISandOctopus] SQLServer2017.Role deployment successful.[SQL4] Should have SQL Server 2017 installed" time="6.0214" asserts="0" success="False" result="Failure" executed="True">
+                        <failure>
+                          <message>Expected $true, but got $false.
+at } | Should -Be $true, G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2017.tests.ps1:14</message>
+                          <stack-trace>at &lt;ScriptBlock&gt;, G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2017.tests.ps1:12</stack-trace>
+                        </failure>
+                      </test-case>
+                      <test-case description="[SSIS] Should have SQL Server 2017 installed" name="[SQLAndSSISandOctopus] SQLServer2017.Role deployment successful.[SSIS] Should have SQL Server 2017 installed" time="5.9715" asserts="0" success="False" result="Failure" executed="True">
+                        <failure>
+                          <message>Expected $true, but got $false.
+at } | Should -Be $true, G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2017.tests.ps1:14</message>
+                          <stack-trace>at &lt;ScriptBlock&gt;, G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.37.0\internal\tests\SQLServer2017.tests.ps1:12</stack-trace>
+                        </failure>
+                      </test-case>
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

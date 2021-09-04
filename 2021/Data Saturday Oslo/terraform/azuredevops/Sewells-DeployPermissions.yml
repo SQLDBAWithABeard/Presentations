@@ -1,0 +1,82 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - Permissions/*
+
+variables:
+   key_vault_resource_group_name: ""
+   key_vault_name: ""
+   sql_resource_group_name: ""
+   sql_server_name: ""
+
+name: $(Date:yyyyMMdd)$(Rev:.r)
+
+jobs:
+- job: DeployPermissions
+  steps:
+  - task: PowerShell@2
+    name: GetClientIP
+    displayName: Get Client IP from Trusted REST API Service
+    inputs:
+      targetType: 'inline'
+      script: |
+        $resp = Invoke-RestMethod -Uri 'https://afa-aspnet4you.azurewebsites.net/api/GetClientIP'
+        # $ipAddr = $resp only works local to the task! ** setvariable must be used to pass the variable down the pipeline.**
+        Write-Host "##vso[task.setvariable variable=agent_ip_address]$resp"
+        $AgentIPAddress = $resp
+        Write-Host "Agent IP Address is: $agent_ip_address"
+  - task: AzureCLI@1
+    name: AddFirewallRule
+    displayName: Add Firewall Rule to Azure Key Vault (Format @ ip)
+    inputs:
+      azureSubscription: ''
+      scriptLocation: 'inlineScript'
+      inlineScript: 'az keyvault network-rule add --resource-group $(key_vault_resource_group_name) --name $(key_vault_name) --ip-address $(agent_ip_address)'
+    enabled: true 
+  
+  - task: AzureCLI@2
+    displayName: Add Firewall Rule to Azure SQL Server
+    inputs:
+      azureSubscription: ''
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: 'az sql server firewall-rule create --resource-group $(sql_resource_group_name) --server $(sql_server_name) --name Azdo_Rule --start-ip-address $(agent_ip_address) --end-ip-address $(agent_ip_address)'
+    enabled: true
+
+  - task: AzurePowerShell@5
+    displayName: Deploy Permissions from Excel Workbook
+    inputs:
+      azureSubscription: ''
+      ScriptType: 'FilePath'
+      ScriptPath: 'Permissions/deploypermissions.ps1'
+      azurePowerShellVersion: 'LatestVersion'
+      pwsh: false  
+
+  - task: AzureCLI@1
+    name: RemoveSQLFirewallRule
+    displayName: Remove Firewall Rule from sql
+    inputs:
+      azureSubscription: ''
+      scriptLocation: 'inlineScript'
+      inlineScript: 'az sql server firewall-rule delete --resource-group $(sql_resource_group_name) --server $(sql_server_name) --name Azdo_Rule'
+    enabled: true
+    condition: always() # we always want this to run so we know the firewall rule was removed          
+
+  - task: AzureCLI@1
+    name: RemoveFirewallRule
+    displayName: Remove Firewall Rule from Azure Key Vault (Format @ ip/32)
+    inputs:
+      azureSubscription: ''
+      scriptLocation: 'inlineScript'
+      inlineScript: 'az keyvault network-rule remove --resource-group $(key_vault_resource_group_name) --name $(key_vault_name) --ip-address $(agent_ip_address)/32'
+    enabled: true
+    condition: always() # we always want this to run so we know the firewall rule was removed          
+    

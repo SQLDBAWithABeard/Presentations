@@ -1,5 +1,5 @@
-$KeyVaultName = ''
-$UserName = ''
+$KeyVaultName = 'sewells-key-vault'
+$UserName = 'rob@sewells-consulting.co.uk'
 $role = 'loginmanager'
 $SQlinstance = 'beard-elasticsql.database.windows.net'
 $database = 'Beard-Audit'
@@ -14,7 +14,7 @@ Set-DbatoolsConfig -FullName sql.connection.experimental -Value $true
 $azureAccount = Connect-AzAccount -Credential $Credential -ServicePrincipal -Tenant $tenantid
 $azureToken = (Get-AzAccessToken -ResourceUrl https://database.windows.net).Token
 
-$AzureSQL = Connect-DbaInstance -SqlInstance $SQlinstance -Database $database -AccessToken $azureToken 
+$AzureSQL = Connect-DbaInstance -SqlInstance $SQlinstance -Database master -AccessToken $azureToken 
 
 $Query = @"
 DECLARE @PrincipalName VARCHAR(250) = '{0}'
@@ -62,13 +62,13 @@ END
 
 "@ -f $UserName, $role
 # $Query
-Invoke-DbaQuery -SqlInstance $AzureSQL -Database $database -Query $Query -MessagesToOutput -WarningVariable ResultWarning
+Invoke-DbaQuery -SqlInstance $AzureSQL  -Query $Query -MessagesToOutput -WarningVariable ResultWarning
 
-$Results = Invoke-DbaQuery -SqlInstance $AzureSQL -Database master -Query $Query -MessagesToOutput -WarningVariable ResultWarning -warningAction SilentlyContinue
+$Results = Invoke-DbaQuery -SqlInstance $AzureSQL  -Query $Query -MessagesToOutput -WarningVariable ResultWarning -warningAction SilentlyContinue
 while($ResultWarning){
     $date = Get-Date
     $AzureSQL = Connect-DbaInstance -SqlInstance $AzureSQL -Database master -AccessToken $azureToken 
-    $Results = Invoke-DbaQuery -SqlInstance $AzureSQL -Database master -Query $Query -MessagesToOutput -WarningVariable ResultWarning -warningAction SilentlyContinue
+    $Results = Invoke-DbaQuery -SqlInstance $AzureSQL -Query $Query -MessagesToOutput -WarningVariable ResultWarning -warningAction SilentlyContinue
     $message = "FAILED : {0} - Can't Add a User Yet" -f $date
     Write-Output $message
     Start-Sleep -Seconds 10
