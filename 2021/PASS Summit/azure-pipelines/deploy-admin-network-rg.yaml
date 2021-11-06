@@ -7,6 +7,7 @@ trigger: none # will disable CI builds (but not PR builds)
 parameters:
  - name: azureSubscription
    type: string
+   default: beards-service-connection
  - name: location
    type: string
    default: uksouth
@@ -73,6 +74,7 @@ jobs:
             $deploymentConfig = @{
                   Name                                    = $deploymentname
                   TemplateFile                            = $templateFile
+                  location                                = ${{ parameters.location }}
                   WhatIf                                  = $WhatIf 
                   vNetName                                = $(vNetName)
                   vNetaddressPrefixes                     = $(vNetaddressPrefixes)
