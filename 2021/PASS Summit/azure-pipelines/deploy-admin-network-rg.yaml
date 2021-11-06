@@ -36,7 +36,6 @@ jobs:
     steps:
     - checkout: self
       persistCredentials: true
-    - checkout: templates
     - task: AzurePowerShell@5
       displayName: Deploy Resource
       inputs:
