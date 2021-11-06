@@ -11,6 +11,9 @@ parameters:
  - name: location
    type: string
    default: uksouth
+ - name: whatIf
+   type: boolean
+   default: false
 
 jobs:
   - job: 'Deploy_Dev_Network'
