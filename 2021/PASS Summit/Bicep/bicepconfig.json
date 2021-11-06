@@ -1,0 +1,17 @@
+{
+    "cloud": {
+      "credentialPrecedence": [
+        "AzurePowerShell",
+        "AzureCLI"
+      ]
+    },
+    "moduleAliases": {
+      "br": {
+        "synedgyadmin": {
+          "registry": "bearddemoacr.azurecr.io",
+          "modulePath": "bicep"
+        }
+      }
+
+    }
+}

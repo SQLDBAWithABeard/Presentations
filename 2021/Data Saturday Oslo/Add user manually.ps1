@@ -1,7 +1,7 @@
 $KeyVaultName = 'sewells-key-vault'
 $UserName = 'BiggerOnTwitter_CathrineWilhelmsen@sewells-consulting.co.uk'
 $SQlinstance = 'beard-elasticsql.database.windows.net'
-$database = 'Beard-Audit'
+$database = 'master'
 $role = 'loginmanager'
 #region Get secrets
 $appidsecret = (Get-AzKeyVaultSecret -vaultName $KeyVaultName -name "service-principal-guid").SecretValue
@@ -62,7 +62,7 @@ END
 
 "@ -f $UserName, $role
 # $Query
-Invoke-DbaQuery -SqlInstance $AzureSQL -Database Beard-Audit -Query $Query -MessagesToOutput -WarningVariable ResultWarning
+Invoke-DbaQuery -SqlInstance $AzureSQL -Database master -Query $Query -MessagesToOutput -WarningVariable ResultWarning
 
 $Results = Invoke-DbaQuery -SqlInstance $AzureSQL -Database master -Query $Query -MessagesToOutput -WarningVariable ResultWarning -warningAction SilentlyContinue
 while($ResultWarning){
@@ -92,9 +92,57 @@ Submit-BTNotification -Content $Content1
 
 
 <#
+
+$UserName = 'rob@sewells-consulting.co.uk'
+$Query = @"
+DECLARE @PrincipalName VARCHAR(250) = '{0}'
+DECLARE @Role VARCHAR(125) 
+DECLARE @SQL NVARCHAR(250)
+IF EXISTS (SELECT Name
+FROM sys.database_principals
+WHERE Name = @PrincipalName)
+BEGIN
+    PRINT @PrincipalName + ' User Exists in ' + db_name() + ' on ' + @@SERVERNAME
+END
+ELSE
+BEGIN
+    PRINT 'Adding ' + @PrincipalName + ' to database '  + db_name() + ' on instance' + @@SERVERNAME
+    SELECT @SQL = 'CREATE USER [' + @PrincipalName + '] FROM EXTERNAL PROVIDER'
+    -- PRINT @SQL
+    EXEC sp_executesql @SQL
+END
+SELECT @Role = 'dbmanager'
+IF IS_ROLEMEMBER(@Role,@PrincipalName) = 1
+BEGIN
+PRINT @PrincipalName + ' User Exists in ' + @Role + ' in database ' + db_name() + ' on instance ' + @@SERVERNAME
+
+END
+ELSE
+BEGIN
+PRINT  'Adding ' + @PrincipalName + ' to ' + @Role + ' role in database ' + db_name() + ' on instance ' + @@SERVERNAME
+SELECT @SQL = 'ALTER ROLE ' + @Role + ' ADD MEMBER [' + @PrincipalName + ']'
+-- PRINT @SQL
+EXEC sp_executesql @SQL
+END
+SELECT @Role = '{1}'
+IF IS_ROLEMEMBER(@Role,@PrincipalName) = 1
+BEGIN
+PRINT @PrincipalName + ' User Exists in ' + @Role + ' in database ' + db_name() + ' on instance ' + @@SERVERNAME
+
+END
+ELSE
+BEGIN
+PRINT  'Adding ' + @PrincipalName + ' to ' + @Role + ' role in database ' + db_name() + ' on instance ' + @@SERVERNAME
+SELECT @SQL = 'ALTER ROLE ' + @Role + ' ADD MEMBER [' + @PrincipalName + ']'
+-- PRINT @SQL
+EXEC sp_executesql @SQL
+END
+
+"@ -f $UserName, $role
 Invoke-DbaQuery -SqlInstance $AzureSQL -Database master -Query $Query -MessagesToOutput -WarningVariable ResultWarning
-$AzureSQL = Connect-DbaInstance -SqlInstance  -Database Beard-Audit -SqlCredential $credential -Tenant $tenantid -TrustServerCertificate
-$UserName = ''
+$AzureSQL = Connect-DbaInstance -SqlInstance $SQlinstance -Database $database  -SqlCredential $credential -Tenant $tenantid -TrustServerCertificate
+
+
 
 $Query = @"
 DECLARE @PrincipalName VARCHAR(250) = '{0}'
