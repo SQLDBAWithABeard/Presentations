@@ -19,8 +19,8 @@ jobs:
       vNetaddressPrefixes: '10.0.0.0/16'
       subnet1Name: onprem
       subnet1addressPrefix: '10.0.2.0/24'
-      subnet1Name: internal
-      subnet1addressPrefix: '10.0.3.0/24'
+      subnet2Name: internal
+      subnet2addressPrefix: '10.0.3.0/24'
       nsgName: gandalf
     pool:
       vmImage: windows-latest
