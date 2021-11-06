@@ -134,6 +134,7 @@ module secondsubnet '../Network/SubNet.bicep' = {
   }
   dependsOn:[
     vNet
+    firstsubnet
   ]
 }
 
@@ -143,4 +144,7 @@ module nsg '../Network/NSG.bicep' = {
   params: {
     name: nsgName
   }
+  dependsOn:[
+  resourceGroup
+  ]
 }
