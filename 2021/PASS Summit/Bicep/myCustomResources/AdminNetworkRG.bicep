@@ -3,7 +3,7 @@ targetScope = 'subscription'
 @minLength(1)
 @maxLength(90)
 @description('The name of the Resource Group')
-param rgName string = 'beardedresourcegroup'
+param rgName string = 'beardednetwork-rg'
 param rgLocation string = 'uksouth'
 
 param subnets array = [
@@ -41,10 +41,18 @@ param vNetserviceEndpoints array = [
 @minLength(1)
 @maxLength(80)
 @description('The subnet name - vNetName/subnetName')
-param subnetName string = 'private'
+param subnet1Name string = 'private'
 
 @description('Address Prefix for this subnet in CIDR notation')
-param subnetaddressPrefix string = '10.0.2.0/24'
+param subnet1addressPrefix string = '10.0.2.0/24'
+
+@minLength(1)
+@maxLength(80)
+@description('The subnet name - vNetName/subnetName')
+param subnet2Name string = 'private'
+
+@description('Address Prefix for this subnet in CIDR notation')
+param subnet2addressPrefix string = '10.0.2.0/24'
 
 
 @description('An array of serviceEndpoints for the subnets objects - service: Name ; locations: []')
@@ -104,12 +112,24 @@ module vNet '..//Network/VirtualNetwork.bicep' = {
 
 // another subnet with other properties
 
-module privatesubnet '../Network/SubNet.bicep' = {
+module firstsubnet '../Network/SubNet.bicep' = {
   scope: az.resourceGroup(rgName)
-  name: 'deploy-${subnetName}'
+  name: 'deploy-${subnet1Name}'
   params: {
-    addressPrefix: subnetaddressPrefix
-    name: '${vNetName}/${subnetName}'
+    addressPrefix: subnet1addressPrefix
+    name: '${vNetName}/${subnet1Name}'
+    serviceEndpoints: subnetServiceEndpoints
+  }
+  dependsOn:[
+    vNet
+  ]
+}
+module secondsubnet '../Network/SubNet.bicep' = {
+  scope: az.resourceGroup(rgName)
+  name: 'deploy-${subnet2Name}'
+  params: {
+    addressPrefix: subnet2addressPrefix
+    name: '${vNetName}/${subnet2Name}'
     serviceEndpoints: subnetServiceEndpoints
   }
   dependsOn:[
