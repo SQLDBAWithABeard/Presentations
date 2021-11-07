@@ -1,14 +1,25 @@
+#region just incase
+if (-not $env:Path.Contains('C:\users\mrrob\.azure\bin')) {
+    Write-PSFMessage "Arggh - set the path to have the bicep" -Level Output
+    $env:Path = $env:Path + ';C:\users\mrrob\.azure\bin'
+}
+Set-Location demos
+#endregion
+
 #region Deploy Admin Infrastructure
+
+code '..\Bicep\myCustomResources\AdminRG.bicep'
 $date = Get-Date -Format yyyyMMddHHmmsss
 $deploymentname = 'deploy_adminRg_{0}' -f $date # name of the deployment seen in the activity log
-$TemplateFile = 'Bicep\myCustomResources\AdminRG.bicep'
+$TemplateFile = '..\Bicep\myCustomResources\AdminRG.bicep'
 
-New-AzDeployment -Name $deploymentname -Location uksouth -TemplateFile $TemplateFile -WhatIf
+New-AzDeployment -Name $deploymentname -Location uksouth -TemplateFile $TemplateFile # -WhatIf
 
 #endregion
 
 #region publish files to the registry
 
+Set-Location ..
 $bicepfiles = Get-ChildItem Bicep -File -Recurse -Include *.bicep
 $keyVaultName = 'beardy-admin-kv'
 $tag = '0.0.1'
@@ -18,20 +29,6 @@ $registryName = $loginserver -replace '.azurecr.io',''
 $loginUser = Get-AzKeyVaultSecret -VaultName $keyVaultName -Name bearddemoacr-username -AsPlainText
 $loginPassword = Get-AzKeyVaultSecret -VaultName $keyVaultName -Name bearddemoacr-password -AsPlainText
 
-# technically not needed but easier for authentication error resolving!
-try {
-    $connection = Connect-AzContainerRegistry -Name $loginserver.Replace('.azurecr.io', '') -UserName $loginUser -Password $loginPassword -ErrorAction Stop
-    if(-not $env:Path.Contains('.azure\bin')){
-    # because az cli doesn't have publish yet
-    $env:Path = $env:Path + ";$home\.azure\bin"
-    }
-
-}
-catch {
-    $message = "Apologies, there was an error connecting to {0} - {1}" -f $loginserver, $_.Exception.Message
-    Write-Warning $message
-    Return
-}
 
 #region deploy a new module to the registry
 
@@ -41,6 +38,7 @@ $ShowAzureCli = $true
 
 az login
 # FIRST CHANGE THE TLS VERSION TO 1.0 for the StorageV2 bicep ROB
+# and CHECK the tag in the resource group bicep
 
 ##
 
@@ -125,7 +123,3 @@ Get-AzStorageAccount -ResourceGroupName demo-rg -Name ateststorage01234567 | Sel
 
 
 
-# Remove the resource group 
-
-Remove-AzResourceGroup -Name demo-rg -Force
-Remove-AzResourceGroup -Name beard-admin-rg -Force
