@@ -7,31 +7,31 @@
       "description": "This tour will explain the Bicep Resources, what they are used for and how they are defined and written.\r\n\r\nThe Bicep Resources can be found in the Resource folder."
     },
     {
-      "file": "demos/Bicep/Bicep/Storage/StorageV2.bicep",
-      "description": "This is how to add a comment using `/`",
-      "line": 26,
-      "title": "Comments"
-    },
-    {
-      "file": "demos/Bicep/Bicep/Storage/StorageV2.bicep",
+      "file": "Bicep/Storage/StorageV2.bicep",
       "description": "This is the target scope for the deployment. It should be at the top of the file (after any comments). It should always be `resourceGroup` except for Resource Group resources.",
       "line": 1,
       "title": "The Target Scope"
     },
     {
-      "file": "demos/Bicep/Bicep/Storage/StorageV2.bicep",
+      "file": "Bicep/Storage/StorageV2.bicep",
+      "description": "This is how to add a comment using `/`",
+      "line": 26,
+      "title": "Comments"
+    },
+    {
+      "file": "Bicep/Storage/StorageV2.bicep",
       "description": "next in a resource file are the parameters - These are defined with the `param` keyword, then the name of the parameter, then the datatype of the parameter which can be string, securestring, int, bool, array or object.  \r\nThe values are provided to the resource file from a different Bicep file or from the Azure DevOps Pipeline template\r\nIf there are no default values for the parameter, the parameter values have to be defined in the file that calls this resource file\r\n\r\nParameter names shall always be camelCase.  \r\nWhere possible, parameter names should match the name of the property that they relate to  \r\nParameter names should not be abbrieviations or shortnames and should be easy to understand by everyone  ",
       "line": 6,
       "title": "Parameters"
     },
     {
-      "file": "demos/Bicep/Bicep/Storage/StorageV2.bicep",
+      "file": "Bicep/Storage/StorageV2.bicep",
       "description": "Here we provide a description for the parameter. This cna help other users who are reading the file and is also provided when the resource is called from another file",
       "line": 5,
       "title": "Parameter Description"
     },
     {
-      "file": "demos/Bicep/Bicep/Storage/StorageV2.bicep",
+      "file": "Bicep/Storage/StorageV2.bicep",
       "description": "Here we can define the allowed lengths for the parameter",
       "line": 4,
       "selection": {
@@ -47,37 +47,37 @@
       "title": "Parameter allowed lengths"
     },
     {
-      "file": "demos/Bicep/Bicep/Storage/StorageV2.bicep",
+      "file": "Bicep/Storage/StorageV2.bicep",
       "description": "This provide the allowed values for the parameter.  \r\n  \r\nThe allowed parameter values must be defined as an array even for a single value.  \r\n  \r\nAn array in Bicep is defined as `[]`. Each item in the array, including the first one must be defined on a seperate line.\r\n\r\nHere we are defining the allowed values for the `minimumTlsVersion` parameter",
-      "line": 32,
+      "line": 34,
       "title": "Parameter allowed values"
     },
     {
-      "file": "demos/Bicep/Bicep/Storage/StorageV2.bicep",
+      "file": "Bicep/Storage/StorageV2.bicep",
       "description": "This is a parameter with a default value. This means that this parameter does not need to be defined in a file that calls this resource although it can be overridden.",
       "line": 56,
       "title": "Parameter with default value"
     },
     {
-      "file": "demos/Bicep/Bicep/Storage/StorageV2.bicep",
+      "file": "Bicep/Storage/StorageV2.bicep",
       "description": "This is a variable. A variable is defined using `var`. It does not need to have a data type defined and must have an `=` and a value.  \r\n  \r\nThe value can be a literal value or use previous parameters or variables.  \r\n  \r\n\r\nIf the variable name is defined using previous parameters these are referenced using `${nameofparameter}` and needs to be inside single quotes.  \r\n  \r\nBicep uses single quotes for strings.\r\n\r\n",
       "title": "Variables",
       "line": 47
     },
     {
-      "file": "demos/Bicep/Bicep/Storage/StorageV2.bicep",
+      "file": "Bicep/Storage/StorageV2.bicep",
       "description": "This variable is defined as an object.  \r\n  \r\nThe object definition is denoted by  `{}`  \r\n  \r\nEach property of the object is defined by name and then a `: ` The space after the `:` is important",
       "line": 50,
       "title": "Objects"
     },
     {
-      "file": "demos/Bicep/Bicep/Storage/StorageV2.bicep",
+      "file": "Bicep/Storage/StorageV2.bicep",
       "description": "This variable is defined in a more complex way.  \r\n  \r\nIt uses a `for` loop to create an array of objects.  ",
       "line": 47,
       "title": "Using a for loop"
     },
     {
-      "file": "demos/Bicep/Bicep/Storage/StorageV2.bicep",
+      "file": "Bicep/Storage/StorageV2.bicep",
       "description": "The `id` property for this object is defined using the `resourceid()` function.  \r\n  \r\nThe resourceId function is the way to generate the resource ids for Azure resources for adding as properties. \r\n  \r\nIn its basic form, the resourceId function has two parameters. The type of resource (eg `'Microsoft.Network/virtualNetworks'`) and then the name of the resource.  \r\n\r\nIn this example there are two extra parameters. \r\n- First is the Resource Group that the resource is in (as it is in a different resource group to the one that is being deployed).  \r\n- Then we have two values. This is becuase the type of reosurce that we are getting the resource id for is `'Microsoft.Network/virtualNetworks/subnets'` so we need the Virtual Network name **and** the subnet name. \r\n    - We are using three string functions to get these values from the parameters `first()`, `last()` and `split()`.  \r\n    First and last take the first and the last items in an array.  \r\n    Split takes two parameters, the string to be split (`virtualNetwork`) and the value to split on `'/'`.  ",
       "line": 49,
       "selection": {
@@ -93,7 +93,7 @@
       "title": "Complex value defintion with resourceId()"
     },
     {
-      "file": "demos/Bicep/Bicep/Storage/StorageV2.bicep",
+      "file": "Bicep/Storage/StorageV2.bicep",
       "description": "This is where we define a resource. We use the `resource` keyword, then a relevant name for the resource, then the type of the resource `Microsoft.Storage/storageAccounts` and `@` the version of the API `@2021-02-01`. These values can easily be found using the ARM Template documentation on docs.microsoft.com or by pressing `CTRL + SPACE` and searching in the drop down using Visual Studio Code.",
       "line": 65,
       "selection": {
@@ -109,7 +109,7 @@
       "title": "Resource"
     },
     {
-      "file": "demos/Bicep/Bicep/Storage/StorageV2.bicep",
+      "file": "Bicep/Storage/StorageV2.bicep",
       "description": "We then define the properties and values for the resource. These values can easily be found using the ARM Template documentation on docs.microsoft.com or by pressing CTRL + SPACE and searching in the drop down using Visual Studio Code.  \r\n  \r\nproperty names are caseSenstive and usually defined in camelCase. They are always followed by a `:` and a space.  \r\n",
       "line": 73,
       "selection": {
@@ -125,31 +125,31 @@
       "title": "Resource Properties"
     },
     {
-      "file": "demos/Bicep/Bicep/Storage/StorageV2.bicep",
+      "file": "Bicep/Storage/StorageV2.bicep",
       "description": "property values can be hard coded as strings",
       "line": 71,
       "title": "Resource Property Values"
     },
     {
-      "file": "demos/Bicep/Bicep/Storage/StorageV2.bicep",
+      "file": "Bicep/Storage/StorageV2.bicep",
       "description": "property values can be hard coded as boolean values",
       "line": 75,
       "title": "Resource Property Values"
     },
     {
-      "file": "demos/Bicep/Bicep/Storage/StorageV2.bicep",
+      "file": "Bicep/Storage/StorageV2.bicep",
       "description": "property values can be parameter values",
       "line": 84,
       "title": "Resource Property Values"
     },
     {
-      "file": "demos/Bicep/Bicep/Storage/StorageV2.bicep",
+      "file": "Bicep/Storage/StorageV2.bicep",
       "description": "property values can be variables",
       "line": 81,
       "title": "Resource Property Values"
     },
     {
-      "file": "demos/Bicep/Bicep/Storage/StorageV2.bicep",
+      "file": "Bicep/Storage/StorageV2.bicep",
       "description": "We can define outputs for our resources using the `output` keyword. They should have a name that is easy to understand by anyone, then the data type and then the value.  \r\n  \r\nThe value is usually found by using the resource reference name `stg` in this example and a `.` and then pressing `CTRL + SPACE`.  \r\n  \r\nHere we are outputting the primary blob endpoint of the `stg` resource we have just created  \r\n  \r\nOutputs are written into the logs of the Azure DevOps pipeline.\r\nThey can also be used in Bicep files when you are using modules.",
       "line": 92,
       "title": "Outputs"
