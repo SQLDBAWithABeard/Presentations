@@ -20,6 +20,14 @@ param databasename string
 
 var unique = uniqueString(subscription().id)
 
+var tags = {
+  role: 'Azure SQL'
+  owner: 'Beardy McBeardFace'
+  budget: 'Ben Weissman personal account'
+  bicep: true
+  BenIsAwesome: 'Always'
+}
+
 module sqlserver '../Data/sqlserver.bicep' = {
   name: 'Deploy_the_SQL_Server_${unique}'
   params: {
@@ -27,6 +35,7 @@ module sqlserver '../Data/sqlserver.bicep' = {
     administratorLoginPassword: administratorLoginPassword
     location: location
     name: name
+    tags: tags
   }
 }
 

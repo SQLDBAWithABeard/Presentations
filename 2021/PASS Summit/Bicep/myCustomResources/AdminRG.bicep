@@ -2,8 +2,10 @@ targetScope = 'subscription'
 
 var tags = {
   Role: 'administration'
-  Bicep: true
-  Demo: 'Correct - this is demo'
+  owner: 'Beardy McBeardFace'
+  budget: 'Ben Weissman personal account'
+  bicep: true
+  BenIsAwesome: 'Always'
 }
 var resourceGroupName = 'beard-admin-rg'
 
@@ -24,6 +26,7 @@ module adminKeyVault '..//KeyVault/keyvault.bicep' = {
     skuName: 'standard'
     tags: tags
     networkAclsDefaultAction: 'Allow' // becasue this is demo
+    createMode: 'recover'
   }
   dependsOn: [
     adminResourceGroup

@@ -32,6 +32,14 @@ param workspaceName string = ''
 @description('The resource group the workspace is in defautls to deployment resource group')
 param workspaceResourceGroup string = ''
 
+var tags = {
+  role: 'production admin'
+  owner: 'Beardy McBeardFace'
+  budget: 'Ben Weissman personal account'
+  bicep: true
+  BenIsAwesome: 'Always'
+}
+
 module sqlserver '../Data/sqlserver.bicep' = {
   name: 'Deploy_${environment}_the_SQL_Server'
   params: {
@@ -39,6 +47,7 @@ module sqlserver '../Data/sqlserver.bicep' = {
     administratorLoginPassword: administratorLoginPassword
     location: location
     name: '${name}-${environment}'
+    tags: tags
   }
 }
 
@@ -69,5 +78,6 @@ module adminpwdtokev '../KeyVault/KeyVaultSecret.bicep' = {
     contentType: 'The password for the ${name}-${environment} SQL Server'
     name: '${KeyVault.name}/${name}-${environment}-admin-pwd'
     value: administratorLoginPassword
+    tags: tags
   }
 }

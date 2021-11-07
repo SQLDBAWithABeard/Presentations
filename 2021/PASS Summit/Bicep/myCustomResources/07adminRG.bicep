@@ -5,6 +5,7 @@ var tags = {
   owner: 'Beardy McBeardFace'
   budget: 'Ben Weissman personal account'
   bicep: true
+  BenIsAwesome: 'Always'
 }
 var scope = az.resourceGroup('PassBeard-Admin')
 

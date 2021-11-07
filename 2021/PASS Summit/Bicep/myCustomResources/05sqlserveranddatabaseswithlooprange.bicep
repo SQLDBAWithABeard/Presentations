@@ -21,6 +21,14 @@ param databasename string
 @description('The number of databases to create - these will be named databasename-X where databasename is the parameter and X is the number')
 param numberOfDatabases int
 
+var tags = {
+  role: 'Azure SQL'
+  owner: 'Beardy McBeardFace'
+  budget: 'Ben Weissman personal account'
+  bicep: true
+  BenIsAwesome: 'Always'
+}
+
 module sqlserver '../Data/sqlserver.bicep' = {
   name: 'Deploy_the_${name}_SQL_Server'
   params: {
@@ -28,6 +36,7 @@ module sqlserver '../Data/sqlserver.bicep' = {
     administratorLoginPassword: administratorLoginPassword
     location: location
     name: name
+    tags: tags
   }
 }
 
