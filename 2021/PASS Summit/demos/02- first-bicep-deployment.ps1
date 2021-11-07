@@ -8,7 +8,8 @@ code ..\Bicep\myCustomResources\01myBeard.bicep
 
 Connect-AzAccount
 # Create a Resource Group
-New-AzResourceGroup -Name PassBeard -Location uksouth
+
+New-AzResourceGroup -Name PassBeard -Location uksouth -Tag @{  Demo = 'true';Conference = 'PassSummit';BenIsAwesome = 'Always'}
 
 # What happens if we deploy the Bicep file?
 New-AzResourceGroupDeployment -ResourceGroupName PassBeard -TemplateFile ..\Bicep\myCustomResources\01myBeard.bicep -WhatIf
@@ -17,7 +18,7 @@ New-AzResourceGroupDeployment -ResourceGroupName PassBeard -TemplateFile ..\Bice
 New-AzResourceGroupDeployment -ResourceGroupName PassBeard -TemplateFile ..\Bicep\myCustomResources\01myBeard.bicep
 
 # Create a Resource Group
-az group create --name PassBeards --location uksouth
+az group create --name PassBeards --location uksouth --tags Demo='true' Conference='PassSummit' BenIsAwesome='Always'
 
 # Deploy the Bicep file
 az deployment group create --resource-group PassBeards --template-file ..\Bicep\myCustomResources\01myBeard.bicep
