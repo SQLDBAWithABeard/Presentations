@@ -105,6 +105,8 @@ Get-DbaDatabase -SqlInstance $azureSql | Select SqlInstance , Name, IsAccessible
 
 #region deploy with an array of names
 
+code '..\Bicep\myCustomResources\05sqlserveranddatabaseswithlooprange.bicep'
+
 $deploymentConfig = @{
     ResourceGroupName          = 'PassBeard'
     TemplateFile               = '..\Bicep\myCustomResources\05sqlserveranddatabaseswithlooparray.bicep'
