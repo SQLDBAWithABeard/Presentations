@@ -60,9 +60,7 @@ param defaultAction string = 'Deny'
 ])
 @description('The access tier used for billing')
 param accessTier string = 'Hot'
-param tags object = {
-  
-}
+param tags object = {}
 
 resource storage 'Microsoft.Storage/storageAccounts@2021-02-01' = {
   name: name
