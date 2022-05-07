@@ -11,5 +11,6 @@ resource sqlserver 'Microsoft.Sql/servers@2021-05-01-preview' = {
     budget: 'Ben Weissman personal account'
     bicep: 'true'
     BenIsAwesome: 'Always'
+    WhichConference: 'PASSSummit'
   }
 }

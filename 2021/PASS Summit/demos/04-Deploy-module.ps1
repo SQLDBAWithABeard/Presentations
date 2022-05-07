@@ -14,6 +14,8 @@ code '..\Bicep\myCustomResources\03sqlserverwithmodule.bicep'
 $administratorLoginPassword = New-Password S24
 $administratorLoginPassword
 $administratorLoginPassword | ConvertFrom-SecureString -AsPlainText
+
+$UnsecureadministratorLoginPassword = (New-Object PSCredential "user",$administratorLoginPassword).GetNetworkCredential().Password
 #endregion
 
 #region Deploy the module Bicep file 
@@ -31,7 +33,7 @@ New-AzResourceGroupDeployment @deploymentConfig
 #endregion
 
 #region Deploy the module Bicep file again
-$deploymentname = 'Deploy_sqlserver_{0}' -f [Guid]::NewGuid().Guid
+$deploymentname = 'Deploy_sqlstorage_{0}' -f [Guid]::NewGuid().Guid
 $deploymentConfig = @{
     ResourceGroupName          = 'PassBeard'
     TemplateFile               = '..\Bicep\myCustomResources\03sqlserverwithmodule.bicep'
@@ -40,6 +42,7 @@ $deploymentConfig = @{
     location                   = 'uksouth'
     administratorLogin         = 'jeremy'
     administratorLoginPassword = $administratorLoginPassword
+    storagename = 'beardstorage734523'
 }
 New-AzResourceGroupDeployment @deploymentConfig
 #endregion

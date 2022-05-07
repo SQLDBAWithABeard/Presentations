@@ -23,6 +23,9 @@ var tags = {
   BenIsAwesome: 'Always'
 }
 
+@description('the name of the storage account')
+param storagename string
+
 module sqlserver '../Data/sqlserver.bicep' = {
   name: 'Deploy_the_${name}_SQL_Server'
   params: {
@@ -31,5 +34,18 @@ module sqlserver '../Data/sqlserver.bicep' = {
     location: location
     name: name
     tags: tags
+  }
+}
+
+output thesqlserver string = sqlserver.outputs.sqlservername
+
+module storage '../Storage/StorageV2.bicep' = {
+  name: 'deploy-storage-${storagename}'
+  params: {
+    isHnsEnabled: false
+    name: storagename
+    networkAclsBypass: 'AzureServices'
+    rgVirtualNetworksSubnets: []
+    skuName: 'Standard_LRS'
   }
 }

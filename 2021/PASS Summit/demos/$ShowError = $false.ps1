@@ -1,0 +1,9 @@
+$ShowError = $false
+$ShowGit = $false
+$ShowUser = $false
+$ShowAzure = $false
+$ShowAzureCli = $false
+$ShowPath = $false
+$ShowCountDown = $true
+$CountDownMessage = "PASS Summit"
+$CountDownEndDate = Get-Date -Year 2021 -Month 11 -Day 11 -Hour 15 -Minute 30
