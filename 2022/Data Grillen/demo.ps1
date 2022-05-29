@@ -1,7 +1,7 @@
 ## lets look at the available tags
 
-$repo1 = invoke-webrequest https://mcr.microsoft.com/v2/mssql/server/tags/list
-$repo2 = invoke-webrequest https://mcr.microsoft.com/v2/mssql/rhel/server/tags/list
+$repo1 = Invoke-WebRequest https://mcr.microsoft.com/v2/mssql/server/tags/list
+$repo2 = Invoke-WebRequest https://mcr.microsoft.com/v2/mssql/rhel/server/tags/list
 $tags = $repo1.content + $repo2.content
 $tags
 
@@ -9,12 +9,20 @@ $tags
 docker pull mcr.microsoft.com/mssql/server:2019-latest
 docker pull mcr.microsoft.com/mssql/server:2017-latest
 
+# get the back up
+
+if (-not (Test-Path  $env:TEMP\Backups\AdventureWorks2017.bak)) {
+    wget https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2017.bak -P $env:TEMP\Backups\
+
+    
+}
+
 # and run some containers
 docker container run -d `
     -p 7432:1433 `
     --env ACCEPT_EULA=Y `
     --env MSSQL_SA_PASSWORD=dbatools.IO `
-    --volume F:\BackupShare:/tmp/backups `
+    --volume $env:TEMP\Backups\:/tmp/backups `
     --name 2017 `
     mcr.microsoft.com/mssql/server:2017-latest
 
@@ -35,7 +43,7 @@ docker container run -d `
     
 # lets set a credential for connecting
 
-$securePassword = ('dbatools.IO' | ConvertTo-SecureString -asPlainText -Force)
+$securePassword = ('dbatools.IO' | ConvertTo-SecureString -AsPlainText -Force)
 $continercredential = New-Object System.Management.Automation.PSCredential('sa', $securePassword)
 
 # lets have a look at those containers in ADS
@@ -95,7 +103,7 @@ docker compose -f .devcontainer\docker-compose.yml up -d
 docker compose -f .devcontainer\docker-compose.yml down
 
 cd  .\Instance1
-docker build -t instance1 . # --progress=plain --no-cache
+docker build -t instance1 . --progress=plain --no-cache
 docker tag instance1 sqldbawithabeard/instance1:v0.0.0
 docker push sqldbawithabeard/instance1:v0.0.0
 
@@ -106,8 +114,12 @@ docker push sqldbawithabeard/instance2:v0.0.0
 
 
 #
-# lets look at our docker
+# lets start some WorkLoadTools IN WINDWOS TERMINAL ROB
 
+# lets set a credential for connecting
+
+$securePassword = ('dbatools.IO' | ConvertTo-SecureString -AsPlainText -Force)
+$continercredential = New-Object System.Management.Automation.PSCredential('sqladmin', $securePassword)
 
 $WorkloadTools = Connect-DbaInstance -SqlInstance 'localhost,7444' -SqlCredential $continercredential
 New-DbaDatabase -SqlInstance $WorkloadTools -Name WorkloadTools
@@ -115,17 +127,22 @@ New-DbaDatabase -SqlInstance $WorkloadTools -Name WorkloadTools
 
 # start replay 
 $ConfigPath = (Get-Item 'Presentations:\2022\Data Grillen\Config\').FullName
+cd 'C:\Program Files\WorkloadTools\'
 .\SqlWorkload.exe --log $ConfigPath\Log\replay.log --File $ConfigPath\replay.json
-
 
 # start baseline 
 $ConfigPath = (Get-Item 'Presentations:\2022\Data Grillen\Config\').FullName
+cd 'C:\Program Files\WorkloadTools\'
 .\SqlWorkload.exe --log $ConfigPath\Log\baseline.log --File $ConfigPath\baseline.json
 
 
 
 #region Workload
+$securePassword = ('dbatools.IO' | ConvertTo-SecureString -AsPlainText -Force)
+$continercredential = New-Object System.Management.Automation.PSCredential('sqladmin', $securePassword)
 
+$Instance1 = Connect-DbaInstance -SqlInstance datagrillen1 -SqlCredential $continercredential
+$Instance2 = Connect-DbaInstance -SqlInstance datagrillen2 -SqlCredential $continercredential
 
 $Colours = [enum]::GetValues([System.ConsoleColor])
 $Queries = Get-Content -Delimiter "------" -Path "AdventureWorksBOLWorkload.sql"
@@ -136,21 +153,20 @@ while ($x -lt 10000) {
     $Query = Get-Random -InputObject $Queries; 
     try {
         $db.Query($query) | Out-Null
-    }
-    catch {
-        $message = "Error on 2017 - {0}" -f $_.Exception.GetBaseException().Message
+    } catch {
+        $message = "Error on 2019 - {0}" -f $_.Exception.GetBaseException().Message
         Write-PSFMessage -Level Significant -Message $message -FunctionName "Baseline Run"
     }
     
     $x ++
     $xcolour = Get-Random -InputObject $Colours
-    Write-Host "Query Number $x is running on 2017" -ForegroundColor $xcolour
+    Write-Host "Query Number $x is running on 2019" -ForegroundColor $xcolour
 } 
 
 
 
 #endregion
 $ConfigPath = (Get-Item 'Presentations:\2022\Data Grillen\Config\').FullName
-.\WorkloadViewer.exe  -L $ConfigPath\viewer.log -S localhost,7444  -D WorkLoadTools -M baseline -U sa -P dbatools.IO -T localhost,7444 -E WorkLoadTools -N replay -V sa -Q dbatools.IO
+cd 'C:\Program Files\WorkloadTools\'
+.\WorkloadViewer.exe  -L $ConfigPath\viewer.log -S localhost,7444  -D WorkLoadTools -M baseline -U sqladmin -P dbatools.IO -T localhost,7444 -E WorkLoadTools -N replay -V sqladmin -Q dbatools.IO
 
-docker rm 2017 2019 2022 WorkloadTools --force
