@@ -13,12 +13,34 @@
     "settings": {
         "editor.renderWhitespace": "all",
         "#terminal.integrated.profiles.linux#": {
-        "pwsh": {
-            "path": "pwsh",
-            "icon": "terminal-powershell"
-        }
-    },
-    "terminal.integrated.defaultProfile.linux": "pwsh"
+            "pwsh": {
+                "path": "pwsh",
+                "icon": "terminal-powershell"
+            },
+            "mssql.connections": [
+                {
+                    "server": "datagrillen1",
+                    "database": "AdventureWorks",
+                    "authenticationType": "SqlLogin",
+                    "user": "sqladmin",
+                    "password": "",
+                    "emptyPasswordInput": false,
+                    "savePassword": true,
+                    "profileName": "datagrillen1"
+                },
+                {
+                    "server": "datagrillen2",
+                    "database": "AdventureWorks",
+                    "authenticationType": "SqlLogin",
+                    "user": "sqladmin",
+                    "password": "",
+                    "emptyPasswordInput": false,
+                    "savePassword": true,
+                    "profileName": "datagrillen2"
+                }
+            ]
+        },
+        "terminal.integrated.defaultProfile.linux": "pwsh"
     },
     "extensions": [
         "ms-vscode.powershell",
@@ -32,5 +54,5 @@
         "ms-mssql.sql-bindings-vscode"
     ],
     "shutdownAction": "stopCompose",
-    "remoteUser": "root"  // not ideal - prob need to setup a non-root user and use that instead. permissions issue without this!
+    "remoteUser": "root" // not ideal - prob need to setup a non-root user and use that instead. permissions issue without this!
 }
