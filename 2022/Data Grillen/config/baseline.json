@@ -1,0 +1,36 @@
+﻿{
+    "Controller": {
+
+        "Listener": {
+            "__type": "ExtendedEventsWorkloadListener",
+            "ConnectionInfo": {
+                "ServerName": "localhost,7432",
+                "UserName": "sa",
+                "Password": "dbatools.IO"
+            },
+            "DatabaseFilter": "AdventureWorks"
+        },
+
+        "Consumers": [{
+                "__type": "ReplayConsumer",
+                "ConnectionInfo": {
+                    "ServerName": "localhost,7433",
+                    "DatabaseName": "AdventureWorks",
+                    "UserName": "sa",
+                    "Password": "dbatools.IO"
+                }
+            },
+            {
+                "__type": "AnalysisConsumer",
+                "ConnectionInfo": {
+                    "ServerName": "localhost,7444",
+                    "DatabaseName": "WorkLoadTools",
+                    "SchemaName": "baseline",
+                    "UserName": "sa",
+                    "Password": "dbatools.IO"
+                },
+                "UploadIntervalSeconds": 60
+            }
+        ]
+    }
+}

@@ -1,0 +1,44 @@
+FROM  mcr.microsoft.com/mssql/server:2019-latest
+USER root
+# Install PowerShell
+RUN apt-get update && apt install -y powershell
+# install git
+RUN apt install -y git
+
+# things for ImportExcel
+
+RUN apt-get -y update \
+    && apt-get install -y --no-install-recommends libgdiplus libc6-dev
+
+ENV GIT_PROMPT_START='\033[1;36dbatools>\033[0m\033[0;33m\w\a\033[0m'
+
+# Save command line history
+RUN echo "export HISTFILE=/commandhistory/.bash_history" >> "/root/.bashrc" \
+    && echo "export PROMPT_COMMAND='history -a'" >> "/root/.bashrc" \
+    && mkdir -p /commandhistory \
+    && touch /commandhistory/.bash_history 
+
+RUN wget https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2017.bak -P /tmp/
+RUN ls /tmp
+
+# copy scripts and make bash files executable
+# use copy instead of add, it's safer apparently
+COPY scripts /tmp/
+RUN chmod +x /tmp/*.sh
+
+# convert CRLF to LF in case Windows or VS Code changed it
+RUN find . -type f \( -name "*.sql" -o -name "*.env" -o -name "*.sh" \) -exec sed -i 's/\r$//' {} \;
+
+# switch to user mssql or the container will fail
+USER mssql
+
+# run initial setup scripts
+RUN /bin/bash /tmp/configure.sh
+
+# Install Pester, 4.10.1
+SHELL ["/usr/bin/pwsh", "-c"]
+RUN $ErrorActionPreference='Stop'; Install-Module -Name Pester -Force -SkipPublisherCheck -MaximumVersion 4.10.1;
+
+# Install dbatools,PSFramework,dbachecks,posh-git,ImportExcel, Pansies
+SHELL ["/usr/bin/pwsh", "-c"]
+RUN $ErrorActionPreference='Stop'; Install-Module -Name dbatools,PSFramework,dbachecks,posh-git,Microsoft.PowerShell.ConsoleGuiTools,ImportExcel,Pansies -Force -SkipPublisherCheck;

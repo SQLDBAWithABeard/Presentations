@@ -1,0 +1,914 @@
+2022-05-12 11:16:03.5835 - Info - SqlWorkload.Program : Reading configuration from 'G:\OneDrive\Documents\GitHub\Presentations\2022\Data Grillen\config\replay.json'
+2022-05-12 11:16:03.6885 - Info - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : Reading Extended Events session definition from C:\Program Files\WorkloadTools\Listener\ExtendedEvents\sqlworkload.sql
+2022-05-12 11:16:03.7115 - Info - WorkloadTools.WorkloadController : Listener of type ExtendedEventsWorkloadListener initialized correctly. Waiting for events.
+2022-05-12 11:17:03.8248 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Unable to write workload analysis.
+2022-05-12 11:17:03.8248 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Login failed for user 'sqladmin'.
+2022-05-12 11:17:03.8248 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Unable to write workload analysis.
+2022-05-12 11:17:03.8248 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Login failed for user 'sqladmin'.
+2022-05-12 11:17:03.8248 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Unable to write workload analysis.
+2022-05-12 11:17:03.8248 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Login failed for user 'sqladmin'.
+2022-05-12 11:17:03.8293 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Unable to write workload analysis.
+2022-05-12 11:17:03.8293 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Login failed for user 'sqladmin'.
+2022-05-12 11:17:03.8293 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Unable to write workload analysis.
+2022-05-12 11:17:03.8293 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Login failed for user 'sqladmin'.
+2022-05-12 11:17:03.8293 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Unable to write workload analysis.
+2022-05-12 11:17:03.8293 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Login failed for user 'sqladmin'.
+2022-05-12 11:17:03.8293 - Error - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Unable to write workload analysis info to the destination database.
+2022-05-12 11:17:03.8293 - Error - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer :    at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at WorkloadTools.Consumer.Analysis.WorkloadAnalyzer.WriteToServer(DateTime intervalTime) in C:\GitHub\WorkloadTools\WorkloadTools\Consumer\Analysis\WorkloadAnalyzer.cs:line 391
+   at WorkloadTools.Consumer.Analysis.WorkloadAnalyzer.CloseInterval() in C:\GitHub\WorkloadTools\WorkloadTools\Consumer\Analysis\WorkloadAnalyzer.cs:line 101
+2022-05-12 11:17:07.7788 - Error - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Login failed for user 'sqladmin'.
+2022-05-12 11:17:07.7788 - Error - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer :    at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, DbConnectionPool pool, String accessToken, Boolean applyTransientFaultHandling, SqlAuthenticationProviderManager sqlAuthProviderManager)
+   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at WorkloadTools.Consumer.Analysis.WorkloadAnalyzer.CreateTargetDatabase() in C:\GitHub\WorkloadTools\WorkloadTools\Consumer\Analysis\WorkloadAnalyzer.cs:line 958
+   at WorkloadTools.Consumer.Analysis.WorkloadAnalyzer.PrepareDictionaries() in C:\GitHub\WorkloadTools\WorkloadTools\Consumer\Analysis\WorkloadAnalyzer.cs:line 835
+   at WorkloadTools.Consumer.Analysis.WorkloadAnalyzer._internalAdd(ExecutionWorkloadEvent evt) in C:\GitHub\WorkloadTools\WorkloadTools\Consumer\Analysis\WorkloadAnalyzer.cs:line 284
+   at WorkloadTools.Consumer.Analysis.WorkloadAnalyzer._internalAdd(WorkloadEvent evt) in C:\GitHub\WorkloadTools\WorkloadTools\Consumer\Analysis\WorkloadAnalyzer.cs:line 221
+   at WorkloadTools.Consumer.Analysis.WorkloadAnalyzer.ProcessQueue() in C:\GitHub\WorkloadTools\WorkloadTools\Consumer\Analysis\WorkloadAnalyzer.cs:line 143
+   at WorkloadTools.Consumer.Analysis.WorkloadAnalyzer.<ProvisionWorker>b__45_0() in C:\GitHub\WorkloadTools\WorkloadTools\Consumer\Analysis\WorkloadAnalyzer.cs:line 200
+2022-05-12 11:17:32.1462 - Info - SqlWorkload.Program : Received shutdown signal...
+2022-05-12 11:18:03.7669 - Info - SqlWorkload.Program : Controller stopped.
+2022-05-12 11:18:03.7824 - Error - SqlWorkload.Program : System.Data.SqlClient.SqlException (0x80131904): Login failed for user 'sqladmin'.
+   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, DbConnectionPool pool, String accessToken, Boolean applyTransientFaultHandling, SqlAuthenticationProviderManager sqlAuthProviderManager)
+   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at WorkloadTools.Consumer.Analysis.WorkloadAnalyzer.WriteToServer(DateTime intervalTime) in C:\GitHub\WorkloadTools\WorkloadTools\Consumer\Analysis\WorkloadAnalyzer.cs:line 391
+   at WorkloadTools.Consumer.Analysis.WorkloadAnalyzer.Stop() in C:\GitHub\WorkloadTools\WorkloadTools\Consumer\Analysis\WorkloadAnalyzer.cs:line 375
+   at WorkloadTools.Consumer.Analysis.AnalysisConsumer.Dispose(Boolean disposing) in C:\GitHub\WorkloadTools\WorkloadTools\Consumer\Analysis\AnalysisConsumer.cs:line 71
+   at WorkloadTools.WorkloadController.Dispose() in C:\GitHub\WorkloadTools\WorkloadTools\WorkloadController.cs:line 110
+   at SqlWorkload.Program.Run(Options options) in C:\GitHub\WorkloadTools\SqlWorkload\Program.cs:line 116
+   at SqlWorkload.Program.Main(String[] args) in C:\GitHub\WorkloadTools\SqlWorkload\Program.cs:line 47
+ClientConnectionId:d7799d3d-be3e-49cf-a3d0-044dd2ac6537
+Error Number:18456,State:1,Class:14
+2022-05-12 11:18:21.8329 - Info - SqlWorkload.Program : Reading configuration from 'G:\OneDrive\Documents\GitHub\Presentations\2022\Data Grillen\config\replay.json'
+2022-05-12 11:18:21.8979 - Info - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : Reading Extended Events session definition from C:\Program Files\WorkloadTools\Listener\ExtendedEvents\sqlworkload.sql
+2022-05-12 11:18:21.9164 - Info - WorkloadTools.WorkloadController : Listener of type ExtendedEventsWorkloadListener initialized correctly. Waiting for events.
+2022-05-12 11:19:22.1620 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 0 rows aggregated
+2022-05-12 11:19:22.1620 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 0 rows written
+2022-05-12 11:19:22.1745 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:19:22.1745 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:20:22.4710 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1079 rows aggregated
+2022-05-12 11:20:22.4710 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 41 rows written
+2022-05-12 11:20:22.4710 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:20:22.4710 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:21:22.1255 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 934 rows aggregated
+2022-05-12 11:21:22.1255 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 39 rows written
+2022-05-12 11:21:22.1320 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:21:22.1455 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:22:22.1296 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 11:22:22.1296 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 11:22:22.1296 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:22:22.1421 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:23:22.1456 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 4 rows aggregated
+2022-05-12 11:23:22.1456 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 3 rows written
+2022-05-12 11:23:22.1616 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:23:22.1616 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:23:30.7351 - Info - SqlWorkload.Program : Received shutdown signal...
+2022-05-12 11:23:30.8781 - Info - SqlWorkload.Program : Received shutdown signal...
+2022-05-12 11:24:08.3265 - Error - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : An exception occurred during event enumeration. Examine the inner exception for more information.
+2022-05-12 11:24:08.3300 - Error - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener :    at Microsoft.SqlServer.XEvent.Linq.Internal.XEventEnumerator.MoveNext()
+   at WorkloadTools.Listener.ExtendedEvents.StreamXEventDataReader.ReadEvents() in C:\GitHub\WorkloadTools\WorkloadTools\Listener\ExtendedEvents\StreamXEventDataReader.cs:line 44
+   at WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener.ReadEvents() in C:\GitHub\WorkloadTools\WorkloadTools\Listener\ExtendedEvents\ExtendedEventsWorkloadListener.cs:line 274
+2022-05-12 11:24:08.3300 - Error - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : A transport-level error has occurred when receiving results from the server. (provider: TCP Provider, error: 0 - An existing connection was forcibly closed by the remote host.)
+2022-05-12 11:24:08.3300 - Info - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : Disposing ExtendedEventsWorkloadListener.
+2022-05-12 11:24:08.3300 - Info - SqlWorkload.Program : Controller stopped.
+2022-05-12 11:24:08.3300 - Warn - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : Error disposing ExtendedEventWorkloadListener: A connection was successfully established with the server, but then an error occurred during the pre-login handshake. (provider: TCP Provider, error: 0 - An existing connection was forcibly closed by the remote host.)
+2022-05-12 11:24:08.3300 - Info - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : Extended Events session [sqlworkload] stopped successfully.
+2022-05-12 11:24:16.1735 - Info - SqlWorkload.Program : Received shutdown signal...
+2022-05-12 11:24:17.6570 - Info - SqlWorkload.Program : Received shutdown signal...
+2022-05-12 11:24:17.8155 - Info - SqlWorkload.Program : Received shutdown signal...
+2022-05-12 11:24:18.0395 - Info - SqlWorkload.Program : Received shutdown signal...
+2022-05-12 11:24:18.2735 - Info - SqlWorkload.Program : Received shutdown signal...
+2022-05-12 11:24:18.4625 - Info - SqlWorkload.Program : Received shutdown signal...
+2022-05-12 11:24:18.6165 - Info - SqlWorkload.Program : Received shutdown signal...
+2022-05-12 11:24:18.7965 - Info - SqlWorkload.Program : Received shutdown signal...
+2022-05-12 11:24:22.7685 - Error - SqlWorkload.Program : System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: TCP Provider, error: 0 - The remote computer refused the network connection.) ---> System.ComponentModel.Win32Exception (0x80004005): The remote computer refused the network connection
+   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, DbConnectionPool pool, String accessToken, Boolean applyTransientFaultHandling, SqlAuthenticationProviderManager sqlAuthProviderManager)
+   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at WorkloadTools.Consumer.Analysis.WorkloadAnalyzer.WriteToServer(DateTime intervalTime) in C:\GitHub\WorkloadTools\WorkloadTools\Consumer\Analysis\WorkloadAnalyzer.cs:line 391
+   at WorkloadTools.Consumer.Analysis.WorkloadAnalyzer.Stop() in C:\GitHub\WorkloadTools\WorkloadTools\Consumer\Analysis\WorkloadAnalyzer.cs:line 375
+   at WorkloadTools.Consumer.Analysis.AnalysisConsumer.Dispose(Boolean disposing) in C:\GitHub\WorkloadTools\WorkloadTools\Consumer\Analysis\AnalysisConsumer.cs:line 71
+   at WorkloadTools.WorkloadController.Dispose() in C:\GitHub\WorkloadTools\WorkloadTools\WorkloadController.cs:line 110
+   at SqlWorkload.Program.Run(Options options) in C:\GitHub\WorkloadTools\SqlWorkload\Program.cs:line 116
+   at SqlWorkload.Program.Main(String[] args) in C:\GitHub\WorkloadTools\SqlWorkload\Program.cs:line 47
+ClientConnectionId:00000000-0000-0000-0000-000000000000
+Error Number:1225,State:0,Class:20
+2022-05-12 11:25:00.4490 - Info - SqlWorkload.Program : Reading configuration from 'G:\OneDrive\Documents\GitHub\Presentations\2022\Data Grillen\config\replay.json'
+2022-05-12 11:25:00.5105 - Info - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : Reading Extended Events session definition from C:\Program Files\WorkloadTools\Listener\ExtendedEvents\sqlworkload.sql
+2022-05-12 11:25:00.5280 - Info - WorkloadTools.WorkloadController : Listener of type ExtendedEventsWorkloadListener initialized correctly. Waiting for events.
+2022-05-12 11:26:01.0330 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 705 rows aggregated
+2022-05-12 11:26:01.0330 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 38 rows written
+2022-05-12 11:26:01.0640 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:26:01.0640 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:27:00.7905 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1627 rows aggregated
+2022-05-12 11:27:00.7905 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 40 rows written
+2022-05-12 11:27:00.8095 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:27:00.8185 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:28:00.7330 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1264 rows aggregated
+2022-05-12 11:28:00.7330 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 40 rows written
+2022-05-12 11:28:00.7510 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:28:00.7590 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:29:00.7420 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1731 rows aggregated
+2022-05-12 11:29:00.7420 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 40 rows written
+2022-05-12 11:29:00.7625 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:29:00.7705 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:30:00.7780 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1446 rows aggregated
+2022-05-12 11:30:00.7780 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 68 rows written
+2022-05-12 11:30:00.7945 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:30:00.8060 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:31:00.8055 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2136 rows aggregated
+2022-05-12 11:31:00.8055 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 219 rows written
+2022-05-12 11:31:00.8240 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:31:00.8310 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:32:00.8165 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1880 rows aggregated
+2022-05-12 11:32:00.8165 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 61 rows written
+2022-05-12 11:32:00.8350 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:32:00.8350 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:33:00.8440 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1368 rows aggregated
+2022-05-12 11:33:00.8440 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 40 rows written
+2022-05-12 11:33:00.8645 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:33:00.8645 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:34:00.8610 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1504 rows aggregated
+2022-05-12 11:34:00.8610 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 40 rows written
+2022-05-12 11:34:00.8790 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:34:00.8790 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:35:01.0745 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1770 rows aggregated
+2022-05-12 11:35:01.0745 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 40 rows written
+2022-05-12 11:35:01.0930 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:35:01.1005 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:36:00.8825 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 507 rows aggregated
+2022-05-12 11:36:00.8825 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 40 rows written
+2022-05-12 11:36:00.8965 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:36:00.8965 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:37:00.9075 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows aggregated
+2022-05-12 11:37:00.9075 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 5 rows written
+2022-05-12 11:37:00.9075 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:37:00.9075 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:38:00.9160 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 11:38:00.9160 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 11:38:00.9160 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:38:00.9290 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:39:00.9535 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 365 rows aggregated
+2022-05-12 11:39:00.9535 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 40 rows written
+2022-05-12 11:39:01.7920 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:39:01.8705 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:40:00.9686 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 953 rows aggregated
+2022-05-12 11:40:00.9686 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 40 rows written
+2022-05-12 11:40:00.9833 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:40:00.9893 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:41:00.9843 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 282 rows aggregated
+2022-05-12 11:41:00.9843 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 39 rows written
+2022-05-12 11:41:00.9978 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:41:01.0053 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:42:01.0338 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows aggregated
+2022-05-12 11:42:01.0338 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 5 rows written
+2022-05-12 11:42:01.0338 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:42:01.0483 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:43:01.0153 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows aggregated
+2022-05-12 11:43:01.0153 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 4 rows written
+2022-05-12 11:43:01.0218 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:43:01.0218 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:44:01.0573 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 253 rows aggregated
+2022-05-12 11:44:01.0573 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 82 rows written
+2022-05-12 11:44:01.0728 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:44:01.0808 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:45:01.0653 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 424 rows aggregated
+2022-05-12 11:45:01.0653 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 41 rows written
+2022-05-12 11:45:01.0808 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:45:01.0808 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:46:01.0723 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 97 rows aggregated
+2022-05-12 11:46:01.0723 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 37 rows written
+2022-05-12 11:46:01.0853 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:46:01.0853 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:47:01.1056 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows aggregated
+2022-05-12 11:47:01.1056 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 5 rows written
+2022-05-12 11:47:01.1126 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:47:01.1126 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:48:01.1274 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 12 rows aggregated
+2022-05-12 11:48:01.1274 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 10 rows written
+2022-05-12 11:48:01.1419 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:48:01.1419 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:49:01.1374 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 8 rows aggregated
+2022-05-12 11:49:01.1374 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 7 rows written
+2022-05-12 11:49:01.1520 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:49:01.1579 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:50:01.1605 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 328 rows aggregated
+2022-05-12 11:50:01.1605 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 42 rows written
+2022-05-12 11:50:01.1750 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:50:01.1750 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:51:01.1704 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows aggregated
+2022-05-12 11:51:01.1704 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows written
+2022-05-12 11:51:01.1764 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:51:01.1764 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:52:01.2096 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 147 rows aggregated
+2022-05-12 11:52:01.2096 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 38 rows written
+2022-05-12 11:52:01.2256 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:52:01.2256 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:53:01.2151 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1499 rows aggregated
+2022-05-12 11:53:01.2151 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 44 rows written
+2022-05-12 11:53:01.2316 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:53:01.2386 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:54:01.2456 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 41 rows aggregated
+2022-05-12 11:54:01.2456 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 27 rows written
+2022-05-12 11:54:01.2516 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:54:01.2516 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:55:01.2500 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 4 rows aggregated
+2022-05-12 11:55:01.2500 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 4 rows written
+2022-05-12 11:55:01.2560 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:55:01.2560 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:56:01.2714 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 8 rows aggregated
+2022-05-12 11:56:01.2714 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 8 rows written
+2022-05-12 11:56:01.2854 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:56:01.2854 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:57:01.2887 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 12 rows aggregated
+2022-05-12 11:57:01.2887 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 9 rows written
+2022-05-12 11:57:01.2887 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:57:01.3037 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:58:01.3067 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 36 rows aggregated
+2022-05-12 11:58:01.3067 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 8 rows written
+2022-05-12 11:58:01.3067 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:58:01.3207 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 11:59:01.3210 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 18 rows aggregated
+2022-05-12 11:59:01.3210 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 10 rows written
+2022-05-12 11:59:01.3210 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 11:59:01.3355 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:00:01.3445 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 639 rows aggregated
+2022-05-12 12:00:01.3455 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 45 rows written
+2022-05-12 12:00:01.3455 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:00:01.3680 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:01:01.3588 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 107 rows aggregated
+2022-05-12 12:01:01.3588 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 35 rows written
+2022-05-12 12:01:01.3728 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:01:01.3788 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:02:01.3736 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 8 rows aggregated
+2022-05-12 12:02:01.3736 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 7 rows written
+2022-05-12 12:02:01.3806 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:02:01.3806 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:03:01.4218 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 865 rows aggregated
+2022-05-12 12:03:01.4218 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 45 rows written
+2022-05-12 12:03:01.4408 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:03:01.4408 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:04:01.4263 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 438 rows aggregated
+2022-05-12 12:04:01.4263 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 45 rows written
+2022-05-12 12:04:01.4408 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:04:01.4408 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:05:01.4443 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 333 rows aggregated
+2022-05-12 12:05:01.4443 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 43 rows written
+2022-05-12 12:05:01.4573 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:05:01.4573 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:06:01.4600 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:06:01.4600 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:06:01.4600 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:06:01.4730 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:07:01.4783 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 971 rows aggregated
+2022-05-12 12:07:01.4783 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 48 rows written
+2022-05-12 12:07:01.4918 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:07:01.4918 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:08:01.5148 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1798 rows aggregated
+2022-05-12 12:08:01.5148 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 45 rows written
+2022-05-12 12:08:01.5308 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:08:01.5383 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:09:01.5288 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1714 rows aggregated
+2022-05-12 12:09:01.5288 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 45 rows written
+2022-05-12 12:09:01.5478 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:09:01.5568 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:10:01.5638 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1742 rows aggregated
+2022-05-12 12:10:01.5638 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 45 rows written
+2022-05-12 12:10:01.5828 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:10:01.5828 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:11:01.6033 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1788 rows aggregated
+2022-05-12 12:11:01.6033 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 45 rows written
+2022-05-12 12:11:01.6223 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:11:01.6298 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:12:01.5903 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1668 rows aggregated
+2022-05-12 12:12:01.5903 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 48 rows written
+2022-05-12 12:12:01.6088 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:12:01.6163 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:13:02.2947 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1896 rows aggregated
+2022-05-12 12:13:02.2947 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 56 rows written
+2022-05-12 12:13:02.3117 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:13:02.3207 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:14:01.6307 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1676 rows aggregated
+2022-05-12 12:14:01.6307 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 12:14:01.6472 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:14:01.6472 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:15:01.6632 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1780 rows aggregated
+2022-05-12 12:15:01.6632 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 12:15:01.6817 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:15:01.6892 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:16:01.6742 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1958 rows aggregated
+2022-05-12 12:16:01.6742 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 12:16:01.6907 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:16:01.6907 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:17:01.7082 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1792 rows aggregated
+2022-05-12 12:17:01.7082 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 54 rows written
+2022-05-12 12:17:01.7267 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:17:01.7267 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:17:22.5312 - Error - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : An exception occurred during event enumeration. Examine the inner exception for more information.
+2022-05-12 12:17:22.5342 - Error - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener :    at Microsoft.SqlServer.XEvent.Linq.Internal.XEventEnumerator.MoveNext()
+   at WorkloadTools.Listener.ExtendedEvents.StreamXEventDataReader.ReadEvents() in C:\GitHub\WorkloadTools\WorkloadTools\Listener\ExtendedEvents\StreamXEventDataReader.cs:line 44
+   at WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener.ReadEvents() in C:\GitHub\WorkloadTools\WorkloadTools\Listener\ExtendedEvents\ExtendedEventsWorkloadListener.cs:line 274
+2022-05-12 12:17:22.5342 - Error - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : A transport-level error has occurred when receiving results from the server. (provider: TCP Provider, error: 0 - An existing connection was forcibly closed by the remote host.)
+2022-05-12 12:17:22.5342 - Info - SqlWorkload.Program : Controller stopped.
+2022-05-12 12:17:22.5342 - Info - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : Disposing ExtendedEventsWorkloadListener.
+2022-05-12 12:17:22.5502 - Warn - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : Error disposing ExtendedEventWorkloadListener: A connection was successfully established with the server, but then an error occurred during the pre-login handshake. (provider: TCP Provider, error: 0 - An existing connection was forcibly closed by the remote host.)
+2022-05-12 12:17:22.5502 - Info - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : Extended Events session [sqlworkload] stopped successfully.
+2022-05-12 12:17:22.5502 - Error - SqlWorkload.Program : System.Data.SqlClient.SqlException (0x80131904): A connection was successfully established with the server, but then an error occurred during the pre-login handshake. (provider: TCP Provider, error: 0 - An existing connection was forcibly closed by the remote host.) ---> System.ComponentModel.Win32Exception (0x80004005): An existing connection was forcibly closed by the remote host
+   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, DbConnectionPool pool, String accessToken, Boolean applyTransientFaultHandling, SqlAuthenticationProviderManager sqlAuthProviderManager)
+   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at WorkloadTools.Consumer.Analysis.WorkloadAnalyzer.WriteToServer(DateTime intervalTime) in C:\GitHub\WorkloadTools\WorkloadTools\Consumer\Analysis\WorkloadAnalyzer.cs:line 391
+   at WorkloadTools.Consumer.Analysis.WorkloadAnalyzer.Stop() in C:\GitHub\WorkloadTools\WorkloadTools\Consumer\Analysis\WorkloadAnalyzer.cs:line 375
+   at WorkloadTools.Consumer.Analysis.AnalysisConsumer.Dispose(Boolean disposing) in C:\GitHub\WorkloadTools\WorkloadTools\Consumer\Analysis\AnalysisConsumer.cs:line 71
+   at WorkloadTools.WorkloadController.Dispose() in C:\GitHub\WorkloadTools\WorkloadTools\WorkloadController.cs:line 110
+   at SqlWorkload.Program.Run(Options options) in C:\GitHub\WorkloadTools\SqlWorkload\Program.cs:line 116
+   at SqlWorkload.Program.Main(String[] args) in C:\GitHub\WorkloadTools\SqlWorkload\Program.cs:line 47
+ClientConnectionId:1fbb6422-96aa-4bf4-9a10-376b524e476a
+Error Number:10054,State:0,Class:20
+2022-05-12 12:22:04.4858 - Info - SqlWorkload.Program : Reading configuration from 'G:\OneDrive\Documents\GitHub\Presentations\2022\Data Grillen\config\replay.json'
+2022-05-12 12:22:04.5538 - Info - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : Reading Extended Events session definition from C:\Program Files\WorkloadTools\Listener\ExtendedEvents\sqlworkload.sql
+2022-05-12 12:22:04.5723 - Info - WorkloadTools.WorkloadController : Listener of type ExtendedEventsWorkloadListener initialized correctly. Waiting for events.
+2022-05-12 12:23:05.0318 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1116 rows aggregated
+2022-05-12 12:23:05.0318 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 49 rows written
+2022-05-12 12:23:05.0658 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:23:05.0658 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:24:04.8473 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1954 rows aggregated
+2022-05-12 12:24:04.8473 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 117 rows written
+2022-05-12 12:24:04.8618 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:24:04.8618 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:25:04.7992 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2400 rows aggregated
+2022-05-12 12:25:04.7992 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 211 rows written
+2022-05-12 12:25:04.8198 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:25:04.8198 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:26:04.8668 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1735 rows aggregated
+2022-05-12 12:26:04.8668 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 55 rows written
+2022-05-12 12:26:04.8848 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:26:04.8923 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:27:04.8312 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1975 rows aggregated
+2022-05-12 12:27:04.8312 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 12:27:04.8492 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:28:04.8863 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2059 rows aggregated
+2022-05-12 12:28:04.8863 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 12:28:04.9058 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:28:04.9128 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:29:04.9533 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2031 rows aggregated
+2022-05-12 12:29:04.9533 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 12:29:04.9718 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:30:04.9043 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1675 rows aggregated
+2022-05-12 12:30:04.9043 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 12:30:04.9213 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:30:04.9278 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:31:04.9378 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1911 rows aggregated
+2022-05-12 12:31:04.9378 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 54 rows written
+2022-05-12 12:31:04.9553 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:31:04.9553 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:32:04.9583 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1851 rows aggregated
+2022-05-12 12:32:04.9583 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 12:32:04.9753 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:32:04.9753 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:33:04.9753 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1711 rows aggregated
+2022-05-12 12:33:04.9753 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 12:33:04.9923 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:33:05.9893 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:34:04.9973 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1992 rows aggregated
+2022-05-12 12:34:04.9973 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 12:34:05.0133 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:34:05.0193 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:35:05.0018 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:35:05.0018 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:35:05.0018 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:35:05.0018 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:36:05.0323 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows aggregated
+2022-05-12 12:36:05.0328 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 5 rows written
+2022-05-12 12:36:05.0328 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:36:05.0328 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:37:05.0401 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:37:05.0401 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:37:05.0401 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:37:05.0537 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:38:05.0567 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:38:05.0567 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:38:05.0567 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:38:05.0702 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:39:05.1039 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:39:05.1039 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:39:05.1039 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:39:05.1164 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:40:05.0958 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:40:05.0958 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:40:05.0958 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:40:05.0958 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:41:05.1161 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows aggregated
+2022-05-12 12:41:05.1161 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 5 rows written
+2022-05-12 12:41:05.1161 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:41:05.1301 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:42:05.1357 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:42:05.1357 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:42:05.1432 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:42:05.1432 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:43:05.1613 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:43:05.1613 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:43:05.1613 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:43:05.1753 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:44:05.1799 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:44:05.1799 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:44:05.1799 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:44:05.1934 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:45:05.1915 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:45:05.1915 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:45:05.1915 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:45:05.1915 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:46:05.2242 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows aggregated
+2022-05-12 12:46:05.2242 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 5 rows written
+2022-05-12 12:46:05.2242 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:46:05.2392 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:47:05.2467 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:47:05.2467 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:47:05.2527 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:47:05.2527 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:48:05.2626 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:48:05.2626 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:48:05.2691 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:48:05.2691 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:49:05.2817 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:49:05.2827 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:49:05.2827 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:49:05.2827 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:50:05.2989 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:50:05.2989 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:50:05.2989 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:50:05.2989 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:51:05.3176 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows aggregated
+2022-05-12 12:51:05.3176 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 5 rows written
+2022-05-12 12:51:05.3176 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:51:05.3321 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:52:05.3456 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:52:05.3456 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:52:05.3456 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:52:05.3611 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:53:05.3588 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:53:05.3588 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:53:05.3653 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:53:05.3653 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:54:05.3713 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:54:05.3713 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:54:05.3773 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:54:05.3773 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:55:05.3908 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:55:05.3908 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:55:05.3978 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:55:05.3978 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:56:05.4172 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows aggregated
+2022-05-12 12:56:05.4172 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 5 rows written
+2022-05-12 12:56:05.4239 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:56:05.4239 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:57:05.4440 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:57:05.4440 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:57:05.4440 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:57:05.4590 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:58:05.4569 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:58:05.4569 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:58:05.4569 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:58:05.4709 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 12:59:05.4666 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 12:59:05.4666 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 12:59:05.4736 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 12:59:05.4736 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:00:05.4867 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 13:00:05.4867 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 13:00:05.4867 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 13:00:05.5017 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:01:05.5098 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows aggregated
+2022-05-12 13:01:05.5098 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 5 rows written
+2022-05-12 13:01:05.5098 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 13:01:05.5243 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:02:05.5324 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 13:02:05.5324 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 13:02:05.5324 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 13:02:05.5324 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:03:05.5435 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 13:03:05.5435 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 13:03:05.5495 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 13:03:05.5495 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:04:05.5698 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 13:04:05.5698 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 13:04:05.5698 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 13:04:05.5828 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:05:05.5867 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 13:05:05.5867 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 13:05:05.5867 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 13:05:05.5992 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:06:05.6077 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows aggregated
+2022-05-12 13:06:05.6077 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 5 rows written
+2022-05-12 13:06:05.6142 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 13:06:05.6142 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:07:05.6199 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 13:07:05.6199 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 13:07:05.6199 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 13:07:05.6329 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:08:05.6516 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 13:08:05.6516 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 13:08:05.6586 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 13:08:05.6586 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:09:05.6580 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 13:09:05.6580 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 13:09:05.6580 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 13:09:05.6580 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:10:05.6838 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 13:10:05.6838 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 13:10:05.6893 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 13:10:05.6893 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:11:05.7015 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows aggregated
+2022-05-12 13:11:05.7015 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 5 rows written
+2022-05-12 13:11:05.7075 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 13:11:05.7075 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:12:05.7204 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 13:12:05.7204 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 13:12:05.7204 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 13:12:05.7204 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:13:05.7374 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 13:13:05.7374 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 13:13:05.7374 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 13:13:05.7374 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:14:05.7592 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 13:14:05.7592 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 13:14:05.7592 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 13:14:05.7742 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:15:05.7752 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 13:15:05.7752 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 13:15:05.7752 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 13:15:05.7887 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:16:05.7938 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows aggregated
+2022-05-12 13:16:05.7938 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 5 rows written
+2022-05-12 13:16:05.8003 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 13:16:05.8003 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:17:05.8183 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 13:17:05.8183 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 13:17:05.8183 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 13:17:05.8333 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:18:05.8350 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 13:18:05.8350 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 13:18:05.8350 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 13:18:05.8480 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:19:05.6953 - Info - SqlWorkload.Program : Received shutdown signal...
+2022-05-12 13:19:05.7718 - Info - SqlWorkload.Program : Controller stopped.
+2022-05-12 13:19:05.8182 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 13:19:05.8182 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 13:19:05.8182 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 13:19:05.8308 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 13:19:05.8308 - Info - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : Disposing ExtendedEventsWorkloadListener.
+2022-05-12 13:19:05.8308 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Unable to write workload analysis.
+2022-05-12 13:19:05.8308 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Violation of PRIMARY KEY constraint 'PK__Interval__6ED7FE589AF3A7D0'. Cannot insert duplicate key in object 'replay.Intervals'. The duplicate key value is (705676745).
+The statement has been terminated.
+2022-05-12 13:19:05.8468 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Unable to write workload analysis.
+2022-05-12 13:19:05.8468 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Violation of PRIMARY KEY constraint 'PK__Interval__6ED7FE589AF3A7D0'. Cannot insert duplicate key in object 'replay.Intervals'. The duplicate key value is (705676745).
+The statement has been terminated.
+2022-05-12 13:19:05.8468 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Unable to write workload analysis.
+2022-05-12 13:19:05.8468 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Violation of PRIMARY KEY constraint 'PK__Interval__6ED7FE589AF3A7D0'. Cannot insert duplicate key in object 'replay.Intervals'. The duplicate key value is (705676745).
+The statement has been terminated.
+2022-05-12 13:19:05.8468 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Unable to write workload analysis.
+2022-05-12 13:19:05.8468 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Violation of PRIMARY KEY constraint 'PK__Interval__6ED7FE589AF3A7D0'. Cannot insert duplicate key in object 'replay.Intervals'. The duplicate key value is (705676745).
+The statement has been terminated.
+2022-05-12 13:19:05.8608 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Unable to write workload analysis.
+2022-05-12 13:19:05.8608 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Violation of PRIMARY KEY constraint 'PK__Interval__6ED7FE589AF3A7D0'. Cannot insert duplicate key in object 'replay.Intervals'. The duplicate key value is (705676745).
+The statement has been terminated.
+2022-05-12 13:19:05.8608 - Info - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : Extended Events session [sqlworkload] stopped successfully.
+2022-05-12 13:19:05.8608 - Info - SqlWorkload.Program : Controller disposed.
+2022-05-12 13:19:05.8608 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Unable to write workload analysis.
+2022-05-12 13:19:05.8608 - Warn - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Violation of PRIMARY KEY constraint 'PK__Interval__6ED7FE589AF3A7D0'. Cannot insert duplicate key in object 'replay.Intervals'. The duplicate key value is (705676745).
+The statement has been terminated.
+2022-05-12 13:19:05.8608 - Error - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Unable to write workload analysis info to the destination database.
+2022-05-12 13:19:05.8608 - Error - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer :    at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   at System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   at System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at WorkloadTools.Consumer.Analysis.WorkloadAnalyzer.CreateInterval(SqlConnection conn, SqlTransaction tran, DateTime intervalTime)
+   at WorkloadTools.Consumer.Analysis.WorkloadAnalyzer.WriteToServer(DateTime intervalTime)
+   at WorkloadTools.Consumer.Analysis.WorkloadAnalyzer.CloseInterval()
+2022-05-12 14:26:42.4612 - Info - SqlWorkload.Program : Reading configuration from 'G:\OneDrive\Documents\GitHub\Presentations\2022\Data Grillen\config\replay.json'
+2022-05-12 14:26:42.5567 - Info - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : Reading Extended Events session definition from C:\Program Files\WorkloadTools\Listener\ExtendedEvents\sqlworkload.sql
+2022-05-12 14:26:42.5767 - Info - WorkloadTools.WorkloadController : Listener of type ExtendedEventsWorkloadListener initialized correctly. Waiting for events.
+2022-05-12 14:27:43.0487 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1577 rows aggregated
+2022-05-12 14:27:43.0487 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 49 rows written
+2022-05-12 14:27:43.1017 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:27:43.1167 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:28:42.8997 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2016 rows aggregated
+2022-05-12 14:28:42.8997 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 14:28:42.9162 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:28:42.9237 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:29:42.7627 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2138 rows aggregated
+2022-05-12 14:29:42.7627 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 14:29:42.7827 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:29:42.7827 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:30:42.8172 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2272 rows aggregated
+2022-05-12 14:30:42.8172 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 146 rows written
+2022-05-12 14:30:42.8332 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:30:42.8332 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:31:42.8462 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2110 rows aggregated
+2022-05-12 14:31:42.8462 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 141 rows written
+2022-05-12 14:31:42.8662 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:31:42.8662 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:32:42.8777 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2190 rows aggregated
+2022-05-12 14:32:42.8777 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 95 rows written
+2022-05-12 14:32:42.8997 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:32:42.9077 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:33:42.8717 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2156 rows aggregated
+2022-05-12 14:33:42.8717 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 14:33:42.8922 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:33:42.8922 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:34:42.8992 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1888 rows aggregated
+2022-05-12 14:34:42.8992 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 14:34:42.9187 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:34:42.9277 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:35:42.9127 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2064 rows aggregated
+2022-05-12 14:35:42.9127 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 14:35:42.9292 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:35:42.9292 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:36:42.9337 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1825 rows aggregated
+2022-05-12 14:36:42.9337 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 14:36:42.9512 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:36:42.9597 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:37:42.9467 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1954 rows aggregated
+2022-05-12 14:37:42.9467 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 54 rows written
+2022-05-12 14:37:43.3057 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:37:43.3599 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:38:42.9787 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 14:38:42.9787 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 14:38:42.9862 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:38:42.9862 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:39:42.9812 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 14:39:42.9812 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 14:39:42.9873 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:39:42.9873 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:40:02.2673 - Info - SqlWorkload.Program : Received shutdown signal...
+2022-05-12 14:40:42.7898 - Info - SqlWorkload.Program : Controller stopped.
+2022-05-12 14:40:42.8363 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-12 14:40:42.8363 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-12 14:40:42.8363 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:40:42.8498 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:40:42.8498 - Info - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : Disposing ExtendedEventsWorkloadListener.
+2022-05-12 14:40:42.8698 - Info - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : Extended Events session [sqlworkload] stopped successfully.
+2022-05-12 14:40:42.8698 - Info - SqlWorkload.Program : Controller disposed.
+2022-05-12 14:41:51.8793 - Info - SqlWorkload.Program : Reading configuration from 'G:\OneDrive\Documents\GitHub\Presentations\2022\Data Grillen\config\replay.json'
+2022-05-12 14:41:51.9473 - Info - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : Reading Extended Events session definition from C:\Program Files\WorkloadTools\Listener\ExtendedEvents\sqlworkload.sql
+2022-05-12 14:41:51.9633 - Info - WorkloadTools.WorkloadController : Listener of type ExtendedEventsWorkloadListener initialized correctly. Waiting for events.
+2022-05-12 14:42:52.5623 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1653 rows aggregated
+2022-05-12 14:42:52.5623 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 49 rows written
+2022-05-12 14:42:52.5933 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:42:52.6043 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:43:52.1773 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2055 rows aggregated
+2022-05-12 14:43:52.1773 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 14:43:52.1963 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:43:52.2053 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:44:52.2378 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2060 rows aggregated
+2022-05-12 14:44:52.2378 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 14:44:52.2533 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:44:52.2533 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:45:52.1713 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1891 rows aggregated
+2022-05-12 14:45:52.1713 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 14:45:52.1888 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:45:52.1888 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:46:52.3053 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2255 rows aggregated
+2022-05-12 14:46:52.3053 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 107 rows written
+2022-05-12 14:46:52.3273 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:47:52.4548 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2297 rows aggregated
+2022-05-12 14:47:52.4548 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 220 rows written
+2022-05-12 14:47:52.4718 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:47:52.4718 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:48:52.2448 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1979 rows aggregated
+2022-05-12 14:48:52.2448 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 14:48:52.2628 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:48:52.2698 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:49:44.1328 - Info - SqlWorkload.Program : Received shutdown signal...
+2022-05-12 14:49:44.3093 - Info - SqlWorkload.Program : Received shutdown signal...
+2022-05-12 14:49:47.9623 - Info - SqlWorkload.Program : Controller stopped.
+2022-05-12 14:49:48.0108 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1792 rows aggregated
+2022-05-12 14:49:48.0108 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-12 14:49:48.0243 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-12 14:49:48.0243 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-12 14:49:48.0368 - Info - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : Disposing ExtendedEventsWorkloadListener.
+2022-05-12 14:49:48.0368 - Info - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : Extended Events session [sqlworkload] stopped successfully.
+2022-05-12 14:49:48.0368 - Info - SqlWorkload.Program : Controller disposed.
+2022-05-13 14:10:41.3651 - Info - SqlWorkload.Program : Reading configuration from 'G:\OneDrive\Documents\GitHub\Presentations\2022\Data Grillen\config\replay.json'
+2022-05-13 14:10:41.4846 - Info - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : Reading Extended Events session definition from C:\Program Files\WorkloadTools\Listener\ExtendedEvents\sqlworkload.sql
+2022-05-13 14:10:41.5046 - Info - WorkloadTools.WorkloadController : Listener of type ExtendedEventsWorkloadListener initialized correctly. Waiting for events.
+2022-05-13 14:11:42.4738 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1718 rows aggregated
+2022-05-13 14:11:42.4738 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 197 rows written
+2022-05-13 14:11:42.5053 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:11:42.5053 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:12:42.0068 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2192 rows aggregated
+2022-05-13 14:12:42.0068 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 119 rows written
+2022-05-13 14:12:42.0213 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:12:42.0213 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:13:41.7378 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1931 rows aggregated
+2022-05-13 14:13:41.7378 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-13 14:13:41.7548 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:13:41.7548 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:14:41.7394 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 1641 rows aggregated
+2022-05-13 14:14:41.7394 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 51 rows written
+2022-05-13 14:14:41.7394 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:14:41.7584 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:15:41.7700 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:15:41.7700 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:15:41.7700 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:15:41.7700 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:16:41.7702 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:16:41.7702 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:16:41.7702 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:16:41.7702 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:17:41.7964 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows aggregated
+2022-05-13 14:17:41.7964 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 5 rows written
+2022-05-13 14:17:41.8014 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:17:41.8014 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:18:41.8144 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:18:41.8144 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:18:41.8194 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:18:41.8194 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:19:41.8264 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:19:41.8264 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:19:41.8264 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:19:41.8264 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:20:41.8426 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:20:41.8426 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:20:41.8481 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:20:41.8481 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:21:41.8664 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:21:41.8664 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:21:41.8664 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:21:41.8664 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:22:41.8865 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows aggregated
+2022-05-13 14:22:41.8865 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 5 rows written
+2022-05-13 14:22:41.8865 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:22:41.8865 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:23:41.8990 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:23:41.8990 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:23:41.8990 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:23:41.8990 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:24:41.9403 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:24:41.9403 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:24:41.9463 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:24:41.9463 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:25:41.9338 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:25:41.9338 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:25:41.9338 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:25:41.9338 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:26:41.9513 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:26:41.9513 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:26:41.9513 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:26:41.9628 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:27:41.9763 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows aggregated
+2022-05-13 14:27:41.9763 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 5 rows written
+2022-05-13 14:27:41.9763 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:27:41.9763 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:28:41.9949 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:28:41.9949 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:28:41.9949 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:28:42.0054 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:29:42.0105 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:29:42.0105 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:29:42.0105 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:29:42.0105 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:30:42.0281 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:30:42.0281 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:30:42.0281 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:30:42.0281 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:31:42.0501 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:31:42.0501 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:31:42.0561 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:31:42.0561 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:32:42.0701 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows aggregated
+2022-05-13 14:32:42.0701 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 5 rows written
+2022-05-13 14:32:42.0701 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:32:42.0701 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:33:42.0840 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:33:42.0840 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:33:42.0840 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:33:42.0840 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:34:42.1004 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:34:42.1004 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:34:42.1004 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:34:42.1004 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:35:42.1167 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:35:42.1167 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:35:42.1167 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:35:42.1167 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:36:42.1422 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:36:42.1422 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:36:42.1482 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:36:42.1482 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:37:42.1652 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows aggregated
+2022-05-13 14:37:42.1652 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 5 rows written
+2022-05-13 14:37:42.1652 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:37:42.1652 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:38:42.1852 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:38:42.1852 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:38:42.1922 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:38:42.1922 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:39:42.1950 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:39:42.1950 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:39:42.1950 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:39:42.1950 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:40:42.2362 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:40:42.2362 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:40:42.2417 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:40:42.2417 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:41:42.2315 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:41:42.2315 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:41:42.2315 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:41:42.2315 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:42:42.2472 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 6 rows aggregated
+2022-05-13 14:42:42.2472 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 5 rows written
+2022-05-13 14:42:42.2472 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:42:42.2472 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:43:42.2773 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:43:42.2773 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:43:42.2773 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:43:42.2773 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:44:42.2873 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:44:42.2873 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:44:42.2873 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:44:42.2873 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:45:42.3078 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:45:42.3078 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:45:42.3078 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:45:42.3078 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:46:42.3161 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows aggregated
+2022-05-13 14:46:42.3161 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : 2 rows written
+2022-05-13 14:46:42.3211 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Performance counters written
+2022-05-13 14:46:42.3211 - Info - WorkloadTools.Consumer.Analysis.WorkloadAnalyzer : Wait stats written
+2022-05-13 14:47:07.4009 - Error - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : An exception occurred during event enumeration. Examine the inner exception for more information.
+2022-05-13 14:47:07.4009 - Error - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener :    at Microsoft.SqlServer.XEvent.Linq.Internal.XEventEnumerator.MoveNext()
+   at WorkloadTools.Listener.ExtendedEvents.StreamXEventDataReader.ReadEvents() in C:\GitHub\WorkloadTools\WorkloadTools\Listener\ExtendedEvents\StreamXEventDataReader.cs:line 44
+   at WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener.ReadEvents() in C:\GitHub\WorkloadTools\WorkloadTools\Listener\ExtendedEvents\ExtendedEventsWorkloadListener.cs:line 274
+2022-05-13 14:47:07.4009 - Error - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : A transport-level error has occurred when receiving results from the server. (provider: TCP Provider, error: 0 - An existing connection was forcibly closed by the remote host.)
+2022-05-13 14:47:07.4009 - Info - WorkloadTools.Listener.ExtendedEvents.ExtendedEventsWorkloadListener : Disposing ExtendedEventsWorkloadListener.
+2022-05-13 14:47:07.4009 - Info - SqlWorkload.Program : Controller stopped.
+2022-05-13 14:47:21.8131 - Error - SqlWorkload.Program : System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: TCP Provider, error: 0 - The remote computer refused the network connection.) ---> System.ComponentModel.Win32Exception (0x80004005): The remote computer refused the network connection
+   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, DbConnectionPool pool, String accessToken, Boolean applyTransientFaultHandling, SqlAuthenticationProviderManager sqlAuthProviderManager)
+   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at WorkloadTools.Consumer.Analysis.WorkloadAnalyzer.WriteToServer(DateTime intervalTime) in C:\GitHub\WorkloadTools\WorkloadTools\Consumer\Analysis\WorkloadAnalyzer.cs:line 391
+   at WorkloadTools.Consumer.Analysis.WorkloadAnalyzer.Stop() in C:\GitHub\WorkloadTools\WorkloadTools\Consumer\Analysis\WorkloadAnalyzer.cs:line 375
+   at WorkloadTools.Consumer.Analysis.AnalysisConsumer.Dispose(Boolean disposing) in C:\GitHub\WorkloadTools\WorkloadTools\Consumer\Analysis\AnalysisConsumer.cs:line 71
+   at WorkloadTools.WorkloadController.Dispose() in C:\GitHub\WorkloadTools\WorkloadTools\WorkloadController.cs:line 110
+   at SqlWorkload.Program.Run(Options options) in C:\GitHub\WorkloadTools\SqlWorkload\Program.cs:line 116
+   at SqlWorkload.Program.Main(String[] args) in C:\GitHub\WorkloadTools\SqlWorkload\Program.cs:line 47
+ClientConnectionId:00000000-0000-0000-0000-000000000000
+Error Number:1225,State:0,Class:20

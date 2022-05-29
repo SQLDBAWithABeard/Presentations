@@ -1,0 +1,36 @@
+{
+    "name": "DataGrillen",
+    "workspaceFolder": "/workspace",
+    "dockerComposeFile": [
+        "docker-compose.yml"
+    ],
+    "remoteEnv": {
+        "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
+        "MY_SERVER": "workloadtools"
+    },
+    // this is the service that will be opened
+    "service": "workloadtools",
+    "settings": {
+        "editor.renderWhitespace": "all",
+        "#terminal.integrated.profiles.linux#": {
+        "pwsh": {
+            "path": "pwsh",
+            "icon": "terminal-powershell"
+        }
+    },
+    "terminal.integrated.defaultProfile.linux": "pwsh"
+    },
+    "extensions": [
+        "ms-vscode.powershell",
+        "2gua.rainbow-brackets",
+        "oderwat.indent-rainbow",
+        "mhutchie.git-graph",
+        "usernamehw.errorlens",
+        "medo64.render-crlf",
+        "ms-mssql.mssql",
+        "ms-mssql.sql-database-projects-vscode",
+        "ms-mssql.sql-bindings-vscode"
+    ],
+    "shutdownAction": "stopCompose",
+    "remoteUser": "root"  // not ideal - prob need to setup a non-root user and use that instead. permissions issue without this!
+}
