@@ -5,7 +5,7 @@
             "ConnectionInfo": {
                 "ServerName": "localhost,7433",
                 "DatabaseName": "AdventureWorks",
-                "UserName": "sa",
+                "UserName": "sqladmin",
                 "Password": "dbatools.IO"
             }
         },
@@ -16,7 +16,7 @@
                 "ServerName": "localhost,7444",
                 "DatabaseName": "WorkLoadTools",
                 "SchemaName": "replay",
-                "UserName": "sa",
+                "UserName": "sqladmin",
                 "Password": "dbatools.IO"
             },
             "UploadIntervalSeconds": 60

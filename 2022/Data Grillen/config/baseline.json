@@ -5,7 +5,7 @@
             "__type": "ExtendedEventsWorkloadListener",
             "ConnectionInfo": {
                 "ServerName": "localhost,7432",
-                "UserName": "sa",
+                "UserName": "sqladmin",
                 "Password": "dbatools.IO"
             },
             "DatabaseFilter": "AdventureWorks"
@@ -16,7 +16,7 @@
                 "ConnectionInfo": {
                     "ServerName": "localhost,7433",
                     "DatabaseName": "AdventureWorks",
-                    "UserName": "sa",
+                    "UserName": "sqladmin",
                     "Password": "dbatools.IO"
                 }
             },
@@ -26,7 +26,7 @@
                     "ServerName": "localhost,7444",
                     "DatabaseName": "WorkLoadTools",
                     "SchemaName": "baseline",
-                    "UserName": "sa",
+                    "UserName": "sqladmin",
                     "Password": "dbatools.IO"
                 },
                 "UploadIntervalSeconds": 60
