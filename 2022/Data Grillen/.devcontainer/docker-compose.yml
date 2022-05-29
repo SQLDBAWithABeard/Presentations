@@ -8,7 +8,7 @@ services:
         # Update this to wherever you want VS Code to mount the folder of your project
         - ..:/workspace:cached
       ports:
-        - "7433:1433"
+        - "7432:1433"
       container_name: datagrillen1
       hostname: datagrillen1
       
@@ -21,7 +21,7 @@ services:
         # So that the second container is rebuilt everytime as well 
         - ..:/workspace:cached
       ports:
-        - "7432:1433"
+        - "7433:1433"
       container_name: datagrillen2
       hostname: datagrillen2
 
