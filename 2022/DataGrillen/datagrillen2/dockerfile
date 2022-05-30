@@ -24,7 +24,7 @@ RUN wget https://github.com/Microsoft/sql-server-samples/releases/download/adven
 RUN ls /tmp
 
 # copy scripts and make bash files executable
-# use copy instead of add, it's safer apparently
+# use copy instead of add, it's safer apparently 
 COPY scripts /tmp/
 RUN chmod +x /tmp/*.sh
 
