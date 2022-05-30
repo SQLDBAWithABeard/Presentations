@@ -64,12 +64,12 @@ jobs:
           replace: "datagrillen1:${{ steps.bump.outputs.new_tag }}"
           include: "{2022/DataGrillen/demo.ps1*,2022/DataGrillen/**/.*/**}" 
       -
-        name: Find and Replace datagrillen2
-        uses: jacobtomlinson/gha-find-replace@v2
-        with:
-          find: "datagrillen2:.*"
-          replace: "datagrillen2:${{ steps.bump.outputs.new_tag }}"
-          include: "{2022/DataGrillen/demo.ps1*,2022/DataGrillen/**/.*devcontainer/docker-compose.yml*}" 
+        name: Replace in the Docker Compose
+        shell: pwsh
+        run:  |
+          $replace = ${{ steps.bump.outputs.new_tag }}
+          $new = (Get-Content 2022\DataGrillen\.devcontainer\docker-compose.yml) -replace 'datagrillen1:v.*', "datagrillen1:$replace" -replace 'datagrillen2:v.*', "datagrillen2:$replace"
+          $new | Set-Content  2022\DataGrillen\.devcontainer\docker-compose.yml
       -
         name: Add & Commit
         uses: EndBug/add-and-commit@v8.0.2
