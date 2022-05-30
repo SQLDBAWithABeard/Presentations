@@ -72,7 +72,7 @@ jobs:
         with:
           author_name: Beardy McBeardFace
           author_email: mrrobsewell@outlook.com
-          message: 'The Beard says we have another Data Grillen container - This is an automated message'
+          message: 'The Beard says we have another Data Grillen container ${{ steps.bump.outputs.new_tag }} - This is an automated message'
 
 
 
