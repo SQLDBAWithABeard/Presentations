@@ -23,7 +23,7 @@
                     "database": "AdventureWorks",
                     "authenticationType": "SqlLogin",
                     "user": "sqladmin",
-                    "password": "",
+                    "password": "dbatools.IO",
                     "emptyPasswordInput": false,
                     "savePassword": true,
                     "profileName": "datagrillen1"
@@ -33,7 +33,7 @@
                     "database": "AdventureWorks",
                     "authenticationType": "SqlLogin",
                     "user": "sqladmin",
-                    "password": "",
+                    "password": "dbatools.IO",
                     "emptyPasswordInput": false,
                     "savePassword": true,
                     "profileName": "datagrillen2"
