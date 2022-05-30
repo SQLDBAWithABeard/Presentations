@@ -12,9 +12,13 @@ docker pull mcr.microsoft.com/mssql/server:2017-latest
 # get the back up
 
 if (-not (Test-Path  $env:TEMP\Backups\AdventureWorks2017.bak)) {
-    wget https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2017.bak -P $env:TEMP\Backups\
-
-    
+    if(-not (Test-Path $env:TEMP\Backups)) {
+        New-Item -ItemType Directory -Force -Path $env:TEMP\Backups
+    }
+    $Url = 'https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2017.bak'
+    $OutputFile = '{0}\Backups\AdventureWorks2017.bak' -f $env:TEMP 
+    $wc = New-Object System.Net.WebClient
+    $wc.DownloadFile($Url, $OutputFile)
 }
 
 # and run some containers
@@ -30,7 +34,7 @@ docker container run -d `
     -p 7433:1433 `
     --env ACCEPT_EULA=Y `
     --env MSSQL_SA_PASSWORD=dbatools.IO `
-    --volume F:\BackupShare:/tmp/backups `
+    --volume $env:TEMP\Backups\:/tmp/backups `
     --name 2019 `
     mcr.microsoft.com/mssql/server:2019-latest
 
@@ -50,17 +54,17 @@ $continercredential = New-Object System.Management.Automation.PSCredential('sa',
 
 # We need a database
 
-$Instance1 = Connect-DbaInstance -SqlInstance 'localhost,7432' -SqlCredential $continercredential
-$Instance2 = Connect-DbaInstance -SqlInstance 'localhost,7433' -SqlCredential $continercredential
+$datagrillen1 = Connect-DbaInstance -SqlInstance 'localhost,7432' -SqlCredential $continercredential
+$datagrillen2 = Connect-DbaInstance -SqlInstance 'localhost,7433' -SqlCredential $continercredential
 
 
-Restore-DbaDatabase -SqlInstance $Instance1 -Path /tmp/backups/AdventureWorks_FULL_COPY_ONLY.bak -DatabaseName AdventureWorks
-Restore-DbaDatabase -SqlInstance $Instance2 -Path /tmp/backups/AdventureWorks_FULL_COPY_ONLY.bak -DatabaseName AdventureWorks
+Restore-DbaDatabase -SqlInstance $datagrillen1 -Path /tmp/backups/AdventureWorks_FULL_COPY_ONLY.bak -DatabaseName AdventureWorks
+Restore-DbaDatabase -SqlInstance $datagrillen2 -Path /tmp/backups/AdventureWorks_FULL_COPY_ONLY.bak -DatabaseName AdventureWorks
 
 $query = "ALTER DATABASE AdventureWorks
 SET COMPATIBILITY_LEVEL = 150"
 
-Invoke-DbaQuery -SqlInstance $Instance2 -Query $query
+Invoke-DbaQuery -SqlInstance $datagrillen2 -Query $query
 
 # Take a look in ADS
 
@@ -72,20 +76,20 @@ docker stop 2017
 docker stop 2019
 
 # create an image
-docker commit 2017 sqldbawithabeard/instance1
-docker commit 2019 sqldbawithabeard/instance2
+docker commit 2017 sqldbawithabeard/datagrillen1
+docker commit 2019 sqldbawithabeard/datagrillen2
 
 # tag the image
-docker tag sqldbawithabeard/instance1 sqldbawithabeard/instance1:v0.0.0
-docker tag sqldbawithabeard/instance2 sqldbawithabeard/instance2:v0.0.0
+docker tag sqldbawithabeard/datagrillen1 sqldbawithabeard/datagrillen1:v0.0.0
+docker tag sqldbawithabeard/datagrillen2 sqldbawithabeard/datagrillen2:v0.0.0
 
 
 docker image ls -f "reference=sqldbawithabeard/in*"
 
 # push the image
 
-docker push sqldbawithabeard/instance1:v0.0.0
-docker push sqldbawithabeard/instance2:v0.0.0
+docker push sqldbawithabeard/datagrillen1:v0.0.0
+docker push sqldbawithabeard/datagrillen2:v0.0.0
 
 
 # remove the containers
@@ -102,15 +106,15 @@ docker compose -f .devcontainer\docker-compose.yml up -d
 
 docker compose -f .devcontainer\docker-compose.yml down
 
-cd  .\Instance1
+cd  .\datagrillen1
 docker build -t instance1 . --progress=plain --no-cache
-docker tag instance1 sqldbawithabeard/instance1:v0.0.0
-docker push sqldbawithabeard/instance1:v0.0.0
+docker tag instance1 sqldbawithabeard/datagrillen1:v0.0.0
+docker push sqldbawithabeard/datagrillen1:v0.0.0
 
-cd  ..\Instance2
+cd  ..\datagrillen2
 docker build -t instance2 . # --progress=plain --no-cache
-docker tag instance2 sqldbawithabeard/instance2:v0.0.0
-docker push sqldbawithabeard/instance2:v0.0.0
+docker tag instance2 sqldbawithabeard/datagrillen2:v0.0.0
+docker push sqldbawithabeard/datagrillen2:v0.0.0
 
 
 #
@@ -141,13 +145,13 @@ cd 'C:\Program Files\WorkloadTools\'
 $securePassword = ('dbatools.IO' | ConvertTo-SecureString -AsPlainText -Force)
 $continercredential = New-Object System.Management.Automation.PSCredential('sqladmin', $securePassword)
 
-$Instance1 = Connect-DbaInstance -SqlInstance datagrillen1 -SqlCredential $continercredential
-$Instance2 = Connect-DbaInstance -SqlInstance datagrillen2 -SqlCredential $continercredential
+$datagrillen1 = Connect-DbaInstance -SqlInstance datagrillen1 -SqlCredential $continercredential
+$datagrillen2 = Connect-DbaInstance -SqlInstance datagrillen2 -SqlCredential $continercredential
 
 $Colours = [enum]::GetValues([System.ConsoleColor])
 $Queries = Get-Content -Delimiter "------" -Path "AdventureWorksBOLWorkload.sql"
 $x = 0
-$db = Get-DbaDatabase -SqlInstance $Instance1 -Database AdventureWorks     
+$db = Get-DbaDatabase -SqlInstance $datagrillen1 -Database AdventureWorks     
 while ($x -lt 10000) {
     # Pick a Random Query from the input object 
     $Query = Get-Random -InputObject $Queries; 
