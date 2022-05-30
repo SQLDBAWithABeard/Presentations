@@ -18,6 +18,8 @@ RUN echo "export HISTFILE=/commandhistory/.bash_history" >> "/root/.bashrc" \
     && mkdir -p /commandhistory \
     && touch /commandhistory/.bash_history 
 
+# We want to download the AdventureWorks sample database ready for creating the containers
+
 RUN wget https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2017.bak -P /tmp/
 RUN ls /tmp
 
