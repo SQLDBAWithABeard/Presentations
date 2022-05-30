@@ -5,7 +5,7 @@ RUN apt-get update && apt install -y powershell
 # install git
 RUN apt install -y git
 
-# things for ImportExcel
+# things for ImportExcel - DO we need this?
 
 RUN apt-get -y update \
     && apt-get install -y --no-install-recommends libgdiplus libc6-dev
