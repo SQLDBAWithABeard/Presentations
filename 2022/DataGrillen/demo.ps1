@@ -130,12 +130,12 @@ New-DbaDatabase -SqlInstance $WorkloadTools -Name WorkloadTools
 
 
 # start replay 
-$ConfigPath = (Get-Item 'Presentations:\2022\Data Grillen\Config\').FullName
+$ConfigPath = (Get-Item 'Presentations:\2022\DataGrillen\Config\').FullName
 cd 'C:\Program Files\WorkloadTools\'
 .\SqlWorkload.exe --log $ConfigPath\Log\replay.log --File $ConfigPath\replay.json
 
 # start baseline 
-$ConfigPath = (Get-Item 'Presentations:\2022\Data Grillen\Config\').FullName
+$ConfigPath = (Get-Item 'Presentations:\2022\DataGrillen\Config\').FullName
 cd 'C:\Program Files\WorkloadTools\'
 .\SqlWorkload.exe --log $ConfigPath\Log\baseline.log --File $ConfigPath\baseline.json
 
@@ -170,7 +170,8 @@ while ($x -lt 10000) {
 
 
 #endregion
-$ConfigPath = (Get-Item 'Presentations:\2022\Data Grillen\Config\').FullName
+$ConfigPath = (Get-Item 'Presentations:\2022\DataGrillen\Config\').FullName
 cd 'C:\Program Files\WorkloadTools\'
 .\WorkloadViewer.exe  -L $ConfigPath\viewer.log -S localhost,7444  -D WorkLoadTools -M baseline -U sqladmin -P dbatools.IO -T localhost,7444 -E WorkLoadTools -N replay -V sqladmin -Q dbatools.IO
 
+docker compose -f "g:\OneDrive\Documents\GitHub\Presentations\2022\DataGrillen\.devcontainer\docker-compose.yml"  -p "datagrillen_devcontainer" down 
