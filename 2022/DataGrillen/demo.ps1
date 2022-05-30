@@ -80,16 +80,16 @@ docker commit 2017 sqldbawithabeard/datagrillen1
 docker commit 2019 sqldbawithabeard/datagrillen2
 
 # tag the image
-docker tag sqldbawithabeard/datagrillen1 sqldbawithabeard/datagrillen1:v0.8.0
-docker tag sqldbawithabeard/datagrillen2 sqldbawithabeard/datagrillen2:v0.8.0
+docker tag sqldbawithabeard/datagrillen1 sqldbawithabeard/datagrillen1:v0.9.0
+docker tag sqldbawithabeard/datagrillen2 sqldbawithabeard/datagrillen2:v0.9.0
 
 
 docker image ls -f "reference=sqldbawithabeard/in*"
 
 # push the image
 
-docker push sqldbawithabeard/datagrillen1:v0.8.0
-docker push sqldbawithabeard/datagrillen2:v0.8.0
+docker push sqldbawithabeard/datagrillen1:v0.9.0
+docker push sqldbawithabeard/datagrillen2:v0.9.0
 
 
 # remove the containers
@@ -108,13 +108,13 @@ docker compose -f .devcontainer\docker-compose.yml down
 
 cd  .\datagrillen1
 docker build -t instance1 . --progress=plain --no-cache
-docker tag instance1 sqldbawithabeard/datagrillen1:v0.8.0
-docker push sqldbawithabeard/datagrillen1:v0.8.0
+docker tag instance1 sqldbawithabeard/datagrillen1:v0.9.0
+docker push sqldbawithabeard/datagrillen1:v0.9.0
 
 cd  ..\datagrillen2
 docker build -t instance2 . # --progress=plain --no-cache
-docker tag instance2 sqldbawithabeard/datagrillen2:v0.8.0
-docker push sqldbawithabeard/datagrillen2:v0.8.0
+docker tag instance2 sqldbawithabeard/datagrillen2:v0.9.0
+docker push sqldbawithabeard/datagrillen2:v0.9.0
 
 
 #
