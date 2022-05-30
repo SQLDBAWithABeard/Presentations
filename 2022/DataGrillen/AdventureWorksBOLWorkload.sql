@@ -813,3 +813,31 @@ ORDER BY Name;
 
 
 ------
+
+/*Lets get the manager*/
+
+EXECUTE  [dbo].[uspGetEmployeeManagers] 4
+
+------
+
+/*Lets get the manager*/
+
+EXECUTE  [dbo].[uspGetEmployeeManagers] 14
+
+------
+
+/*Lets get the manager*/
+
+EXECUTE  [dbo].[uspGetEmployeeManagers] 99
+
+------
+
+/*Lets get the manager*/
+
+EXECUTE  [dbo].[uspGetEmployeeManagers] 95
+------
+
+/*Lets get the manager*/
+
+EXECUTE  [dbo].[uspGetEmployeeManagers] 87
+
