@@ -4,14 +4,14 @@ on:
   push:
     branches: [ main ]
     paths: 
-      - Instance1/dockerfile
-      - Instance2/dockerfile
+      - datagrillen1/dockerfile
+      - datagrillen2/dockerfile
     
   pull_request:
     branches: [ main ]
     paths:
-      - Instance1/dockerfile
-      - Instance2/dockerfile
+      - datagrillen1/dockerfile
+      - datagrillen2/dockerfile
   workflow_dispatch:
   
 jobs:
@@ -47,28 +47,28 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          context: Instance1/
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/Instance1:${{ steps.bump.outputs.new_tag }},${{ secrets.DOCKERHUB_USERNAME }}/Instance1:latest
+          context: datagrillen1/
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/datagrillen1:${{ steps.bump.outputs.new_tag }},${{ secrets.DOCKERHUB_USERNAME }}/datagrillen1:latest
       -
         name: Build and push Sql Instance 2
         uses: docker/build-push-action@v2
         with:
           push: true
-          context: Instance2/
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/Instance2:${{ steps.bump.outputs.new_tag }},${{ secrets.DOCKERHUB_USERNAME }}/Instance2:latest
+          context: datagrillen2/
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/datagrillen2:${{ steps.bump.outputs.new_tag }},${{ secrets.DOCKERHUB_USERNAME }}/datagrillen2:latest
       -
         name: Find and Replace
         uses: jacobtomlinson/gha-find-replace@v2
         with:
-          find: "Instance1:.*"
-          replace: "Instance1:${{ steps.bump.outputs.new_tag }}"
+          find: "datagrillen1:.*"
+          replace: "datagrillen1:${{ steps.bump.outputs.new_tag }}"
           include: ".devcontainer/docker-compose.yml" 
       -
-        name: Find and Replace Instance2
+        name: Find and Replace datagrillen2
         uses: jacobtomlinson/gha-find-replace@v2
         with:
-          find: "Instance2:.*"
-          replace: "Instance2:${{ steps.bump.outputs.new_tag }}"
+          find: "datagrillen2:.*"
+          replace: "datagrillen2:${{ steps.bump.outputs.new_tag }}"
           include: ".devcontainer/docker-compose.yml" 
       -
         name: Add & Commit
