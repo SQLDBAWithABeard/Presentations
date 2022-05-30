@@ -62,7 +62,7 @@ jobs:
         with:
           find: "datagrillen1:.*"
           replace: "datagrillen1:${{ steps.bump.outputs.new_tag }}"
-          include: "{2022/DataGrillen/demo.ps1*,2022/DataGrillen/**/.*devcontainer/docker-compose.yml*}" 
+          include: "{2022/DataGrillen/demo.ps1*,2022/DataGrillen/**/.*/**}" 
       -
         name: Find and Replace datagrillen2
         uses: jacobtomlinson/gha-find-replace@v2
