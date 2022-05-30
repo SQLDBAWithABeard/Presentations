@@ -4,14 +4,14 @@ on:
   push:
     branches: [ main ]
     paths: 
-      - 2022/DataGrillen/datagrillen1/dockerfile
-      - 2022/DataGrillen/datagrillen2/dockerfile
+      - 2022/DataGrillen/datagrillen1/**
+      - 2022/DataGrillen/datagrillen2/**
     
   pull_request:
     branches: [ main ]
     paths:
-      - 2022/DataGrillen/datagrillen1/dockerfile 
-      - 2022/DataGrillen/datagrillen2/dockerfile
+      - 2022/DataGrillen/datagrillen1/**
+      - 2022/DataGrillen/datagrillen2/**
   workflow_dispatch:
   
 jobs:
