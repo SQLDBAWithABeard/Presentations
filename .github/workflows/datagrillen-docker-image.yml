@@ -67,7 +67,7 @@ jobs:
         name: Replace in the Docker Compose
         shell: pwsh
         run:  |
-          $replace = ${{ steps.bump.outputs.new_tag }}
+          $replace = '{0}' -f ${{ steps.bump.outputs.new_tag }}
           $new = (Get-Content 2022\DataGrillen\.devcontainer\docker-compose.yml) -replace 'datagrillen1:v.*', "datagrillen1:$replace" -replace 'datagrillen2:v.*', "datagrillen2:$replace"
           $new | Set-Content  2022\DataGrillen\.devcontainer\docker-compose.yml
       -
