@@ -116,7 +116,7 @@ docker tag instance1 sqldbawithabeard/datagrillen1:v0.9.0
 docker push sqldbawithabeard/datagrillen1:v0.9.0
 
 cd  ..\datagrillen2
-docker build -t instance2 . # --progress=plain --no-cache
+docker build -t instance2 . --progress=plain --no-cache
 docker tag instance2 sqldbawithabeard/datagrillen2:v0.9.0
 docker push sqldbawithabeard/datagrillen2:v0.9.0
 #>

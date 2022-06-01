@@ -1,4 +1,4 @@
-FROM  mcr.microsoft.com/mssql/2022-latest
+FROM  mcr.microsoft.com/mssql/server:2022-latest
 USER root
 # Install PowerShell
 RUN apt-get update && apt install -y powershell
