@@ -1,0 +1,30 @@
+version: "3"
+services:
+    instance1:
+      image: sqldbawithabeard/instance1:v0.9.0
+      volumes:
+        - mydata:/var/opt/backups
+        - shared:/shared
+        # Update this to wherever you want VS Code to mount the folder of your project
+        - ..:/workspace:cached
+      ports:
+        - "7452:1433"
+      container_name: instance1
+      hostname: instance1
+      
+    instance2:
+      image: sqldbawithabeard/instance2:v0.9.0
+      volumes:
+        - mydata:/var/opt/backups
+        - shared:/shared
+        # Update this to wherever you want VS Code to mount the folder of your project
+        # So that the second container is rebuilt everytime as well 
+        - ..:/workspace:cached
+      ports:
+        - "7453:1433"
+      container_name: instance2
+      hostname: instance2
+      
+volumes:
+  mydata:
+  shared:
