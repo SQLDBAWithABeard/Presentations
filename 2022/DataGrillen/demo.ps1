@@ -23,7 +23,7 @@ if (-not (Test-Path  $env:TEMP\Backups\AdventureWorks2017.bak)) {
 
 # and run some containers
 docker container run -d `
-    -p 7432:1433 `
+    -p 7452:1433 `
     --env ACCEPT_EULA=Y `
     --env MSSQL_SA_PASSWORD=dbatools.IO `
     --volume $env:TEMP\Backups\:/tmp/backups `
@@ -31,7 +31,7 @@ docker container run -d `
     mcr.microsoft.com/mssql/server:2017-latest
 
 docker container run -d `
-    -p 7433:1433 `
+    -p 7453:1433 `
     --env ACCEPT_EULA=Y `
     --env MSSQL_SA_PASSWORD=dbatools.IO `
     --volume $env:TEMP\Backups\:/tmp/backups `
@@ -39,7 +39,7 @@ docker container run -d `
     mcr.microsoft.com/mssql/server:2019-latest
 
 docker container run -d `
-    -p 7444:1433 `
+    -p 7454:1433 `
     --env ACCEPT_EULA=Y `
     --env MSSQL_SA_PASSWORD=dbatools.IO `
     --name WorkloadTools `
@@ -54,12 +54,12 @@ $continercredential = New-Object System.Management.Automation.PSCredential('sa',
 
 # We need a database
 
-$datagrillen1 = Connect-DbaInstance -SqlInstance 'localhost,7432' -SqlCredential $continercredential
-$datagrillen2 = Connect-DbaInstance -SqlInstance 'localhost,7433' -SqlCredential $continercredential
+$datagrillen1 = Connect-DbaInstance -SqlInstance 'localhost,7452' -SqlCredential $continercredential
+$datagrillen2 = Connect-DbaInstance -SqlInstance 'localhost,7453' -SqlCredential $continercredential
 
 
-Restore-DbaDatabase -SqlInstance $datagrillen1 -Path /tmp/backups/AdventureWorks_FULL_COPY_ONLY.bak -DatabaseName AdventureWorks
-Restore-DbaDatabase -SqlInstance $datagrillen2 -Path /tmp/backups/AdventureWorks_FULL_COPY_ONLY.bak -DatabaseName AdventureWorks
+Restore-DbaDatabase -SqlInstance $datagrillen1 -Path /tmp/backups/AdventureWorks2017.bak -DatabaseName AdventureWorks
+Restore-DbaDatabase -SqlInstance $datagrillen2 -Path /tmp/backups/AdventureWorks2017.bak -DatabaseName AdventureWorks
 
 $query = "ALTER DATABASE AdventureWorks
 SET COMPATIBILITY_LEVEL = 150"
@@ -76,12 +76,12 @@ docker stop 2017
 docker stop 2019
 
 # create an image
-docker commit 2017 sqldbawithabeard/datagrillen1
-docker commit 2019 sqldbawithabeard/datagrillen2
+docker commit 2017 instance1
+docker commit 2019 instance2
 
 # tag the image
-docker tag sqldbawithabeard/datagrillen1 sqldbawithabeard/datagrillen1:v0.9.0
-docker tag sqldbawithabeard/datagrillen2 sqldbawithabeard/datagrillen2:v0.9.0
+docker tag instance1 sqldbawithabeard/instance1:v0.9.0
+docker tag instance2 sqldbawithabeard/instance2:v0.9.0
 
 
 docker image ls -f "reference=sqldbawithabeard/in*"
@@ -98,13 +98,17 @@ docker rm 2017 2019 2022 WorkloadTools --force
 
 # then we can run docker compose and start an environment
 
-docker compose -f .devcontainer\docker-compose.yml up -d
+docker compose -f config\docker-compose.yml up -d
 
-# examine the instancs in ADS
+# examine the instances in ADS
 
 # So that is awesome but how about we automate the thing ?
 
-docker compose -f .devcontainer\docker-compose.yml down
+docker compose -f config\docker-compose.yml down
+
+<#
+
+# If we have time and internet we can build an instance locally and push it to the registry
 
 cd  .\datagrillen1
 docker build -t instance1 . --progress=plain --no-cache
@@ -115,7 +119,9 @@ cd  ..\datagrillen2
 docker build -t instance2 . # --progress=plain --no-cache
 docker tag instance2 sqldbawithabeard/datagrillen2:v0.9.0
 docker push sqldbawithabeard/datagrillen2:v0.9.0
+#>
 
+# Otherwise we can look at the github action
 
 #
 # lets start some WorkLoadTools IN WINDWOS TERMINAL ROB
@@ -174,4 +180,4 @@ $ConfigPath = (Get-Item 'Presentations:\2022\DataGrillen\Config\').FullName
 cd 'C:\Program Files\WorkloadTools\'
 .\WorkloadViewer.exe  -L $ConfigPath\viewer.log -S localhost,7444  -D WorkLoadTools -M baseline -U sqladmin -P dbatools.IO -T localhost,7444 -E WorkLoadTools -N replay -V sqladmin -Q dbatools.IO
 
-docker compose -f "g:\OneDrive\Documents\GitHub\Presentations\2022\DataGrillen\.devcontainer\docker-compose.yml"  -p "datagrillen_devcontainer" down 
+docker compose -f ".devcontainer\docker-compose.yml"  -p "datagrillen_devcontainer" down 
