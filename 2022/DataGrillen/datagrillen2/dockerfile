@@ -1,4 +1,4 @@
-FROM  mcr.microsoft.com/mssql/server:2019-latest
+FROM  mcr.microsoft.com/mssql/2022-CTP2.0-ubuntu-20.04
 USER root
 # Install PowerShell
 RUN apt-get update && apt install -y powershell
