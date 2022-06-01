@@ -7,7 +7,7 @@ $tags
 
 # then we can pull the ones that we want
 docker pull mcr.microsoft.com/mssql/server:2019-latest
-docker pull mcr.microsoft.com/mssql/server:2017-latest
+docker pull mcr.microsoft.com/mssql/server:2022-CTP2.0-ubuntu-20.04
 
 # get the back up
 
