@@ -1,7 +1,7 @@
 version: "3"
 services:
     datagrillen1:
-      image: sqldbawithabeard/datagrillen1:v0.9.0
+      image: sqldbawithabeard/datagrillen1:v0.13.0
       volumes:
         - mydata:/var/opt/backups
         - shared:/shared
@@ -13,7 +13,7 @@ services:
       hostname: datagrillen1
       
     datagrillen2:
-      image: sqldbawithabeard/datagrillen2:v0.9.0
+      image: sqldbawithabeard/datagrillen2:v0.13.0
       volumes:
         - mydata:/var/opt/backups
         - shared:/shared
@@ -26,7 +26,7 @@ services:
       hostname: datagrillen2
 
     workloadtools:
-      image: sqldbawithabeard/datagrillen1:v0.9.0
+      image: sqldbawithabeard/datagrillen1:v0.13.0
       volumes:
         - mydata:/var/opt/backups
         - shared:/shared
