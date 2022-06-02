@@ -88,8 +88,8 @@ docker image ls -f "reference=sqldbawithabeard/in*"
 
 # push the image
 
-docker push sqldbawithabeard/datagrillen1:v0.13.0
-docker push sqldbawithabeard/datagrillen2:v0.13.0
+docker push sqldbawithabeard/datagrillen1:v0.14.0
+docker push sqldbawithabeard/datagrillen2:v0.14.0
 
 
 # remove the containers
@@ -114,13 +114,13 @@ docker compose -f .devcontainer\docker-compose.yml down
 
 cd  .\datagrillen1
 docker build -t instance1 . --progress=plain --no-cache
-docker tag instance1 sqldbawithabeard/datagrillen1:v0.13.0
-docker push sqldbawithabeard/datagrillen1:v0.13.0
+docker tag instance1 sqldbawithabeard/datagrillen1:v0.14.0
+docker push sqldbawithabeard/datagrillen1:v0.14.0
 
 cd  ..\datagrillen2
 docker build -t instance2 . --progress=plain --no-cache
-docker tag instance2 sqldbawithabeard/datagrillen2:v0.13.0
-docker push sqldbawithabeard/datagrillen2:v0.13.0
+docker tag instance2 sqldbawithabeard/datagrillen2:v0.14.0
+docker push sqldbawithabeard/datagrillen2:v0.14.0
 #>
 
 # Otherwise we can look at the github action
