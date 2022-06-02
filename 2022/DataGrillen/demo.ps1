@@ -7,7 +7,7 @@ $tags
 
 # then we can pull the ones that we want
 docker pull mcr.microsoft.com/mssql/server:2019-latest
-docker pull mcr.microsoft.com/mssql/server:2022-CTP2.0-ubuntu-20.04
+docker pull mcr.microsoft.com/mssql/server:2022-latest
 
 # get the back up
 
@@ -36,7 +36,7 @@ docker container run -d `
     --env MSSQL_SA_PASSWORD=dbatools.IO `
     --volume $env:TEMP\Backups\:/tmp/backups `
     --name 2019 `
-    mcr.microsoft.com/mssql/server:2019-latest
+    mcr.microsoft.com/mssql/server:2022-latest
 
 docker container run -d `
     -p 7454:1433 `
@@ -99,12 +99,14 @@ docker rm 2017 2019 2022 WorkloadTools --force
 # then we can run docker compose and start an environment
 
 docker compose -f config\docker-compose.yml up -d
+docker compose -f .devcontainer\docker-compose.yml up -d
 
 # examine the instances in ADS
 
 # So that is awesome but how about we automate the thing ?
 
 docker compose -f config\docker-compose.yml down
+docker compose -f .devcontainer\docker-compose.yml down
 
 <#
 
