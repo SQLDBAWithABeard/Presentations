@@ -1024,3 +1024,307 @@
 2022-05-13 14:13:15.9088 - Info - WorkloadViewer.ViewModel.MainViewModel : Benchmark evaluation completed
 2022-05-13 14:13:15.9088 - Info - WorkloadViewer.ViewModel.MainViewModel : Merging sets
 2022-05-13 14:13:15.9118 - Info - WorkloadViewer.ViewModel.MainViewModel : Sets merged
+2022-05-30 20:25:17.9866 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 0 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.0673 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 0 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.0673 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 0 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.0673 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 0 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.0786 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 1 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.0786 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 1 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.0786 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 1 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.0786 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 1 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.0786 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 2 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.0940 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 2 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.0940 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 2 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.0940 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 2 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.0940 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 3 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.0940 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 3 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.0940 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 3 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1092 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 3 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1092 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 4 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1092 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 4 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1092 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 4 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1092 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 4 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1092 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 5 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1242 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 5 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1242 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 5 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1242 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 5 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1242 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 6 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1242 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 6 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1242 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 6 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1400 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 6 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1400 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 7 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1400 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 7 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1400 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 7 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1400 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 7 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1557 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 8 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1557 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 8 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1557 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 8 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1557 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 8 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1557 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 9 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1697 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 9 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1697 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 9 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1697 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 9 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1697 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 10 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1697 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 10 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1697 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 10 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1697 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 10 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1882 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 11 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1882 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 11 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1882 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 11 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1882 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 11 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1882 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 12 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.1882 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 12 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2031 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 12 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2031 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 12 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2031 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 13 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2031 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 13 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2031 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 13 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2031 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 13 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2031 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 14 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2187 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 14 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2187 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 14 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2187 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 14 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2187 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 15 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2187 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 15 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2325 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 15 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2325 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 15 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2325 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 16 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2325 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 16 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2325 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 16 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2478 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 16 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2478 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 17 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2478 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 17 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2478 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 17 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2478 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 17 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2478 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 18 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2478 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 18 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2662 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 18 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2662 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 18 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2662 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 19 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2662 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 19 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2662 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 19 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2793 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 19 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2793 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 20 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2793 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 20 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2793 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 20 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2793 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 20 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2951 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 21 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2951 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 21 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2951 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 21 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2951 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 21 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.2951 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 22 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3120 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 22 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3120 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 22 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3120 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 22 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3120 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 23 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3267 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 23 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3267 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 23 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3267 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 23 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3267 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 24 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3267 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 24 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3416 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 24 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3416 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 24 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3416 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 25 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3416 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 25 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3416 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 25 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3582 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 25 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3582 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 26 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3582 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 26 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3744 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 26 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3744 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 26 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3744 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 27 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3744 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 27 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3744 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 27 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.3910 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 27 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-05-30 20:25:18.7828 - Info - WorkloadViewer.ViewModel.MainViewModel : Entering baseline evaluation
+2022-05-30 20:25:18.7828 - Info - WorkloadViewer.ViewModel.MainViewModel : Baseline evaluation completed
+2022-05-30 20:25:18.7828 - Info - WorkloadViewer.ViewModel.MainViewModel : Entering benchmark evaluation
+2022-05-30 20:25:18.7828 - Info - WorkloadViewer.ViewModel.MainViewModel : Benchmark evaluation completed
+2022-05-30 20:25:18.7828 - Info - WorkloadViewer.ViewModel.MainViewModel : Merging sets
+2022-05-30 20:25:18.7968 - Info - WorkloadViewer.ViewModel.MainViewModel : Sets merged
+2022-06-01 22:48:51.1905 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 0 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-01 22:48:51.2325 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 0 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-01 22:48:51.2325 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 0 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-01 22:48:51.2325 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 0 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-01 22:48:51.2325 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 1 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-01 22:48:51.2325 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 1 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-01 22:48:51.2325 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 1 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-01 22:48:51.2551 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 1 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-01 22:48:51.2551 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 2 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-01 22:48:51.2551 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 2 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-01 22:48:51.2551 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 2 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-01 22:48:51.2551 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 2 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-01 22:48:51.4749 - Info - WorkloadViewer.ViewModel.MainViewModel : Entering baseline evaluation
+2022-06-01 22:48:51.4749 - Info - WorkloadViewer.ViewModel.MainViewModel : Baseline evaluation completed
+2022-06-01 22:48:51.4749 - Info - WorkloadViewer.ViewModel.MainViewModel : Entering benchmark evaluation
+2022-06-01 22:48:51.4869 - Info - WorkloadViewer.ViewModel.MainViewModel : Benchmark evaluation completed
+2022-06-01 22:48:51.4869 - Info - WorkloadViewer.ViewModel.MainViewModel : Merging sets
+2022-06-01 22:48:51.4869 - Info - WorkloadViewer.ViewModel.MainViewModel : Sets merged
+2022-06-02 12:49:18.9269 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 0 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-02 12:49:18.9840 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 0 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-02 12:49:18.9864 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 0 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-02 12:49:18.9864 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 0 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-02 12:49:19.1661 - Info - WorkloadViewer.ViewModel.MainViewModel : Entering baseline evaluation
+2022-06-02 12:49:19.1661 - Info - WorkloadViewer.ViewModel.MainViewModel : Baseline evaluation completed
+2022-06-02 12:49:19.1661 - Info - WorkloadViewer.ViewModel.MainViewModel : Entering benchmark evaluation
+2022-06-02 12:49:19.1661 - Info - WorkloadViewer.ViewModel.MainViewModel : Benchmark evaluation completed
+2022-06-02 12:49:19.1661 - Info - WorkloadViewer.ViewModel.MainViewModel : Merging sets
+2022-06-02 12:49:19.1791 - Info - WorkloadViewer.ViewModel.MainViewModel : Sets merged
+2022-06-02 12:51:27.4547 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 0 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-02 12:51:27.4864 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 0 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-02 12:51:27.4864 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 0 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-02 12:51:27.4864 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 0 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-02 12:51:27.4864 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 1 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-02 12:51:27.4864 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 1 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-02 12:51:27.4864 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 1 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-02 12:51:27.4864 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 1 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-02 12:51:27.4864 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 2 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-02 12:51:27.4864 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 2 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-02 12:51:27.4864 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 2 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-02 12:51:27.4864 - Warn - WorkloadViewer.Model.WorkloadAnalysis : Skipping invalid datapoint at 2 because of Exception:    at System.Data.SqlClient.SqlBuffer.get_Int64()
+   at WorkloadViewer.Model.WorkloadAnalysis.Load() in C:\GitHub\WorkloadTools\WorkloadViewer\Model\WorkloadAnalysis.cs:line 89
+2022-06-02 12:51:27.6660 - Info - WorkloadViewer.ViewModel.MainViewModel : Entering baseline evaluation
+2022-06-02 12:51:27.6660 - Info - WorkloadViewer.ViewModel.MainViewModel : Baseline evaluation completed
+2022-06-02 12:51:27.6660 - Info - WorkloadViewer.ViewModel.MainViewModel : Entering benchmark evaluation
+2022-06-02 12:51:27.6660 - Info - WorkloadViewer.ViewModel.MainViewModel : Benchmark evaluation completed
+2022-06-02 12:51:27.6660 - Info - WorkloadViewer.ViewModel.MainViewModel : Merging sets
+2022-06-02 12:51:27.6660 - Info - WorkloadViewer.ViewModel.MainViewModel : Sets merged
