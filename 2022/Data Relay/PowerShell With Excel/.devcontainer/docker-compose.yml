@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Update 'VARIANT' to pick a version of .NET: 3.1-focal, 6.0-focal
+        VARIANT: "6.0-focal"
+        # Optional version of Node.js
+        NODE_VERSION: "lts/*"
+
+    volumes:
+      - ..:/workspace:cached
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+
+    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
+    network_mode: service:dbachecks1
+
+    # Uncomment the next line to use a non-root user for all processes.
+    # user: vscode
+
+    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally. 
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+  dbachecks1:
+    image: sqldbawithabeard/dbatoolsprecon:v0.27.0
+    volumes:
+      - mydata:/var/opt/backups
+      - shared:/shared
+
+    ports:
+      - "7401:1433"
+    container_name: dbachecks1
+    hostname: dbachecks1
+    
+  dbachecks2:
+    image: sqldbawithabeard/dbatoolsprecon2:v0.27.0
+    volumes:
+      - mydata:/var/opt/backups
+      - shared:/shared
+      # Update this to wherever you want VS Code to mount the folder of your project
+      # So that the second container is rebuilt everytime as well 
+      - ..:/somewhereweirdworkspace:cached
+    ports:
+      - "7402:1433"
+    container_name: dbachecks2
+    hostname: dbachecks2
+
+  # Add "forwardPorts": ["1433"] to **devcontainer.json** to forward MSSQL locally.
+  # (Adding the "ports" property to this file will not forward from a Codespace.)
+volumes:
+  mydata:
+  shared:

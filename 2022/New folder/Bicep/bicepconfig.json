@@ -1,9 +1,0 @@
-{
-  "cloud": {
-    "currentProfile": "AzureCloud",
-    "credentialPrecedence": [
-      "AzurePowerShell",
-      "AzureCLI"
-    ]
-  }
-}
