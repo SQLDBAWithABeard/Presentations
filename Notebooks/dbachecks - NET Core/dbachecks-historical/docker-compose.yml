@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+    2019-CTP24:
+        image: mcr.microsoft.com/mssql/server:2019-CTP2.4-ubuntu
+        ports:  
+          - "15594:1433"
+        environment:
+          SA_PASSWORD: "Password0!"
+          ACCEPT_EULA: "Y"
+        volumes: 
+          - C:\dbachecks:/var/opt/mssql/backups

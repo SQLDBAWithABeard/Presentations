@@ -1,0 +1,57 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "minLength": 1,
+            "maxLength": 63,
+            "type": "String",
+            "metadata": {
+                "description": "The name of the SQL server - Lowercase letters, numbers, and hyphens.Cant start or end with hyphen."
+            }
+        },
+        "location": {
+            "type": "String",
+            "metadata": {
+                "description": "The location for the SQL Server"
+            }
+        },
+        "administratorLogin": {
+            "type": "String",
+            "metadata": {
+                "description": "The name of the administrator login"
+            }
+        },
+        "administratorLoginPassword": {
+            "type": "SecureString",
+            "metadata": {
+                "description": "The password for the SQL Server Administratoe"
+            }
+        },
+        "tags": {
+            "defaultValue": {},
+            "type": "Object",
+            "metadata": {
+                "description": "The tags that should be added to the resource"
+            }
+        }
+    },
+    "functions": [],
+    "resources": [{
+        "type": "Microsoft.Sql/servers",
+        "apiVersion": "2021-05-01-preview",
+        "name": "[parameters('name')]",
+        "location": "[parameters('location')]",
+        "tags": "[parameters('tags')]",
+        "properties": {
+            "administratorLogin": "[parameters('administratorLogin')]",
+            "administratorLoginPassword": "[parameters('administratorLoginPassword')]"
+        }
+    }],
+    "outputs": {
+        "sqlservername": {
+            "type": "String",
+            "value": "[parameters('name')]"
+        }
+    }
+}
