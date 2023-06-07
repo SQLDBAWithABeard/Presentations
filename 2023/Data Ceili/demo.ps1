@@ -183,6 +183,9 @@ sqlcmd open ads
 
 sqlcmd delete
 
+# so this is a bit interesting but there is an issue opened. See sqlcmd is open-source and you can help to guide the direction of the project.
+https://github.com/microsoft/go-sqlcmd/issues/372
+
 sqlcmd config view
 
 sqlcmd delete
