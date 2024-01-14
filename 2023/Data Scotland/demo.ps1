@@ -69,10 +69,14 @@ Invoke-DbaQuery -SqlInstance localhost -SqlCredential $cred -Query "SELECT Name 
 # Just so I can quickly talk about dbatools v2 and the trust cert
 Set-DbatoolsConfig -Name sql.connection.trustcert -Value $true
 
-Invoke-DbaQuery -SqlInstance localhost -SqlCredential $cred -Query "SELECT Name From sys.databases"
+Invoke-DbaQuery -SqlInstance 'localhost,1435' -SqlCredential $cred -Query "SELECT Name From sys.databases"
 
 # but we cna just use sqlcmd and create a database
 sqlcmd query "CREATE DATABASE DbJunk"
+
+# We can also use sqlcmd to open a database in Azure Data Studio
+
+sqlcmd open ads
 
 # lets talk about passwords
 
@@ -203,6 +207,7 @@ sqlcmd config delete-user --name sqladmin
 
 Set-AzContext -Subscription 6d8f994c-9051-4cef-ba61-528bab27d213
 
+<#
 --authentication-method
 Specifies the SQL authentication method to use to connect
 to Azure SQL Database. One of: ActiveDirectoryDefault,
@@ -210,6 +215,14 @@ ActiveDirectoryIntegrated, ActiveDirectoryPassword,
 ActiveDirectoryInteractive,
 ActiveDirectoryManagedIdentity,
 ActiveDirectoryServicePrincipal, SqlPassword
+
+#>
+
+# Make sure that we are logged in to Azure
+# This requires Azure CLI to be installed and logged in
+
+az login
+az account set --subscription '6d8f994c-9051-4cef-ba61-528bab27d213'
 
 sqlcmd -S beardenergysrv.database.windows.net -d Strava --authentication-method ActiveDirectoryIntegrated --format="vert"
 
@@ -219,7 +232,6 @@ SELECT [name]
       ,[moving_time]
       ,[total_elevation_gain]
       ,[start_date_local]
-
       ,[average_cadence]
       ,[average_watts]
       ,[average_heartrate]
@@ -243,101 +255,124 @@ GO
 
 ## new things
 
+cd C:\temp\sqlcmd-319
+
 $env:SQLCMD_ACCEPT_EULA='YES'
+
+./sqlcmd --help
+
+
+# I want to restore a backup
+
+./sqlcmd create mssql --cached --using https://aka.ms/AdventureWorksLT.bak
+
+# query it
+./sqlcmd query "SELECT DB_NAME()"
+
+# remove it
+./sqlcmd delete --force --yes
 
 # Lets see the new things
 
 # restore from a file into an existing container
-sqlcmd create mssql --cached
+./sqlcmd create mssql --cached
 
 # restore the file into it
-sqlcmd using https://aka.ms/AdventureWorksLT.bak
+./sqlcmd use https://aka.ms/AdventureWorksLT.bak
 
 # query it
-sqlcmd query "SELECT DB_NAME()"
+./sqlcmd query "SELECT DB_NAME()"
 
 # remove it
-sqlcmd delete --force --yes
+./sqlcmd delete --force --yes
 
 # I dont have a file in an URL with a .bak extension
 
 # restore from a file into an existing container
-sqlcmd create mssql --cached
+./sqlcmd create mssql --cached
 
-# restore a local file into it
-sqlcmd use c:\temp\backup\somedatabase.bak
+# I want to restore some database backup into it
+./sqlcmd use c:\temp\backup\somedatabase.bak
 
 # query it
-sqlcmd query "SELECT DB_NAME()"
+./sqlcmd query "SELECT DB_NAME()"
 
 # remove it
-sqlcmd delete --force --yes
+./sqlcmd delete --force --yes
 
 
-# I want to restore the database as a different name
+# I want to restore some database backup as that database name
 
 # restore from a file into an existing container
-sqlcmd create mssql --cached
+./sqlcmd create mssql --cached
 
 # restore a local file into it as a different name
-sqlcmd use c:\temp\backup\somedatabase.bak,anotherdatabase
+./sqlcmd use c:\temp\backup\somedatabase.bak,thatdatabasename
 
 # query it
-sqlcmd query "SELECT DB_NAME()"
+./sqlcmd query "SELECT DB_NAME()"
 
 # remove it
-sqlcmd delete --force --yes
+./sqlcmd delete --force --yes
 
 # I am organised, can I do it all in one line please. Just restore when I create please
 
-sqlcmd create mssql --cached --use c:\temp\backup\somedatabase.bak
+./sqlcmd create mssql --cached --use c:\temp\backup\somedatabase.bak
 
 # query it
-sqlcmd query "SELECT DB_NAME()"
+./sqlcmd query "SELECT DB_NAME()"
 
 # remove it
-sqlcmd delete --force --yes
+./sqlcmd delete --force --yes
 
 # I am organised, can I do it all in one line please.
 
-sqlcmd create mssql --cached --use c:\temp\backup\somedatabase.bak,yetanotherdatabase
+./sqlcmd create mssql --cached --use c:\temp\backup\somedatabase.bak,yetanotherdatabasenamejusttoshowyouican
 
 # query it
-sqlcmd query "SELECT DB_NAME()"
+./sqlcmd query "SELECT DB_NAME()"
 
 # remove it
-sqlcmd delete --force --yes
+./sqlcmd delete --force --yes
 
 # I am organised, AND LAZY, can I do it all in one line please.
 
-sqlcmd create mssql --cached --use c:\temp\backup\somedatabase.bak,yetanotherdatabase --open ads
+./sqlcmd create mssql --cached --use c:\temp\backup\somedatabase.bak,anevenlongerdatabasenametoseeifanyoneisreadingthissaybeard --open ads
 
 # query it
-sqlcmd query "SELECT DB_NAME()"
+./sqlcmd query "SELECT DB_NAME()"
+
 
 # remove it
-sqlcmd delete --force --yes
+./sqlcmd delete --force --yes
 
 # I dont have a .bak but I want to attach an mdf file please
 
-sqlcmd create mssql --cached --use C:\temp\backup\moreagaindatabase.mdf
+./sqlcmd create mssql --cached --using C:\temp\backup\anotherdatabaseforwilliam.mdf,anotherdatabaseforwilliam
 
 # query it
-sqlcmd query "SELECT DB_NAME()"
+./sqlcmd query "SELECT DB_NAME()"
+./sqlcmd query "SELECT name from sys.databases"
 
 # remove it
-sqlcmd delete --force --yes
+./sqlcmd delete --force --yes
 
 # We live in a modern world, my backup is in Azure Storage
 
-sqlcmd create mssql --cached --use "https://dublinbeard.blob.core.windows.net/backup/someonlinedatabase.bak?sp=r&st=2023-06-09T05:57:56Z&se=2023-06-17T13:57:56Z&spr=https&sv=2022-11-02&sr=c&sig=qo9qCQq%2BUrkp4c2N%2BEFF2KrchNhghj25jY00xFsVoZE%3D"
+./sqlcmd create mssql --cached --use 'https://beardsqlbaks1.blob.core.windows.net/backups/someonlinedeebeebackup.bak?sp=racwd&st=2023-09-12T15:31:05Z&se=2023-09-17T23:31:05Z&spr=https&sv=2022-11-02&sr=b&sig=FRda2aEhH6aBk2rNLmtQ4zcJbi8ykWHCWM4OaSGDlpQ%3D' --verbosity 5
+
 
 # query it
-sqlcmd query "SELECT DB_NAME()"
+./sqlcmd query "SELECT DB_NAME()"
 
 # remove it
-sqlcmd delete --force --yes
+./sqlcmd delete --force --yes
 
 
 
 
+GOOS=windows GOARCH=amd64 go build -o ../sqlcmd.exe -ldflags="-X main.version=1.7" ../cmd/modern
+
+2019-latest
+
+wget -O /var/opt/mssql/backup.bak 'https://beardsqlbaks1.blob.core.windows.net/backups/someonlinedeebeebackup.bak?sp=racw&st=2023-09-12T14:16:53Z&se=2023-10-03T22:16:53Z&sv=2022-11-02&sr=b&sig=hu1nLNRxs12YF1vbFL0K9%2FuWXEh5G4SaqCoYwc3PCDc%3D'
