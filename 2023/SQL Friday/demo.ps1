@@ -33,8 +33,9 @@ sqlcmd create mssql get-tags
 
 # lets create a new sql container
 # I am using cached to save redownloading the image
+# I am using verbosity 4 to show ALL of the output
 
-sqlcmd create mssql --accept-eula --cached
+sqlcmd create mssql --accept-eula --cached --verbosity 4
 
 # It even tells you what you can do next
 
@@ -264,11 +265,11 @@ sqlcmd config delete-user --name sqladmin
 
 ## new things
 
-cd C:\temp\sqlcmd319
+# cd C:\temp\sqlcmd319
 
 $env:SQLCMD_ACCEPT_EULA='YES'
 
-./sqlcmd --help
+sqlcmd --help
 
 
 # I want to restore a backup

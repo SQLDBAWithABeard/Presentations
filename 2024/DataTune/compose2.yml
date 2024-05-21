@@ -1,0 +1,44 @@
+version: "3"
+services:
+    dbatools1:
+      image: sqldbawithabeard/dbatoolsprecon:v0.28.0
+      volumes:
+        - mydata:/var/opt/backups
+        - shared:/shared
+        # Update this to wherever you want VS Code to mount the folder of your project
+        - ..:/workspace:cached
+      ports:
+        - "11001:1433"
+      container_name: dbatools1
+      hostname: dbatools1
+
+    dbatools2:
+      image: sqldbawithabeard/dbatoolsprecon2:v0.28.0
+      volumes:
+        - mydata:/var/opt/backups
+        - shared:/shared
+        # Update this to wherever you want VS Code to mount the folder of your project
+        # So that the second container is rebuilt everytime as well
+        - ..:/somewhereweirdworkspace:cached
+      ports:
+        - "11002:1433"
+      container_name: dbatools2
+      hostname: dbatools2
+
+    dbatools3:
+      image: dbachecks/sqlinstance1:v2.38.0
+      volumes:
+        - mydata:/var/opt/backups
+        - shared:/shared
+        # Update this to wherever you want VS Code to mount the folder of your project
+        # So that the second container is rebuilt everytime as well
+        - ..:/somewhereweirdworkspace:cached
+      ports:
+        - "11003:1433"
+      container_name: dbatools3
+      hostname: dbatools3
+
+
+volumes:
+  mydata:
+  shared:
